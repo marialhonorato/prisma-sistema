@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prisma - Coordenacao</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="../prisma_logo-removebg-preview.png">
+</head>
+<body>
+    <!-- Loading -->
+    <div id="loadingScreen" style="position:fixed;top:0;left:0;right:0;bottom:0;background:var(--background);display:flex;align-items:center;justify-content:center;z-index:9999">
+        <div style="text-align:center">
+            <img src="../prisma_logo-removebg-preview.png" alt="Prisma" style="width:100px;margin-bottom:16px">
+            <p style="color:var(--text-light);font-family:Poppins,sans-serif">Carregando...</p>
+        </div>
+    </div>
+
+    <!-- Menu Mobile -->
+    <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../prisma_logo-removebg-preview.png" alt="Prisma" class="sidebar-logo">
+                <h2>Coordenacao</h2>
+                <span class="role-badge coord">Coordenacao</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a class="nav-item active" onclick="showSection('dashboard')" data-section="dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                    Painel Geral
+                </a>
+                <a class="nav-item" onclick="showSection('therapists')" data-section="therapists">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    Terapeutas
+                </a>
+                <a class="nav-item" onclick="showSection('all-patients')" data-section="all-patients">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Todos os Pacientes
+                </a>
+                <a class="nav-item" onclick="showSection('all-evolutions')" data-section="all-evolutions">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    Todas as Evolucoes
+                </a>
+                <a class="nav-item" onclick="showSection('all-reports')" data-section="all-reports">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                    Todos os Relatorios
+                </a>
+                <a class="nav-item" onclick="showSection('aba-data')" data-section="aba-data">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    Dados ABA
+                </a>
+                <a class="nav-item" onclick="showSection('manage-users')" data-section="manage-users">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    Gerenciar Usuarios
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a class="nav-item" onclick="doLogout()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    Sair
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="main-content">
+
+            <!-- === DASHBOARD === -->
+            <div class="section active" id="section-dashboard">
+                <div class="page-header">
+                    <div>
+                        <h1>Painel da Coordenacao</h1>
+                        <p class="welcome-text">Visao geral de toda a clinica</p>
+                    </div>
+                </div>
+
+                <div class="stats-grid" id="statsGrid"></div>
+
+                <!-- Alertas -->
+                <div class="card" id="alertsCard" style="display:none">
+                    <div class="card-header"><h2>Alertas e Pendencias</h2></div>
+                    <div id="alertsContainer"></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Ultimas Evolucoes (Todos os Terapeutas)</h2>
+                    </div>
+                    <div id="recentEvolutions"></div>
+                </div>
+            </div>
+
+            <!-- === TERAPEUTAS === -->
+            <div class="section" id="section-therapists">
+                <div class="page-header">
+                    <h1>Terapeutas</h1>
+                </div>
+                <div class="therapist-grid" id="therapistGrid"></div>
+            </div>
+
+            <!-- === DETALHE TERAPEUTA === -->
+            <div class="section" id="section-therapist-detail">
+                <a class="back-btn" onclick="showSection('therapists')">&#8592; Voltar</a>
+                <div class="page-header">
+                    <div>
+                        <h1 id="detailTherapistName"></h1>
+                        <p class="welcome-text" id="detailTherapistSpec"></p>
+                    </div>
+                </div>
+
+                <div class="stats-grid" id="therapistStats"></div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Pacientes deste terapeuta</h2>
+                    </div>
+                    <div class="patient-list" id="therapistPatients"></div>
+                </div>
+
+                <div class="card" style="margin-top:20px">
+                    <div class="card-header">
+                        <h2>Evolucoes recentes</h2>
+                    </div>
+                    <div id="therapistEvolutions" class="evolution-list"></div>
+                </div>
+            </div>
+
+            <!-- === TODOS OS PACIENTES === -->
+            <div class="section" id="section-all-patients">
+                <div class="page-header">
+                    <h1>Todos os Pacientes</h1>
+                </div>
+                <div class="filter-bar">
+                    <select id="patientTherapistFilter" onchange="loadAllPatients()">
+                        <option value="">Todos os terapeutas</option>
+                    </select>
+                    <div class="search-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" id="patientSearch" placeholder="Buscar paciente..." oninput="loadAllPatients()">
+                    </div>
+                </div>
+                <div class="patient-list" id="allPatientList"></div>
+            </div>
+
+            <!-- === DETALHE PACIENTE (Coord) === -->
+            <div class="section" id="section-patient-detail">
+                <a class="back-btn" onclick="showSection('all-patients')">&#8592; Voltar</a>
+                <div class="page-header">
+                    <div>
+                        <h1 id="detailPatientName"></h1>
+                        <p class="welcome-text" id="detailPatientInfo"></p>
+                    </div>
+                </div>
+
+                <div class="tabs" id="patientTabs">
+                    <div class="tab active" onclick="switchPatientTab('evo')">Evolucoes</div>
+                    <div class="tab" onclick="switchPatientTab('rep')">Relatorios</div>
+                </div>
+
+                <div id="patientEvolutions" class="evolution-list"></div>
+                <div id="patientReports" class="evolution-list" style="display:none"></div>
+            </div>
+
+            <!-- === TODAS AS EVOLUCOES === -->
+            <div class="section" id="section-all-evolutions">
+                <div class="page-header">
+                    <h1>Todas as Evolucoes</h1>
+                </div>
+                <div class="filter-bar">
+                    <select id="evoTherapistFilter" onchange="loadAllEvolutions()">
+                        <option value="">Todos os terapeutas</option>
+                    </select>
+                    <select id="evoPatientFilter" onchange="loadAllEvolutions()">
+                        <option value="">Todos os pacientes</option>
+                    </select>
+                </div>
+                <div id="allEvolutionsList" class="evolution-list"></div>
+            </div>
+
+            <!-- === TODOS OS RELATORIOS === -->
+            <div class="section" id="section-all-reports">
+                <div class="page-header">
+                    <h1>Todos os Relatorios</h1>
+                </div>
+                <div class="filter-bar">
+                    <select id="repTherapistFilter" onchange="loadAllReports()">
+                        <option value="">Todos os terapeutas</option>
+                    </select>
+                </div>
+                <div id="allReportsList" class="evolution-list"></div>
+            </div>
+
+            <!-- === DADOS ABA === -->
+            <div class="section" id="section-aba-data">
+                <div class="page-header">
+                    <h1>Dados ABA</h1>
+                </div>
+                <div class="filter-bar">
+                    <select id="abaTherapistFilter" onchange="loadAbaPatientFilter()">
+                        <option value="">Todos os terapeutas</option>
+                    </select>
+                    <select id="abaPatientSelect" onchange="loadCoordAbaData()">
+                        <option value="">Selecione um paciente</option>
+                    </select>
+                </div>
+
+                <div id="abaContent" style="display:none">
+                    <!-- Alvos -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Alvos / Programas</h2>
+                        </div>
+                        <div id="abaTargetsList"></div>
+                    </div>
+
+                    <!-- Graficos -->
+                    <div class="card" id="abaChartsCard" style="display:none">
+                        <div class="card-header">
+                            <h2>Graficos de Progresso</h2>
+                            <select id="abaChartTarget" onchange="renderCoordAbaCharts()" style="padding:6px 12px;border:2px solid var(--border);border-radius:8px;font-family:Poppins;font-size:0.85rem">
+                                <option value="all">Todos os alvos</option>
+                            </select>
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+                            <div class="chart-container"><h3>Taxa de Acerto (%)</h3><canvas id="chartAccuracy"></canvas></div>
+                            <div class="chart-container"><h3>Frequencia por Sessao</h3><canvas id="chartFrequency"></canvas></div>
+                            <div class="chart-container"><h3>Duracao (minutos)</h3><canvas id="chartDuration"></canvas></div>
+                            <div class="chart-container"><h3>Tentativas Discretas (DTT)</h3><canvas id="chartDTT"></canvas></div>
+                        </div>
+                    </div>
+
+                    <!-- Historico de registros -->
+                    <div class="card">
+                        <div class="card-header"><h2>Historico de Registros</h2></div>
+                        <div id="abaSessionsList" class="evolution-list"></div>
+                    </div>
+                </div>
+
+                <div id="abaEmpty">
+                    <div class="empty-state"><h3>Selecione um paciente</h3><p>Escolha um terapeuta e paciente acima para visualizar os dados ABA.</p></div>
+                </div>
+            </div>
+
+            <!-- === GERENCIAR USUARIOS === -->
+            <div class="section" id="section-manage-users">
+                <div class="page-header">
+                    <h1>Gerenciar Usuarios</h1>
+                    <button class="btn btn-primary" onclick="openAddUserModal()">+ Novo Terapeuta</button>
+                </div>
+
+                <div class="card">
+                    <div class="table-container">
+                        <table id="usersTable">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Usuario</th>
+                                    <th>Senha</th>
+                                    <th>Especialidade</th>
+                                    <th>Tipo</th>
+                                    <th>Acoes</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: Novo Usuario -->
+    <div class="modal-overlay" id="modalUser">
+        <div class="modal">
+            <h2>Novo Terapeuta</h2>
+            <form id="formUser">
+                <div class="form-group">
+                    <label>Nome completo</label>
+                    <input type="text" id="userName" required>
+                </div>
+                <div class="form-group">
+                    <label>Usuario (login)</label>
+                    <input type="text" id="userUsername" required placeholder="ex: nome.sobrenome">
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="text" id="userPassword" required value="prisma123">
+                </div>
+                <div class="form-group">
+                    <label>Especialidade</label>
+                    <select id="userSpecialty" required>
+                        <option value="Psicologa ABA">Psicologo(a) ABA</option>
+                        <option value="Psicologo TCC">Psicologo(a) TCC</option>
+                        <option value="Fonoaudiologo">Fonoaudiologo(a)</option>
+                        <option value="Terapeuta Ocupacional">Terapeuta Ocupacional</option>
+                        <option value="Terapeuta Ocupacional IS">Terapeuta Ocupacional IS</option>
+                        <option value="Psicopedagoga TEACCH">Psicopedagogo(a) TEACCH</option>
+                        <option value="Psicomotricista">Psicomotricista</option>
+                        <option value="Musicoterapeuta">Musicoterapeuta</option>
+                        <option value="Neuropsicologia">Neuropsicologo(a)</option>
+                        <option value="Outro">Outro</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalUser')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="width:auto">Cadastrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/data.js"></script>
+    <script>
+        // ======= AUTH CHECK =======
+        const currentUser = DB.getCurrentUser();
+        if (!currentUser || currentUser.role !== 'coordenacao') {
+            window.location.href = 'login.html';
+        }
+
+        let currentTherapistId = null;
+        let currentPatientId = null;
+
+        // ======= INIT =======
+        DB.init().then(() => {
+            document.getElementById('loadingScreen').style.display = 'none';
+            startApp();
+        });
+
+        function startApp() {
+            loadDashboard();
+            loadTherapistFilters();
+        }
+
+        // ======= NAVIGATION =======
+        function showSection(name) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById('section-' + name).classList.add('active');
+            document.querySelectorAll('.sidebar-nav .nav-item').forEach(n => n.classList.remove('active'));
+            const navItem = document.querySelector(`.nav-item[data-section="${name}"]`);
+            if (navItem) navItem.classList.add('active');
+
+            document.querySelector('.sidebar').classList.remove('open');
+
+            if (name === 'dashboard') loadDashboard();
+            if (name === 'therapists') loadTherapists();
+            if (name === 'all-patients') loadAllPatients();
+            if (name === 'all-evolutions') loadAllEvolutions();
+            if (name === 'all-reports') loadAllReports();
+            if (name === 'manage-users') loadUsers();
+            if (name === 'aba-data') loadAbaTherapistFilter();
+        }
+
+        // ======= DASHBOARD =======
+        function loadDashboard() {
+            const stats = DB.getStats();
+            const therapists = DB.getTherapists();
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-icon blue">&#128105;&#8205;&#9877;&#65039;</div>
+                    <div class="stat-info">
+                        <h3>${therapists.length}</h3>
+                        <p>Terapeutas</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green">&#128101;</div>
+                    <div class="stat-info">
+                        <h3>${stats.totalPatients}</h3>
+                        <p>Pacientes</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon yellow">&#128221;</div>
+                    <div class="stat-info">
+                        <h3>${stats.totalEvolutions}</h3>
+                        <p>Evolucoes</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon coral">&#128202;</div>
+                    <div class="stat-info">
+                        <h3>${stats.totalReports}</h3>
+                        <p>Relatorios</p>
+                    </div>
+                </div>
+            `;
+
+            // Alertas
+            loadAlerts(therapists);
+
+            const evos = DB.getEvolutions().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 10);
+            if (evos.length === 0) {
+                document.getElementById('recentEvolutions').innerHTML = '<div class="empty-state"><h3>Nenhuma evolucao registrada ainda</h3></div>';
+            } else {
+                document.getElementById('recentEvolutions').innerHTML = evos.map(e => {
+                    const patient = DB.getPatientById(e.patientId);
+                    return `
+                    <div class="evolution-item">
+                        <div class="evo-header">
+                            <div>
+                                <strong>${patient ? patient.name : '?'}</strong>
+                                <span class="evo-therapist" style="margin-left:10px">por ${e.therapistName}</span>
+                            </div>
+                            <span class="evo-date">${formatDate(e.date)}</span>
+                        </div>
+                        <div class="evo-content">${truncate(e.description, 200)}</div>
+                    </div>`;
+                }).join('');
+            }
+        }
+
+        // ======= ALERTAS =======
+        function loadAlerts(therapists) {
+            const alerts = [];
+            const now = new Date();
+            const sevenDaysAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
+            const fourteenDaysAgo = new Date(now - 14 * 24 * 60 * 60 * 1000);
+
+            // Verificar terapeutas sem evolucoes recentes
+            therapists.forEach(t => {
+                const evos = DB.getEvolutionsByTherapist(t.id);
+                if (evos.length === 0) {
+                    alerts.push({ type: 'danger', icon: '&#9888;&#65039;', text: `<strong>${t.name}</strong> ainda nao registrou nenhuma evolucao.` });
+                } else {
+                    const lastEvo = evos[0];
+                    const lastDate = new Date(lastEvo.date || lastEvo.createdAt);
+                    if (lastDate < fourteenDaysAgo) {
+                        alerts.push({ type: 'danger', icon: '&#9888;&#65039;', text: `<strong>${t.name}</strong> nao registra evolucao ha mais de 14 dias (ultima: ${formatDate(lastEvo.date)}).` });
+                    } else if (lastDate < sevenDaysAgo) {
+                        alerts.push({ type: 'warning', icon: '&#128276;', text: `<strong>${t.name}</strong> nao registra evolucao ha mais de 7 dias (ultima: ${formatDate(lastEvo.date)}).` });
+                    }
+                }
+            });
+
+            // Pacientes sem evolucao recente
+            const patients = DB.getPatients();
+            patients.forEach(p => {
+                const evos = DB.getEvolutionsByPatient(p.id);
+                if (evos.length === 0 && new Date(p.createdAt) < sevenDaysAgo) {
+                    const therapist = DB.getUserById(p.therapistId);
+                    alerts.push({ type: 'warning', icon: '&#128100;', text: `Paciente <strong>${p.name}</strong> (${therapist ? therapist.name : '?'}) nao possui nenhuma evolucao registrada.` });
+                }
+            });
+
+            const container = document.getElementById('alertsContainer');
+            const card = document.getElementById('alertsCard');
+            if (alerts.length === 0) {
+                card.style.display = 'none';
+            } else {
+                card.style.display = '';
+                container.innerHTML = alerts.map(a => `<div class="alert-card ${a.type === 'danger' ? 'alert-danger' : ''}"><span class="alert-icon">${a.icon}</span><div class="alert-text">${a.text}</div></div>`).join('');
+            }
+        }
+
+        // ======= TERAPEUTAS =======
+        function loadTherapists() {
+            const therapists = DB.getTherapists();
+            document.getElementById('therapistGrid').innerHTML = therapists.map(t => {
+                const stats = DB.getStats(t.id);
+                const initials = t.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+                return `
+                <div class="therapist-card" onclick="openTherapistDetail('${t.id}')">
+                    <div class="therapist-avatar">${initials}</div>
+                    <h3>${t.name}</h3>
+                    <p class="specialty">${t.specialty}</p>
+                    <div class="stats">
+                        <span>${stats.totalPatients} pacientes</span>
+                        <span>${stats.totalEvolutions} evolucoes</span>
+                        <span>${stats.totalReports} relatorios</span>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function openTherapistDetail(therapistId) {
+            currentTherapistId = therapistId;
+            const therapist = DB.getUserById(therapistId);
+            if (!therapist) return;
+
+            document.getElementById('detailTherapistName').textContent = therapist.name;
+            document.getElementById('detailTherapistSpec').textContent = therapist.specialty;
+
+            const stats = DB.getStats(therapistId);
+            document.getElementById('therapistStats').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-icon green">&#128101;</div>
+                    <div class="stat-info"><h3>${stats.totalPatients}</h3><p>Pacientes</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon yellow">&#128221;</div>
+                    <div class="stat-info"><h3>${stats.totalEvolutions}</h3><p>Evolucoes</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon coral">&#128202;</div>
+                    <div class="stat-info"><h3>${stats.totalReports}</h3><p>Relatorios</p></div>
+                </div>
+            `;
+
+            const patients = DB.getPatientsByTherapist(therapistId);
+            if (patients.length === 0) {
+                document.getElementById('therapistPatients').innerHTML = '<div class="empty-state"><h3>Nenhum paciente</h3></div>';
+            } else {
+                document.getElementById('therapistPatients').innerHTML = patients.map(p => {
+                    const evoCount = DB.getEvolutionsByPatient(p.id).length;
+                    return `
+                    <div class="patient-card" onclick="openPatientDetail('${p.id}')">
+                        <h3>${p.name}</h3>
+                        <div class="patient-info">
+                            <span>Nasc: ${formatDate(p.birthDate)}</span>
+                            ${p.diagnosis ? `<span>Diag: ${p.diagnosis}</span>` : ''}
+                        </div>
+                        <span class="evo-count">${evoCount} evolucao(oes)</span>
+                    </div>`;
+                }).join('');
+            }
+
+            const evos = DB.getEvolutionsByTherapist(therapistId).slice(0, 10);
+            if (evos.length === 0) {
+                document.getElementById('therapistEvolutions').innerHTML = '<div class="empty-state"><h3>Nenhuma evolucao</h3></div>';
+            } else {
+                document.getElementById('therapistEvolutions').innerHTML = evos.map(e => {
+                    const patient = DB.getPatientById(e.patientId);
+                    return `
+                    <div class="evolution-item">
+                        <div class="evo-header">
+                            <strong>${patient ? patient.name : '?'}</strong>
+                            <span class="evo-date">${formatDate(e.date)}</span>
+                        </div>
+                        <div class="evo-content">${truncate(e.description, 200)}</div>
+                    </div>`;
+                }).join('');
+            }
+
+            showSection('therapist-detail');
+        }
+
+        // ======= TODOS OS PACIENTES =======
+        function loadAllPatients() {
+            const therapistFilter = document.getElementById('patientTherapistFilter').value;
+            const searchTerm = document.getElementById('patientSearch').value.toLowerCase().trim();
+
+            let patients = DB.getPatients();
+            if (therapistFilter) patients = patients.filter(p => p.therapistId === therapistFilter);
+            if (searchTerm) patients = patients.filter(p => p.name.toLowerCase().includes(searchTerm));
+
+            if (patients.length === 0) {
+                document.getElementById('allPatientList').innerHTML = '<div class="empty-state" style="grid-column:1/-1"><h3>Nenhum paciente encontrado</h3></div>';
+                return;
+            }
+
+            document.getElementById('allPatientList').innerHTML = patients.map(p => {
+                const therapist = DB.getUserById(p.therapistId);
+                const evoCount = DB.getEvolutionsByPatient(p.id).length;
+                return `
+                <div class="patient-card" onclick="openPatientDetail('${p.id}')">
+                    <h3>${p.name}</h3>
+                    <div class="patient-info">
+                        <span>Terapeuta: ${therapist ? therapist.name : '-'}</span>
+                        <span>Nasc: ${formatDate(p.birthDate)}</span>
+                        ${p.diagnosis ? `<span>Diag: ${p.diagnosis}</span>` : ''}
+                    </div>
+                    <span class="evo-count">${evoCount} evolucao(oes)</span>
+                </div>`;
+            }).join('');
+        }
+
+        function openPatientDetail(patientId) {
+            currentPatientId = patientId;
+            const patient = DB.getPatientById(patientId);
+            if (!patient) return;
+
+            const therapist = DB.getUserById(patient.therapistId);
+            document.getElementById('detailPatientName').textContent = patient.name;
+            document.getElementById('detailPatientInfo').textContent =
+                `${patient.diagnosis || ''} | Nasc: ${formatDate(patient.birthDate)} | Terapeuta: ${therapist ? therapist.name : '-'} | Resp: ${patient.guardian || '-'}`;
+
+            loadPatientEvolutions();
+            loadPatientReports();
+            showSection('patient-detail');
+        }
+
+        function loadPatientEvolutions() {
+            const evos = DB.getEvolutionsByPatient(currentPatientId);
+            const container = document.getElementById('patientEvolutions');
+            if (evos.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>Nenhuma evolucao</h3></div>';
+                return;
+            }
+            container.innerHTML = evos.map(e => `
+                <div class="evolution-item">
+                    <div class="evo-header">
+                        <div>
+                            <strong>${e.objectives || 'Sem objetivo especificado'}</strong>
+                            <span class="evo-therapist" style="margin-left:10px">por ${e.therapistName}</span>
+                        </div>
+                        <span class="evo-date">${formatDate(e.date)}</span>
+                    </div>
+                    <div class="evo-content">${e.description}</div>
+                    ${e.incidents ? `<div class="evo-content" style="margin-top:8px;color:var(--danger)"><strong>Intercorrencias:</strong> ${e.incidents}</div>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function loadPatientReports() {
+            const reps = DB.getReportsByPatient(currentPatientId);
+            const container = document.getElementById('patientReports');
+            if (reps.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>Nenhum relatorio</h3></div>';
+                return;
+            }
+            container.innerHTML = reps.map(r => `
+                <div class="evolution-item">
+                    <div class="evo-header">
+                        <div>
+                            <strong>${getReportTypeName(r.type)}</strong>
+                            <span class="evo-therapist" style="margin-left:10px">por ${r.therapistName}</span>
+                            <span class="badge badge-green" style="margin-left:8px">${r.period || ''}</span>
+                        </div>
+                        <span class="evo-date">${formatDate(r.date || r.createdAt)}</span>
+                    </div>
+                    <div class="evo-content">${r.content}</div>
+                    <div class="evo-actions">
+                        <button class="btn btn-secondary btn-small" onclick="printReport('${r.id}')">Imprimir</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function switchPatientTab(tab) {
+            document.querySelectorAll('#patientTabs .tab').forEach(t => t.classList.remove('active'));
+            if (tab === 'evo') {
+                document.querySelectorAll('#patientTabs .tab')[0].classList.add('active');
+                document.getElementById('patientEvolutions').style.display = '';
+                document.getElementById('patientReports').style.display = 'none';
+            } else {
+                document.querySelectorAll('#patientTabs .tab')[1].classList.add('active');
+                document.getElementById('patientEvolutions').style.display = 'none';
+                document.getElementById('patientReports').style.display = '';
+            }
+        }
+
+        // ======= TODAS AS EVOLUCOES =======
+        function loadAllEvolutions() {
+            const therapistFilter = document.getElementById('evoTherapistFilter').value;
+            const patientFilter = document.getElementById('evoPatientFilter').value;
+
+            let evos = DB.getEvolutions().sort((a, b) => new Date(b.date) - new Date(a.date));
+            if (therapistFilter) evos = evos.filter(e => e.therapistId === therapistFilter);
+            if (patientFilter) evos = evos.filter(e => e.patientId === patientFilter);
+
+            const container = document.getElementById('allEvolutionsList');
+            if (evos.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>Nenhuma evolucao encontrada</h3></div>';
+                return;
+            }
+            container.innerHTML = evos.map(e => {
+                const patient = DB.getPatientById(e.patientId);
+                return `
+                <div class="evolution-item">
+                    <div class="evo-header">
+                        <div>
+                            <strong>${patient ? patient.name : '?'}</strong>
+                            <span class="evo-therapist" style="margin-left:10px">por ${e.therapistName}</span>
+                            <span style="color:var(--text-light);font-size:0.8rem;margin-left:8px">${e.objectives || ''}</span>
+                        </div>
+                        <span class="evo-date">${formatDate(e.date)}</span>
+                    </div>
+                    <div class="evo-content">${truncate(e.description, 300)}</div>
+                </div>`;
+            }).join('');
+        }
+
+        // ======= TODOS OS RELATORIOS =======
+        function loadAllReports() {
+            const therapistFilter = document.getElementById('repTherapistFilter').value;
+
+            let reps = DB.getReports().sort((a, b) => new Date(b.date || b.createdAt) - new Date(a.date || a.createdAt));
+            if (therapistFilter) reps = reps.filter(r => r.therapistId === therapistFilter);
+
+            const container = document.getElementById('allReportsList');
+            if (reps.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>Nenhum relatorio encontrado</h3></div>';
+                return;
+            }
+            container.innerHTML = reps.map(r => {
+                const patient = DB.getPatientById(r.patientId);
+                return `
+                <div class="evolution-item">
+                    <div class="evo-header">
+                        <div>
+                            <strong>${patient ? patient.name : '?'}</strong>
+                            <span class="evo-therapist" style="margin-left:10px">por ${r.therapistName}</span>
+                            <span class="badge badge-green" style="margin-left:8px">${getReportTypeName(r.type)}</span>
+                        </div>
+                        <span class="evo-date">${formatDate(r.date || r.createdAt)}</span>
+                    </div>
+                    <div class="evo-content">${truncate(r.content, 300)}</div>
+                    <div class="evo-actions">
+                        <button class="btn btn-secondary btn-small" onclick="printReport('${r.id}')">Imprimir</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        // ======= GERENCIAR USUARIOS =======
+        function loadUsers() {
+            const users = DB.getUsers();
+            document.getElementById('usersTableBody').innerHTML = users.map(u => `
+                <tr>
+                    <td>${u.name}</td>
+                    <td><code>${u.username}</code></td>
+                    <td><code>${u.password}</code></td>
+                    <td>${u.specialty}</td>
+                    <td><span class="badge ${u.role === 'coordenacao' ? 'badge-yellow' : 'badge-green'}">${u.role === 'coordenacao' ? 'Coordenacao' : 'Terapeuta'}</span></td>
+                    <td>
+                        ${u.role !== 'coordenacao' ? `<button class="btn btn-danger btn-small" onclick="deleteUser('${u.id}')">Remover</button>` : '<span style="color:var(--text-light);font-size:0.8rem">-</span>'}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openAddUserModal() {
+            document.getElementById('formUser').reset();
+            document.getElementById('userPassword').value = 'prisma123';
+            document.getElementById('modalUser').classList.add('active');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        document.getElementById('formUser').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('userUsername').value.trim();
+
+            // Verificar usuario duplicado
+            const existing = DB.getUsers().find(u => u.username === username);
+            if (existing) {
+                showToast('Este usuario ja existe!');
+                return;
+            }
+
+            DB.addUser({
+                name: document.getElementById('userName').value.trim(),
+                username: username,
+                password: document.getElementById('userPassword').value,
+                role: 'terapeuta',
+                specialty: document.getElementById('userSpecialty').value
+            });
+            closeModal('modalUser');
+            loadUsers();
+            loadTherapistFilters();
+            showToast('Terapeuta cadastrado com sucesso!');
+        });
+
+        function deleteUser(id) {
+            const user = DB.getUserById(id);
+            if (confirm(`Tem certeza que deseja remover ${user.name}? Os dados de pacientes e evolucoes serao mantidos.`)) {
+                DB.removeUser(id);
+                loadUsers();
+                showToast('Usuario removido.');
+            }
+        }
+
+        // ======= FILTERS =======
+        function loadTherapistFilters() {
+            const therapists = DB.getTherapists();
+            const options = '<option value="">Todos os terapeutas</option>' +
+                therapists.map(t => `<option value="${t.id}">${t.name} (${t.specialty})</option>`).join('');
+
+            const filterIds = ['patientTherapistFilter', 'evoTherapistFilter', 'repTherapistFilter', 'abaTherapistFilter'];
+            filterIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = options;
+            });
+
+            // Patient filter for evolutions
+            const patients = DB.getPatients();
+            const patientOptions = '<option value="">Todos os pacientes</option>' +
+                patients.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+            const evoPatientFilter = document.getElementById('evoPatientFilter');
+            if (evoPatientFilter) evoPatientFilter.innerHTML = patientOptions;
+        }
+
+        // ======= PRINT =======
+        function printReport(id) {
+            const reports = DB.getReports();
+            const report = reports.find(r => r.id === id);
+            if (!report) return;
+            const patient = DB.getPatientById(report.patientId);
+            const win = window.open('', '_blank');
+            win.document.write(`
+                <html><head><title>Relatorio - ${patient ? patient.name : ''}</title>
+                <style>body{font-family:Arial,sans-serif;padding:40px;color:#333;line-height:1.6}
+                h1{color:#7BA89A;font-size:20px}h2{color:#5E8F80;font-size:16px;margin-top:20px}
+                .header{text-align:center;border-bottom:2px solid #7BA89A;padding-bottom:20px;margin-bottom:30px}
+                .info{font-size:13px;color:#666}pre{white-space:pre-wrap;font-family:Arial;font-size:14px}</style></head>
+                <body>
+                    <div class="header">
+                        <h1>Clinica Prisma</h1>
+                        <p style="color:#999;font-size:12px;letter-spacing:2px">CUIDADO QUE TRANSFORMA</p>
+                    </div>
+                    <h2>${getReportTypeName(report.type)}</h2>
+                    <p class="info"><strong>Paciente:</strong> ${patient ? patient.name : '-'}</p>
+                    <p class="info"><strong>Terapeuta:</strong> ${report.therapistName}</p>
+                    <p class="info"><strong>Periodo:</strong> ${report.period || '-'}</p>
+                    <p class="info"><strong>Data:</strong> ${formatDate(report.date || report.createdAt)}</p>
+                    <hr style="margin:20px 0;border:none;border-top:1px solid #ddd">
+                    <pre>${report.content}</pre>
+                </body></html>
+            `);
+            win.document.close();
+            win.print();
+        }
+
+        // ======= UTILS =======
+        function formatDate(dateStr) {
+            if (!dateStr) return '-';
+            const d = new Date(dateStr + (dateStr.length === 10 ? 'T00:00:00' : ''));
+            return d.toLocaleDateString('pt-BR');
+        }
+
+        function truncate(str, max) {
+            if (!str) return '';
+            return str.length > max ? str.substring(0, max) + '...' : str;
+        }
+
+        function getReportTypeName(type) {
+            const names = {
+                mensal: 'Relatorio Mensal', trimestral: 'Relatorio Trimestral',
+                semestral: 'Relatorio Semestral', alta: 'Relatorio de Alta',
+                devolutiva: 'Devolutiva para Familia', escolar: 'Relatorio Escolar', outro: 'Outro'
+            };
+            return names[type] || type;
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        // ======= ABA DATA =======
+        let abaCharts = {};
+        let abaCurrentPatientId = null;
+
+        function loadAbaTherapistFilter() {
+            const therapists = DB.getTherapists();
+            const select = document.getElementById('abaTherapistFilter');
+            select.innerHTML = '<option value="">Todos os terapeutas</option>' +
+                therapists.map(t => `<option value="${t.id}">${t.name} (${t.specialty})</option>`).join('');
+            loadAbaPatientFilter();
+        }
+
+        function loadAbaPatientFilter() {
+            const therapistFilter = document.getElementById('abaTherapistFilter').value;
+            let patients = DB.getPatients();
+            if (therapistFilter) patients = patients.filter(p => p.therapistId === therapistFilter);
+
+            document.getElementById('abaPatientSelect').innerHTML = '<option value="">Selecione um paciente</option>' +
+                patients.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+
+            // Reset ABA view
+            document.getElementById('abaContent').style.display = 'none';
+            document.getElementById('abaEmpty').style.display = '';
+        }
+
+        function loadCoordAbaData() {
+            const patientId = document.getElementById('abaPatientSelect').value;
+            if (!patientId) {
+                document.getElementById('abaContent').style.display = 'none';
+                document.getElementById('abaEmpty').style.display = '';
+                return;
+            }
+            document.getElementById('abaContent').style.display = '';
+            document.getElementById('abaEmpty').style.display = 'none';
+            abaCurrentPatientId = patientId;
+            loadCoordAbaTargets();
+            loadCoordAbaSessions();
+            updateCoordAbaChartFilter();
+            renderCoordAbaCharts();
+        }
+
+        function loadCoordAbaTargets() {
+            const targets = DB.getAbaTargetsByPatient(abaCurrentPatientId);
+            const container = document.getElementById('abaTargetsList');
+            if (targets.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>Nenhum alvo cadastrado para este paciente</h3></div>';
+                document.getElementById('abaChartsCard').style.display = 'none';
+                return;
+            }
+            document.getElementById('abaChartsCard').style.display = '';
+            const statusColors = { em_treino: 'badge-yellow', dominado: 'badge-green', manutencao: 'badge-green', pausado: 'badge-coral' };
+            const statusNames = { em_treino: 'Em treino', dominado: 'Dominado', manutencao: 'Manutencao', pausado: 'Pausado' };
+            const typeNames = { dtt: 'DTT', frequencia: 'Frequencia', duracao: 'Duracao', porcentagem: 'Porcentagem' };
+            const programNames = { comunicacao:'Comunicacao', comportamento:'Comportamento', social:'Hab. Sociais', cognitivo:'Cognitivo', motor:'Motor', avd:'AVD', academico:'Academico', linguagem:'Linguagem', brincar:'Brincar', outro:'Outro' };
+
+            container.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">' + targets.map(t => {
+                const sessions = DB.getAbaSessionsByTarget(t.id);
+                const lastSession = sessions.length > 0 ? sessions[sessions.length - 1] : null;
+                let lastValue = '-';
+                if (lastSession) {
+                    if (t.type === 'dtt') lastValue = Math.round((lastSession.correct / lastSession.total) * 100) + '%';
+                    else if (t.type === 'frequencia') lastValue = lastSession.frequency + 'x';
+                    else if (t.type === 'duracao') lastValue = lastSession.duration + ' min';
+                    else if (t.type === 'porcentagem') lastValue = lastSession.percentage + '%';
+                }
+                return `<div class="patient-card" style="border-left-color:${t.status === 'dominado' ? 'var(--success)' : t.status === 'pausado' ? 'var(--danger)' : 'var(--primary)'}">
+                    <div style="display:flex;justify-content:space-between;align-items:start">
+                        <h3>${t.name}</h3>
+                        <span class="badge ${statusColors[t.status] || 'badge-yellow'}">${statusNames[t.status] || t.status}</span>
+                    </div>
+                    <div class="patient-info">
+                        <span>Tipo: ${typeNames[t.type] || t.type}</span>
+                        <span>Programa: ${programNames[t.program] || t.program || '-'}</span>
+                        <span>Sessoes: ${sessions.length} | Ultimo: ${lastValue}</span>
+                        ${t.criteria ? `<span>Criterio: ${t.criteria}</span>` : ''}
+                        <span>Terapeuta: ${t.therapistName || '-'}</span>
+                    </div>
+                </div>`;
+            }).join('') + '</div>';
+        }
+
+        function loadCoordAbaSessions() {
+            const sessions = DB.getAbaSessionsByPatient(abaCurrentPatientId);
+            const container = document.getElementById('abaSessionsList');
+            if (sessions.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>Nenhum registro</h3></div>';
+                return;
+            }
+            const promptNames = { independente:'Independente', dica_gestual:'Dica Gestual', dica_verbal:'Dica Verbal', modelo:'Modelo', fisica_parcial:'Fisica Parcial', fisica_total:'Fisica Total' };
+            container.innerHTML = sessions.slice(0, 30).map(s => {
+                const target = DB.getAbaTargetById(s.targetId);
+                let valueStr = '';
+                if (s.correct !== undefined) valueStr = `${s.correct}/${s.total} (${Math.round((s.correct/s.total)*100)}%)`;
+                else if (s.frequency !== undefined) valueStr = `${s.frequency} ocorrencias`;
+                else if (s.duration !== undefined) valueStr = `${s.duration} min`;
+                else if (s.percentage !== undefined) valueStr = `${s.percentage}%`;
+                return `<div class="evolution-item"><div class="evo-header"><div><strong>${target ? target.name : '?'}</strong><span class="badge badge-green" style="margin-left:8px">${valueStr}</span><span style="margin-left:8px;font-size:0.8rem;color:var(--text-light)">${promptNames[s.prompt] || s.prompt || ''}</span></div><span class="evo-date">${formatDate(s.date)}</span></div><div class="evo-content" style="font-size:0.85rem;color:var(--text-light)">Terapeuta: ${s.therapistName || '-'}${s.notes ? ' | ' + s.notes : ''}</div></div>`;
+            }).join('');
+        }
+
+        function updateCoordAbaChartFilter() {
+            const targets = DB.getAbaTargetsByPatient(abaCurrentPatientId);
+            document.getElementById('abaChartTarget').innerHTML = '<option value="all">Todos os alvos</option>' +
+                targets.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+        }
+
+        function renderCoordAbaCharts() {
+            const filterTarget = document.getElementById('abaChartTarget').value;
+            let targets = DB.getAbaTargetsByPatient(abaCurrentPatientId);
+            if (filterTarget !== 'all') targets = targets.filter(t => t.id === filterTarget);
+
+            Object.values(abaCharts).forEach(c => c.destroy());
+            abaCharts = {};
+
+            const colors = ['#7BA89A','#F5C9B8','#F5E5A8','#A8D4D4','#E85D5D','#5DB87E','#4A90B8','#C07050'];
+
+            // Accuracy chart
+            const accTargets = targets.filter(t => t.type === 'dtt' || t.type === 'porcentagem');
+            const accCtx = document.getElementById('chartAccuracy').getContext('2d');
+            const accDatasets = accTargets.map((t, i) => {
+                const sessions = DB.getAbaSessionsByTarget(t.id);
+                return { label: t.name, data: sessions.map(s => t.type === 'dtt' ? Math.round((s.correct/s.total)*100) : s.percentage), borderColor: colors[i % colors.length], backgroundColor: colors[i % colors.length] + '33', tension: 0.3, fill: false, pointRadius: 4 };
+            });
+            const accLabels = accTargets.length > 0 ? DB.getAbaSessionsByTarget(accTargets[0].id).map((s,i) => 'S' + (i+1)) : [];
+            abaCharts.accuracy = new Chart(accCtx, { type: 'line', data: { labels: accLabels.length > 0 ? accLabels : [''], datasets: accDatasets.length > 0 ? accDatasets : [{ label: 'Sem dados', data: [] }] }, options: { responsive: true, scales: { y: { min: 0, max: 100, title: { display: true, text: '%' } } }, plugins: { legend: { position: 'bottom' } } } });
+
+            // Frequency chart
+            const freqTargets = targets.filter(t => t.type === 'frequencia');
+            const freqCtx = document.getElementById('chartFrequency').getContext('2d');
+            const freqDatasets = freqTargets.map((t, i) => {
+                const sessions = DB.getAbaSessionsByTarget(t.id);
+                return { label: t.name, data: sessions.map(s => s.frequency), borderColor: colors[i % colors.length], backgroundColor: colors[i % colors.length] + '66', tension: 0.3 };
+            });
+            const freqLabels = freqTargets.length > 0 ? DB.getAbaSessionsByTarget(freqTargets[0].id).map((s,i) => 'S' + (i+1)) : [];
+            abaCharts.frequency = new Chart(freqCtx, { type: 'bar', data: { labels: freqLabels.length > 0 ? freqLabels : [''], datasets: freqDatasets.length > 0 ? freqDatasets : [{ label: 'Sem dados', data: [] }] }, options: { responsive: true, plugins: { legend: { position: 'bottom' } } } });
+
+            // Duration chart
+            const durTargets = targets.filter(t => t.type === 'duracao');
+            const durCtx = document.getElementById('chartDuration').getContext('2d');
+            const durDatasets = durTargets.map((t, i) => {
+                const sessions = DB.getAbaSessionsByTarget(t.id);
+                return { label: t.name, data: sessions.map(s => s.duration), borderColor: colors[i % colors.length], backgroundColor: colors[i % colors.length] + '33', tension: 0.3, fill: true };
+            });
+            const durLabels = durTargets.length > 0 ? DB.getAbaSessionsByTarget(durTargets[0].id).map((s,i) => 'S' + (i+1)) : [];
+            abaCharts.duration = new Chart(durCtx, { type: 'line', data: { labels: durLabels.length > 0 ? durLabels : [''], datasets: durDatasets.length > 0 ? durDatasets : [{ label: 'Sem dados', data: [] }] }, options: { responsive: true, scales: { y: { title: { display: true, text: 'min' } } }, plugins: { legend: { position: 'bottom' } } } });
+
+            // DTT stacked chart
+            const dttTargets = targets.filter(t => t.type === 'dtt');
+            const dttCtx = document.getElementById('chartDTT').getContext('2d');
+            if (dttTargets.length > 0) {
+                const firstTarget = dttTargets[0];
+                const sessions = DB.getAbaSessionsByTarget(firstTarget.id);
+                abaCharts.dtt = new Chart(dttCtx, { type: 'bar', data: {
+                    labels: sessions.map(s => formatDate(s.date)),
+                    datasets: [
+                        { label: 'Acertos', data: sessions.map(s => s.correct), backgroundColor: '#5DB87E' },
+                        { label: 'Erros', data: sessions.map(s => s.total - s.correct), backgroundColor: '#E85D5D66' }
+                    ]
+                }, options: { responsive: true, scales: { x: { stacked: true }, y: { stacked: true, title: { display: true, text: 'Tentativas' } } }, plugins: { legend: { position: 'bottom' }, title: { display: true, text: firstTarget.name } } } });
+            } else {
+                abaCharts.dtt = new Chart(dttCtx, { type: 'bar', data: { labels: [''], datasets: [{ label: 'Sem dados DTT', data: [] }] }, options: { responsive: true } });
+            }
+        }
+
+        function doLogout() {
+            DB.logout();
+            window.location.href = 'login.html';
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prisma - Painel do Terapeuta</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="../prisma_logo-removebg-preview.png">
+</head>
+<body>
+    <!-- Loading -->
+    <div id="loadingScreen" style="position:fixed;top:0;left:0;right:0;bottom:0;background:var(--background);display:flex;align-items:center;justify-content:center;z-index:9999">
+        <div style="text-align:center">
+            <img src="../prisma_logo-removebg-preview.png" alt="Prisma" style="width:100px;margin-bottom:16px">
+            <p style="color:var(--text-light);font-family:Poppins,sans-serif">Carregando...</p>
+        </div>
+    </div>
+
+    <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../prisma_logo-removebg-preview.png" alt="Prisma" class="sidebar-logo">
+                <h2 id="sidebarUserName">Terapeuta</h2>
+                <span class="role-badge terapeuta" id="sidebarSpecialty">Terapeuta</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a class="nav-item active" onclick="showSection('dashboard')" data-section="dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                    Painel Inicial
+                </a>
+                <a class="nav-item" onclick="showSection('patients')" data-section="patients">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    Meus Pacientes
+                </a>
+                <a class="nav-item" onclick="showSection('evolutions')" data-section="evolutions">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    Evolucoes
+                </a>
+                <a class="nav-item" onclick="showSection('reports')" data-section="reports">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                    Relatorios
+                </a>
+                <a class="nav-item" onclick="showSection('aba')" data-section="aba">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    Dados ABA
+                </a>
+                <a class="nav-item" onclick="showSection('profile')" data-section="profile">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Meu Perfil
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a class="nav-item" onclick="doLogout()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    Sair
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+
+            <!-- DASHBOARD -->
+            <div class="section active" id="section-dashboard">
+                <div class="page-header">
+                    <div>
+                        <h1>Painel Inicial</h1>
+                        <p class="welcome-text">Bem-vindo(a), <span id="welcomeName"></span></p>
+                    </div>
+                    <button class="btn btn-primary" style="width:auto" onclick="openAddEvolutionModal()">+ Registrar Evolucao</button>
+                </div>
+                <div class="stats-grid" id="statsGrid"></div>
+                <div class="card">
+                    <div class="card-header"><h2>Ultimas Evolucoes</h2></div>
+                    <div id="recentEvolutions"></div>
+                </div>
+            </div>
+
+            <!-- PACIENTES -->
+            <div class="section" id="section-patients">
+                <div class="page-header">
+                    <h1>Meus Pacientes</h1>
+                    <button class="btn btn-primary" style="width:auto" onclick="openAddPatientModal()">+ Novo Paciente</button>
+                </div>
+                <div class="patient-list" id="patientList"></div>
+            </div>
+
+            <!-- EVOLUCOES -->
+            <div class="section" id="section-evolutions">
+                <div class="page-header"><h1>Evolucoes</h1></div>
+                <div class="filter-bar">
+                    <select id="evoPatientFilter" onchange="loadEvolutionsList()"><option value="">Todos os pacientes</option></select>
+                </div>
+                <div id="evolutionsList" class="evolution-list"></div>
+            </div>
+
+            <!-- RELATORIOS -->
+            <div class="section" id="section-reports">
+                <div class="page-header">
+                    <h1>Relatorios</h1>
+                    <button class="btn btn-primary" style="width:auto" onclick="openAddReportModal()">+ Novo Relatorio</button>
+                </div>
+                <div class="filter-bar">
+                    <select id="repPatientFilter" onchange="loadReportsList()"><option value="">Todos os pacientes</option></select>
+                </div>
+                <div id="reportsList" class="evolution-list"></div>
+            </div>
+
+            <!-- DETALHE PACIENTE -->
+            <div class="section" id="section-patient-detail">
+                <a class="back-btn" onclick="showSection('patients')">&#8592; Voltar</a>
+                <div class="page-header">
+                    <div>
+                        <h1 id="detailPatientName"></h1>
+                        <p class="welcome-text" id="detailPatientInfo"></p>
+                    </div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap">
+                        <button class="btn btn-primary" style="width:auto" onclick="openAddEvolutionModal()">+ Evolucao</button>
+                        <button class="btn btn-secondary" style="width:auto" onclick="openAddReportModal()">+ Relatorio</button>
+                    </div>
+                </div>
+                <div class="tabs">
+                    <div class="tab active" onclick="switchDetailTab('evo')">Evolucoes</div>
+                    <div class="tab" onclick="switchDetailTab('rep')">Relatorios</div>
+                </div>
+                <div id="patientEvolutions" class="evolution-list"></div>
+                <div id="patientReports" class="evolution-list" style="display:none"></div>
+            </div>
+
+            <!-- DADOS ABA -->
+            <div class="section" id="section-aba">
+                <div class="page-header">
+                    <h1>Dados ABA</h1>
+                </div>
+                <div class="filter-bar">
+                    <select id="abaPatientSelect" onchange="loadAbaData()">
+                        <option value="">Selecione um paciente</option>
+                    </select>
+                </div>
+
+                <div id="abaContent" style="display:none">
+                    <!-- Alvos -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Alvos / Programas</h2>
+                            <button class="btn btn-primary btn-small" style="width:auto" onclick="openAddTargetModal()">+ Novo Alvo</button>
+                        </div>
+                        <div id="abaTargetsList"></div>
+                    </div>
+
+                    <!-- Graficos -->
+                    <div class="card" id="abaChartsCard" style="display:none">
+                        <div class="card-header">
+                            <h2>Graficos de Progresso</h2>
+                            <select id="abaChartTarget" onchange="renderAbaCharts()" style="padding:6px 12px;border:2px solid var(--border);border-radius:8px;font-family:Poppins;font-size:0.85rem">
+                                <option value="all">Todos os alvos</option>
+                            </select>
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+                            <div class="chart-container"><h3>Taxa de Acerto (%)</h3><canvas id="chartAccuracy"></canvas></div>
+                            <div class="chart-container"><h3>Frequencia por Sessao</h3><canvas id="chartFrequency"></canvas></div>
+                            <div class="chart-container"><h3>Duracao (minutos)</h3><canvas id="chartDuration"></canvas></div>
+                            <div class="chart-container"><h3>Tentativas Discretas (DTT)</h3><canvas id="chartDTT"></canvas></div>
+                        </div>
+                    </div>
+
+                    <!-- Historico de registros -->
+                    <div class="card">
+                        <div class="card-header"><h2>Historico de Registros</h2></div>
+                        <div id="abaSessionsList" class="evolution-list"></div>
+                    </div>
+                </div>
+
+                <div id="abaEmpty">
+                    <div class="empty-state"><h3>Selecione um paciente</h3><p>Escolha um paciente acima para ver e registrar dados ABA.</p></div>
+                </div>
+            </div>
+
+            <!-- PERFIL -->
+            <div class="section" id="section-profile">
+                <div class="page-header"><h1>Meu Perfil</h1></div>
+                <div class="profile-card">
+                    <div class="profile-avatar-large" id="profileAvatar"></div>
+                    <div class="profile-info">
+                        <h2 id="profileName"></h2>
+                        <p id="profileSpecialty"></p>
+                    </div>
+                    <form id="formPassword">
+                        <div class="form-group">
+                            <label>Senha atual</label>
+                            <input type="password" id="currentPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nova senha</label>
+                            <input type="password" id="newPassword" required minlength="6">
+                        </div>
+                        <div class="form-group">
+                            <label>Confirmar nova senha</label>
+                            <input type="password" id="confirmPassword" required minlength="6">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Alterar Senha</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: Novo Paciente -->
+    <div class="modal-overlay" id="modalPatient">
+        <div class="modal">
+            <h2>Novo Paciente</h2>
+            <form id="formPatient">
+                <div class="form-group"><label>Nome completo</label><input type="text" id="patientName" required></div>
+                <div class="form-group"><label>Data de nascimento</label><input type="date" id="patientBirth" required></div>
+                <div class="form-group"><label>Responsavel</label><input type="text" id="patientGuardian"></div>
+                <div class="form-group"><label>Telefone do responsavel</label><input type="tel" id="patientPhone" placeholder="(00) 00000-0000"></div>
+                <div class="form-group"><label>Diagnostico / CID</label><input type="text" id="patientDiagnosis"></div>
+                <div class="form-group"><label>Plano de saude</label><input type="text" id="patientInsurance" placeholder="Ex: Bradesco, Unimed..."></div>
+                <div class="form-group"><label>Observacoes</label><textarea id="patientNotes" rows="3"></textarea></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalPatient')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="width:auto">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Nova/Editar Evolucao -->
+    <div class="modal-overlay" id="modalEvolution">
+        <div class="modal">
+            <h2 id="modalEvoTitle">Nova Evolucao</h2>
+            <form id="formEvolution">
+                <input type="hidden" id="editEvoId">
+                <div class="form-group"><label>Paciente</label><select id="evoPatient" required></select></div>
+                <div class="form-group"><label>Data da sessao</label><input type="date" id="evoDate" required></div>
+                <div class="form-group">
+                    <label>Tipo de atendimento</label>
+                    <select id="evoType">
+                        <option value="individual">Individual</option>
+                        <option value="grupo">Grupo</option>
+                        <option value="supervisao">Supervisao</option>
+                        <option value="domiciliar">Domiciliar</option>
+                        <option value="escolar">Escolar</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Objetivos trabalhados</label><input type="text" id="evoObjectives" placeholder="Ex: Comunicacao, Interacao social..."></div>
+                <div class="form-group"><label>Descricao da evolucao</label><textarea id="evoDescription" required placeholder="Descreva o que foi trabalhado, como o paciente respondeu, progressos observados..."></textarea></div>
+                <div class="form-group"><label>Intercorrencias</label><textarea id="evoIncidents" rows="2" placeholder="Alguma intercorrencia?"></textarea></div>
+                <div class="form-group">
+                    <label>Presenca</label>
+                    <select id="evoPresence">
+                        <option value="presente">Presente</option>
+                        <option value="faltou">Faltou</option>
+                        <option value="faltou_justificado">Faltou (justificado)</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalEvolution')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="width:auto">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Novo/Editar Relatorio -->
+    <div class="modal-overlay" id="modalReport">
+        <div class="modal">
+            <h2 id="modalRepTitle">Novo Relatorio</h2>
+            <form id="formReport">
+                <input type="hidden" id="editRepId">
+                <div class="form-group"><label>Paciente</label><select id="repPatient" required></select></div>
+                <div class="form-group">
+                    <label>Tipo de relatorio</label>
+                    <select id="repType" required>
+                        <option value="mensal">Relatorio Mensal</option>
+                        <option value="trimestral">Relatorio Trimestral</option>
+                        <option value="semestral">Relatorio Semestral</option>
+                        <option value="alta">Relatorio de Alta</option>
+                        <option value="devolutiva">Devolutiva para Familia</option>
+                        <option value="escolar">Relatorio Escolar</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Periodo de referencia</label><input type="text" id="repPeriod" placeholder="Ex: Janeiro/2026 a Marco/2026"></div>
+                <div class="form-group"><label>Conteudo do relatorio</label><textarea id="repContent" required style="min-height:200px" placeholder="Escreva o relatorio completo..."></textarea></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalReport')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="width:auto">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Novo Alvo ABA -->
+    <div class="modal-overlay" id="modalAbaTarget">
+        <div class="modal">
+            <h2>Novo Alvo / Programa</h2>
+            <form id="formAbaTarget">
+                <div class="form-group">
+                    <label>Nome do alvo</label>
+                    <input type="text" id="targetName" required placeholder="Ex: Contato visual, Mando, Imitacao motora...">
+                </div>
+                <div class="form-group">
+                    <label>Programa / Area</label>
+                    <select id="targetProgram">
+                        <option value="comunicacao">Comunicacao</option>
+                        <option value="comportamento">Comportamento</option>
+                        <option value="social">Habilidades Sociais</option>
+                        <option value="cognitivo">Cognitivo</option>
+                        <option value="motor">Motor</option>
+                        <option value="avd">AVD (Atividades de Vida Diaria)</option>
+                        <option value="academico">Academico</option>
+                        <option value="linguagem">Linguagem Receptiva/Expressiva</option>
+                        <option value="brincar">Brincar</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Tipo de registro</label>
+                    <select id="targetType">
+                        <option value="dtt">Tentativa Discreta (DTT) - acertos/total</option>
+                        <option value="frequencia">Frequencia - contagem de ocorrencias</option>
+                        <option value="duracao">Duracao - tempo em minutos</option>
+                        <option value="porcentagem">Porcentagem direta</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Criterio de maestria</label>
+                    <input type="text" id="targetCriteria" placeholder="Ex: 80% de acerto em 3 sessoes consecutivas">
+                </div>
+                <div class="form-group">
+                    <label>Descricao / Procedimento</label>
+                    <textarea id="targetDescription" rows="3" placeholder="Descreva o procedimento, dica, consequencia..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalAbaTarget')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="width:auto">Salvar Alvo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Registrar Sessao ABA -->
+    <div class="modal-overlay" id="modalAbaSession">
+        <div class="modal">
+            <h2 id="sessionModalTitle">Registrar Dados</h2>
+            <form id="formAbaSession">
+                <input type="hidden" id="sessionTargetId">
+                <div class="form-group"><label>Data</label><input type="date" id="sessionDate" required></div>
+                <div id="sessionFieldsDTT">
+                    <div class="form-group"><label>Tentativas corretas</label><input type="number" id="sessionCorrect" min="0" value="0"></div>
+                    <div class="form-group"><label>Total de tentativas</label><input type="number" id="sessionTotal" min="1" value="10"></div>
+                </div>
+                <div id="sessionFieldsFreq" style="display:none">
+                    <div class="form-group"><label>Numero de ocorrencias</label><input type="number" id="sessionFrequency" min="0" value="0"></div>
+                </div>
+                <div id="sessionFieldsDur" style="display:none">
+                    <div class="form-group"><label>Duracao (minutos)</label><input type="number" id="sessionDuration" min="0" step="0.5" value="0"></div>
+                </div>
+                <div id="sessionFieldsPct" style="display:none">
+                    <div class="form-group"><label>Porcentagem (%)</label><input type="number" id="sessionPercentage" min="0" max="100" value="0"></div>
+                </div>
+                <div class="form-group">
+                    <label>Nivel de ajuda</label>
+                    <select id="sessionPrompt">
+                        <option value="independente">Independente</option>
+                        <option value="dica_gestual">Dica Gestual</option>
+                        <option value="dica_verbal">Dica Verbal</option>
+                        <option value="modelo">Modelo</option>
+                        <option value="fisica_parcial">Fisica Parcial</option>
+                        <option value="fisica_total">Fisica Total</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Observacao</label><textarea id="sessionNotes" rows="2" placeholder="Notas sobre a sessao..."></textarea></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalAbaSession')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="width:auto">Salvar Registro</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/data.js"></script>
+    <script>
+        const currentUser = DB.getCurrentUser();
+        if (!currentUser || currentUser.role !== 'terapeuta') window.location.href = 'login.html';
+
+        let currentPatientId = null;
+
+        DB.init().then(() => {
+            document.getElementById('loadingScreen').style.display = 'none';
+            startApp();
+        });
+
+        function startApp() {
+            document.getElementById('sidebarUserName').textContent = currentUser.name;
+            document.getElementById('sidebarSpecialty').textContent = currentUser.specialty;
+            document.getElementById('welcomeName').textContent = currentUser.name.split(' ')[0];
+            loadDashboard();
+            loadPatientFilters();
+            loadAbaPatientFilter();
+            loadProfile();
+        }
+
+        // ======= NAVIGATION =======
+        function showSection(name) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById('section-' + name).classList.add('active');
+            document.querySelectorAll('.sidebar-nav .nav-item').forEach(n => n.classList.remove('active'));
+            const navItem = document.querySelector(`.nav-item[data-section="${name}"]`);
+            if (navItem) navItem.classList.add('active');
+            document.querySelector('.sidebar').classList.remove('open');
+            if (name === 'patients') loadPatients();
+            if (name === 'evolutions') loadEvolutionsList();
+            if (name === 'reports') loadReportsList();
+            if (name === 'dashboard') loadDashboard();
+        }
+
+        // ======= DASHBOARD =======
+        function loadDashboard() {
+            const stats = DB.getStats(currentUser.id);
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="stat-icon green">&#128101;</div><div class="stat-info"><h3>${stats.totalPatients}</h3><p>Pacientes</p></div></div>
+                <div class="stat-card"><div class="stat-icon yellow">&#128221;</div><div class="stat-info"><h3>${stats.totalEvolutions}</h3><p>Evolucoes</p></div></div>
+                <div class="stat-card"><div class="stat-icon coral">&#128202;</div><div class="stat-info"><h3>${stats.totalReports}</h3><p>Relatorios</p></div></div>
+                <div class="stat-card"><div class="stat-icon blue">&#128197;</div><div class="stat-info"><h3>${stats.evolutionsThisMonth}</h3><p>Evolucoes este mes</p></div></div>
+            `;
+            const evos = DB.getEvolutionsByTherapist(currentUser.id).slice(0, 5);
+            if (evos.length === 0) {
+                document.getElementById('recentEvolutions').innerHTML = '<div class="empty-state"><h3>Nenhuma evolucao ainda</h3><p>Adicione pacientes e registre suas evolucoes.</p></div>';
+            } else {
+                document.getElementById('recentEvolutions').innerHTML = evos.map(e => {
+                    const patient = DB.getPatientById(e.patientId);
+                    return `<div class="evolution-item"><div class="evo-header"><strong>${patient ? patient.name : '?'}</strong><span class="evo-date">${formatDate(e.date)}</span></div><div class="evo-content">${truncate(e.description, 150)}</div></div>`;
+                }).join('');
+            }
+        }
+
+        // ======= PACIENTES =======
+        function loadPatients() {
+            const patients = DB.getPatientsByTherapist(currentUser.id);
+            if (patients.length === 0) {
+                document.getElementById('patientList').innerHTML = '<div class="empty-state" style="grid-column:1/-1"><h3>Nenhum paciente cadastrado</h3><p>Clique em "+ Novo Paciente" para comecar.</p></div>';
+                return;
+            }
+            document.getElementById('patientList').innerHTML = patients.map(p => {
+                const evoCount = DB.getEvolutionsByPatient(p.id).length;
+                return `<div class="patient-card" onclick="openPatientDetail('${p.id}')"><h3>${p.name}</h3><div class="patient-info"><span>Nasc: ${formatDate(p.birthDate)}</span>${p.diagnosis ? `<span>Diag: ${p.diagnosis}</span>` : ''}${p.guardian ? `<span>Resp: ${p.guardian}</span>` : ''}${p.insurance ? `<span>Plano: ${p.insurance}</span>` : ''}</div><span class="evo-count">${evoCount} evolucao(oes)</span></div>`;
+            }).join('');
+        }
+
+        function openPatientDetail(patientId) {
+            currentPatientId = patientId;
+            const patient = DB.getPatientById(patientId);
+            if (!patient) return;
+            document.getElementById('detailPatientName').textContent = patient.name;
+            document.getElementById('detailPatientInfo').textContent = `${patient.diagnosis || ''} | Nasc: ${formatDate(patient.birthDate)} | Resp: ${patient.guardian || '-'}${patient.phone ? ' | Tel: ' + patient.phone : ''}`;
+            showSection('patient-detail');
+            loadPatientEvolutions();
+            loadPatientReports();
+        }
+
+        function loadPatientEvolutions() {
+            const evos = DB.getEvolutionsByPatient(currentPatientId).filter(e => e.therapistId === currentUser.id);
+            const container = document.getElementById('patientEvolutions');
+            if (evos.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>Nenhuma evolucao registrada</h3><p>Clique em "+ Evolucao" para adicionar.</p></div>';
+                return;
+            }
+            container.innerHTML = evos.map(e => {
+                const presenceLabel = e.presence === 'faltou' ? '<span class="badge badge-coral">Faltou</span>' : e.presence === 'faltou_justificado' ? '<span class="badge badge-yellow">Falta justificada</span>' : '';
+                return `<div class="evolution-item"><div class="evo-header"><div><strong>${e.objectives || 'Sem objetivo especificado'}</strong> ${presenceLabel} ${e.incidents ? '<span class="badge badge-yellow">Intercorrencia</span>' : ''}</div><span class="evo-date">${formatDate(e.date)}</span></div><div class="evo-content">${e.description}</div>${e.incidents ? `<div class="evo-content" style="margin-top:8px;color:var(--danger)"><strong>Intercorrencias:</strong> ${e.incidents}</div>` : ''}<div class="evo-actions"><button class="btn btn-edit btn-small" onclick="editEvolution('${e.id}')">Editar</button><button class="btn btn-danger btn-small" onclick="deleteEvolution('${e.id}')">Excluir</button></div></div>`;
+            }).join('');
+        }
+
+        function loadPatientReports() {
+            const reps = DB.getReportsByPatient(currentPatientId).filter(r => r.therapistId === currentUser.id);
+            const container = document.getElementById('patientReports');
+            if (reps.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>Nenhum relatorio</h3></div>';
+                return;
+            }
+            container.innerHTML = reps.map(r => `<div class="evolution-item"><div class="evo-header"><div><strong>${getReportTypeName(r.type)}</strong><span class="badge badge-green" style="margin-left:8px">${r.period || ''}</span></div><span class="evo-date">${formatDate(r.date || r.createdAt)}</span></div><div class="evo-content">${r.content}</div><div class="evo-actions"><button class="btn btn-edit btn-small" onclick="editReport('${r.id}')">Editar</button><button class="btn btn-secondary btn-small" onclick="printReport('${r.id}')">Imprimir</button><button class="btn btn-danger btn-small" onclick="deleteReport('${r.id}')">Excluir</button></div></div>`).join('');
+        }
+
+        function switchDetailTab(tab) {
+            document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+            if (tab === 'evo') { document.querySelectorAll('.tabs .tab')[0].classList.add('active'); document.getElementById('patientEvolutions').style.display=''; document.getElementById('patientReports').style.display='none'; }
+            else { document.querySelectorAll('.tabs .tab')[1].classList.add('active'); document.getElementById('patientEvolutions').style.display='none'; document.getElementById('patientReports').style.display=''; }
+        }
+
+        // ======= EVOLUCOES LISTA =======
+        function loadEvolutionsList() {
+            const filter = document.getElementById('evoPatientFilter').value;
+            let evos = DB.getEvolutionsByTherapist(currentUser.id);
+            if (filter) evos = evos.filter(e => e.patientId === filter);
+            const container = document.getElementById('evolutionsList');
+            if (evos.length === 0) { container.innerHTML = '<div class="empty-state"><h3>Nenhuma evolucao encontrada</h3></div>'; return; }
+            container.innerHTML = evos.map(e => { const p = DB.getPatientById(e.patientId); return `<div class="evolution-item"><div class="evo-header"><div><strong>${p ? p.name : '?'}</strong><span style="color:var(--text-light);font-size:0.85rem;margin-left:8px">${e.objectives || ''}</span></div><span class="evo-date">${formatDate(e.date)}</span></div><div class="evo-content">${truncate(e.description, 300)}</div><div class="evo-actions"><button class="btn btn-edit btn-small" onclick="editEvolution('${e.id}')">Editar</button></div></div>`; }).join('');
+        }
+
+        // ======= RELATORIOS LISTA =======
+        function loadReportsList() {
+            const filter = document.getElementById('repPatientFilter').value;
+            let reps = DB.getReportsByTherapist(currentUser.id);
+            if (filter) reps = reps.filter(r => r.patientId === filter);
+            const container = document.getElementById('reportsList');
+            if (reps.length === 0) { container.innerHTML = '<div class="empty-state"><h3>Nenhum relatorio encontrado</h3></div>'; return; }
+            container.innerHTML = reps.map(r => { const p = DB.getPatientById(r.patientId); return `<div class="evolution-item"><div class="evo-header"><div><strong>${p ? p.name : '?'}</strong><span class="badge badge-green" style="margin-left:8px">${getReportTypeName(r.type)}</span></div><span class="evo-date">${formatDate(r.date || r.createdAt)}</span></div><div class="evo-content">${truncate(r.content, 300)}</div><div class="evo-actions"><button class="btn btn-edit btn-small" onclick="editReport('${r.id}')">Editar</button><button class="btn btn-secondary btn-small" onclick="printReport('${r.id}')">Imprimir</button></div></div>`; }).join('');
+        }
+
+        // ======= FILTERS =======
+        function loadPatientFilters() {
+            const patients = DB.getPatientsByTherapist(currentUser.id);
+            const opts = '<option value="">Todos os pacientes</option>' + patients.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+            document.getElementById('evoPatientFilter').innerHTML = opts;
+            document.getElementById('repPatientFilter').innerHTML = opts;
+        }
+
+        // ======= MODALS =======
+        function openAddPatientModal() { document.getElementById('formPatient').reset(); document.getElementById('modalPatient').classList.add('active'); }
+
+        function openAddEvolutionModal() {
+            document.getElementById('formEvolution').reset();
+            document.getElementById('editEvoId').value = '';
+            document.getElementById('modalEvoTitle').textContent = 'Nova Evolucao';
+            const patients = DB.getPatientsByTherapist(currentUser.id);
+            document.getElementById('evoPatient').innerHTML = patients.map(p => `<option value="${p.id}" ${p.id === currentPatientId ? 'selected' : ''}>${p.name}</option>`).join('');
+            document.getElementById('evoDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('modalEvolution').classList.add('active');
+        }
+
+        function editEvolution(id) {
+            const evo = DB.getEvolutions().find(e => e.id === id);
+            if (!evo) return;
+            const patients = DB.getPatientsByTherapist(currentUser.id);
+            document.getElementById('evoPatient').innerHTML = patients.map(p => `<option value="${p.id}" ${p.id === evo.patientId ? 'selected' : ''}>${p.name}</option>`).join('');
+            document.getElementById('editEvoId').value = evo.id;
+            document.getElementById('modalEvoTitle').textContent = 'Editar Evolucao';
+            document.getElementById('evoDate').value = evo.date || '';
+            document.getElementById('evoObjectives').value = evo.objectives || '';
+            document.getElementById('evoDescription').value = evo.description || '';
+            document.getElementById('evoIncidents').value = evo.incidents || '';
+            document.getElementById('evoType').value = evo.type || 'individual';
+            document.getElementById('evoPresence').value = evo.presence || 'presente';
+            document.getElementById('modalEvolution').classList.add('active');
+        }
+
+        function openAddReportModal() {
+            document.getElementById('formReport').reset();
+            document.getElementById('editRepId').value = '';
+            document.getElementById('modalRepTitle').textContent = 'Novo Relatorio';
+            const patients = DB.getPatientsByTherapist(currentUser.id);
+            document.getElementById('repPatient').innerHTML = patients.map(p => `<option value="${p.id}" ${p.id === currentPatientId ? 'selected' : ''}>${p.name}</option>`).join('');
+            document.getElementById('modalReport').classList.add('active');
+        }
+
+        function editReport(id) {
+            const rep = DB.getReports().find(r => r.id === id);
+            if (!rep) return;
+            const patients = DB.getPatientsByTherapist(currentUser.id);
+            document.getElementById('repPatient').innerHTML = patients.map(p => `<option value="${p.id}" ${p.id === rep.patientId ? 'selected' : ''}>${p.name}</option>`).join('');
+            document.getElementById('editRepId').value = rep.id;
+            document.getElementById('modalRepTitle').textContent = 'Editar Relatorio';
+            document.getElementById('repType').value = rep.type || 'mensal';
+            document.getElementById('repPeriod').value = rep.period || '';
+            document.getElementById('repContent').value = rep.content || '';
+            document.getElementById('modalReport').classList.add('active');
+        }
+
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        // ======= FORM SUBMISSIONS =======
+        document.getElementById('formPatient').addEventListener('submit', function(e) {
+            e.preventDefault();
+            DB.addPatient({
+                name: document.getElementById('patientName').value.trim(),
+                birthDate: document.getElementById('patientBirth').value,
+                guardian: document.getElementById('patientGuardian').value.trim(),
+                phone: document.getElementById('patientPhone').value.trim(),
+                diagnosis: document.getElementById('patientDiagnosis').value.trim(),
+                insurance: document.getElementById('patientInsurance').value.trim(),
+                notes: document.getElementById('patientNotes').value.trim(),
+                therapistId: currentUser.id
+            });
+            closeModal('modalPatient');
+            loadPatients();
+            loadPatientFilters();
+            showToast('Paciente adicionado!');
+        });
+
+        document.getElementById('formEvolution').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const editId = document.getElementById('editEvoId').value;
+            const data = {
+                patientId: document.getElementById('evoPatient').value,
+                therapistId: currentUser.id,
+                therapistName: currentUser.name,
+                date: document.getElementById('evoDate').value,
+                type: document.getElementById('evoType').value,
+                objectives: document.getElementById('evoObjectives').value.trim(),
+                description: document.getElementById('evoDescription').value.trim(),
+                incidents: document.getElementById('evoIncidents').value.trim(),
+                presence: document.getElementById('evoPresence').value
+            };
+            if (editId) {
+                DB.updateEvolution(editId, data);
+                showToast('Evolucao atualizada!');
+            } else {
+                DB.addEvolution(data);
+                showToast('Evolucao registrada!');
+            }
+            closeModal('modalEvolution');
+            if (currentPatientId) loadPatientEvolutions();
+            loadDashboard();
+        });
+
+        document.getElementById('formReport').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const editId = document.getElementById('editRepId').value;
+            const data = {
+                patientId: document.getElementById('repPatient').value,
+                therapistId: currentUser.id,
+                therapistName: currentUser.name,
+                type: document.getElementById('repType').value,
+                period: document.getElementById('repPeriod').value.trim(),
+                content: document.getElementById('repContent').value.trim(),
+                date: new Date().toISOString()
+            };
+            if (editId) {
+                DB.updateReport(editId, data);
+                showToast('Relatorio atualizado!');
+            } else {
+                DB.addReport(data);
+                showToast('Relatorio salvo!');
+            }
+            closeModal('modalReport');
+            if (currentPatientId) loadPatientReports();
+            loadReportsList();
+        });
+
+        // ======= PROFILE =======
+        function loadProfile() {
+            const initials = currentUser.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+            document.getElementById('profileAvatar').textContent = initials;
+            document.getElementById('profileName').textContent = currentUser.name;
+            document.getElementById('profileSpecialty').textContent = currentUser.specialty;
+        }
+
+        document.getElementById('formPassword').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const current = document.getElementById('currentPassword').value;
+            const newPwd = document.getElementById('newPassword').value;
+            const confirm = document.getElementById('confirmPassword').value;
+
+            // Verificar senha atual
+            const user = DB.authenticate(currentUser.username, current);
+            if (!user) { showToast('Senha atual incorreta!'); return; }
+            if (newPwd !== confirm) { showToast('As senhas nao conferem!'); return; }
+            if (newPwd.length < 6) { showToast('A nova senha deve ter pelo menos 6 caracteres!'); return; }
+
+            DB.changePassword(currentUser.id, newPwd);
+            document.getElementById('formPassword').reset();
+            showToast('Senha alterada com sucesso!');
+        });
+
+        // ======= DELETES =======
+        function deleteEvolution(id) {
+            if (confirm('Excluir esta evolucao?')) { DB.removeEvolution(id); loadPatientEvolutions(); loadDashboard(); showToast('Evolucao excluida.'); }
+        }
+        function deleteReport(id) {
+            if (confirm('Excluir este relatorio?')) { DB.removeReport(id); loadPatientReports(); showToast('Relatorio excluido.'); }
+        }
+
+        // ======= PRINT =======
+        function printReport(id) {
+            const report = DB.getReports().find(r => r.id === id);
+            if (!report) return;
+            const patient = DB.getPatientById(report.patientId);
+            const w = window.open('', '_blank');
+            w.document.write(`<html><head><title>Relatorio</title><style>body{font-family:Arial,sans-serif;padding:40px;color:#333;line-height:1.6}h1{color:#7BA89A;font-size:20px}h2{color:#5E8F80;font-size:16px;margin-top:20px}.header{text-align:center;border-bottom:2px solid #7BA89A;padding-bottom:20px;margin-bottom:30px}.info{font-size:13px;color:#666}pre{white-space:pre-wrap;font-family:Arial;font-size:14px}</style></head><body><div class="header"><h1>Clinica Prisma</h1><p style="color:#999;font-size:12px;letter-spacing:2px">CUIDADO QUE TRANSFORMA</p></div><h2>${getReportTypeName(report.type)}</h2><p class="info"><strong>Paciente:</strong> ${patient ? patient.name : '-'}</p><p class="info"><strong>Terapeuta:</strong> ${report.therapistName}</p><p class="info"><strong>Periodo:</strong> ${report.period || '-'}</p><p class="info"><strong>Data:</strong> ${formatDate(report.date || report.createdAt)}</p><hr style="margin:20px 0;border:none;border-top:1px solid #ddd"><pre>${report.content}</pre></body></html>`);
+            w.document.close(); w.print();
+        }
+
+        // ======= UTILS =======
+        function formatDate(s) { if (!s) return '-'; const d = new Date(s + (s.length === 10 ? 'T00:00:00' : '')); return d.toLocaleDateString('pt-BR'); }
+        function truncate(s, m) { if (!s) return ''; return s.length > m ? s.substring(0, m) + '...' : s; }
+        function getReportTypeName(t) { return { mensal:'Relatorio Mensal', trimestral:'Relatorio Trimestral', semestral:'Relatorio Semestral', alta:'Relatorio de Alta', devolutiva:'Devolutiva para Familia', escolar:'Relatorio Escolar', outro:'Outro' }[t] || t; }
+        function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
+        // ======= ABA =======
+        let abaCharts = {};
+
+        function loadAbaPatientFilter() {
+            const patients = DB.getPatientsByTherapist(currentUser.id);
+            document.getElementById('abaPatientSelect').innerHTML = '<option value="">Selecione um paciente</option>' +
+                patients.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+        }
+
+        function loadAbaData() {
+            const patientId = document.getElementById('abaPatientSelect').value;
+            if (!patientId) {
+                document.getElementById('abaContent').style.display = 'none';
+                document.getElementById('abaEmpty').style.display = '';
+                return;
+            }
+            document.getElementById('abaContent').style.display = '';
+            document.getElementById('abaEmpty').style.display = 'none';
+            currentPatientId = patientId;
+            loadAbaTargets();
+            loadAbaSessions();
+            updateAbaChartFilter();
+            renderAbaCharts();
+        }
+
+        function loadAbaTargets() {
+            const targets = DB.getAbaTargetsByPatient(currentPatientId);
+            const container = document.getElementById('abaTargetsList');
+            if (targets.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>Nenhum alvo cadastrado</h3><p>Clique em "+ Novo Alvo" para comecar.</p></div>';
+                document.getElementById('abaChartsCard').style.display = 'none';
+                return;
+            }
+            document.getElementById('abaChartsCard').style.display = '';
+            const statusColors = { em_treino: 'badge-yellow', dominado: 'badge-green', manutencao: 'badge-green', pausado: 'badge-coral' };
+            const statusNames = { em_treino: 'Em treino', dominado: 'Dominado', manutencao: 'Manutencao', pausado: 'Pausado' };
+            const typeNames = { dtt: 'DTT', frequencia: 'Frequencia', duracao: 'Duracao', porcentagem: 'Porcentagem' };
+
+            container.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">' + targets.map(t => {
+                const sessions = DB.getAbaSessionsByTarget(t.id);
+                const lastSession = sessions.length > 0 ? sessions[sessions.length - 1] : null;
+                let lastValue = '-';
+                if (lastSession) {
+                    if (t.type === 'dtt') lastValue = Math.round((lastSession.correct / lastSession.total) * 100) + '%';
+                    else if (t.type === 'frequencia') lastValue = lastSession.frequency + 'x';
+                    else if (t.type === 'duracao') lastValue = lastSession.duration + ' min';
+                    else if (t.type === 'porcentagem') lastValue = lastSession.percentage + '%';
+                }
+                return `<div class="patient-card" style="border-left-color:${t.status === 'dominado' ? 'var(--success)' : t.status === 'pausado' ? 'var(--danger)' : 'var(--primary)'}">
+                    <div style="display:flex;justify-content:space-between;align-items:start">
+                        <h3>${t.name}</h3>
+                        <span class="badge ${statusColors[t.status] || 'badge-yellow'}">${statusNames[t.status] || t.status}</span>
+                    </div>
+                    <div class="patient-info">
+                        <span>Tipo: ${typeNames[t.type] || t.type}</span>
+                        <span>Programa: ${t.program || '-'}</span>
+                        <span>Sessoes: ${sessions.length} | Ultimo: ${lastValue}</span>
+                        ${t.criteria ? `<span>Criterio: ${t.criteria}</span>` : ''}
+                    </div>
+                    <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+                        <button class="btn btn-primary btn-small" style="width:auto" onclick="openAddSessionModal('${t.id}')">+ Registrar</button>
+                        <button class="btn btn-small" style="width:auto;background:var(--success-light);color:var(--success)" onclick="changeTargetStatus('${t.id}','dominado')">Dominado</button>
+                        <button class="btn btn-small" style="width:auto;background:var(--accent-yellow);color:#B8960A" onclick="changeTargetStatus('${t.id}','pausado')">Pausar</button>
+                        <button class="btn btn-small" style="width:auto;background:var(--primary-light);color:var(--primary-dark)" onclick="changeTargetStatus('${t.id}','em_treino')">Em treino</button>
+                        <button class="btn btn-danger btn-small" style="width:auto" onclick="deleteTarget('${t.id}')">Excluir</button>
+                    </div>
+                </div>`;
+            }).join('') + '</div>';
+        }
+
+        function loadAbaSessions() {
+            const sessions = DB.getAbaSessionsByPatient(currentPatientId).filter(s => s.therapistId === currentUser.id);
+            const container = document.getElementById('abaSessionsList');
+            if (sessions.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>Nenhum registro</h3></div>';
+                return;
+            }
+            container.innerHTML = sessions.slice(0, 20).map(s => {
+                const target = DB.getAbaTargetById(s.targetId);
+                let valueStr = '';
+                if (s.correct !== undefined) valueStr = `${s.correct}/${s.total} (${Math.round((s.correct/s.total)*100)}%)`;
+                else if (s.frequency !== undefined) valueStr = `${s.frequency} ocorrencias`;
+                else if (s.duration !== undefined) valueStr = `${s.duration} min`;
+                else if (s.percentage !== undefined) valueStr = `${s.percentage}%`;
+                const promptNames = { independente:'Independente', dica_gestual:'Dica Gestual', dica_verbal:'Dica Verbal', modelo:'Modelo', fisica_parcial:'Fisica Parcial', fisica_total:'Fisica Total' };
+                return `<div class="evolution-item"><div class="evo-header"><div><strong>${target ? target.name : '?'}</strong><span class="badge badge-green" style="margin-left:8px">${valueStr}</span><span style="margin-left:8px;font-size:0.8rem;color:var(--text-light)">${promptNames[s.prompt] || s.prompt || ''}</span></div><span class="evo-date">${formatDate(s.date)}</span></div>${s.notes ? `<div class="evo-content">${s.notes}</div>` : ''}<div class="evo-actions"><button class="btn btn-danger btn-small" onclick="deleteAbaSession('${s.id}')">Excluir</button></div></div>`;
+            }).join('');
+        }
+
+        function updateAbaChartFilter() {
+            const targets = DB.getAbaTargetsByPatient(currentPatientId);
+            document.getElementById('abaChartTarget').innerHTML = '<option value="all">Todos os alvos</option>' +
+                targets.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+        }
+
+        function renderAbaCharts() {
+            const filterTarget = document.getElementById('abaChartTarget').value;
+            let targets = DB.getAbaTargetsByPatient(currentPatientId);
+            if (filterTarget !== 'all') targets = targets.filter(t => t.id === filterTarget);
+
+            // Destroy old charts
+            Object.values(abaCharts).forEach(c => c.destroy());
+            abaCharts = {};
+
+            const colors = ['#7BA89A','#F5C9B8','#F5E5A8','#A8D4D4','#E85D5D','#5DB87E','#4A90B8','#C07050'];
+
+            // Accuracy chart (DTT + porcentagem)
+            const accTargets = targets.filter(t => t.type === 'dtt' || t.type === 'porcentagem');
+            const accCtx = document.getElementById('chartAccuracy').getContext('2d');
+            const accDatasets = accTargets.map((t, i) => {
+                const sessions = DB.getAbaSessionsByTarget(t.id);
+                return {
+                    label: t.name,
+                    data: sessions.map(s => t.type === 'dtt' ? Math.round((s.correct/s.total)*100) : s.percentage),
+                    borderColor: colors[i % colors.length],
+                    backgroundColor: colors[i % colors.length] + '33',
+                    tension: 0.3, fill: false, pointRadius: 4
+                };
+            });
+            const accLabels = accTargets.length > 0 ? DB.getAbaSessionsByTarget(accTargets[0].id).map((s,i) => 'S' + (i+1)) : [];
+            abaCharts.accuracy = new Chart(accCtx, { type: 'line', data: { labels: accLabels.length > 0 ? accLabels : [''], datasets: accDatasets.length > 0 ? accDatasets : [{ label: 'Sem dados', data: [] }] }, options: { responsive: true, scales: { y: { min: 0, max: 100, title: { display: true, text: '%' } } }, plugins: { legend: { position: 'bottom' } } } });
+
+            // Frequency chart
+            const freqTargets = targets.filter(t => t.type === 'frequencia');
+            const freqCtx = document.getElementById('chartFrequency').getContext('2d');
+            const freqDatasets = freqTargets.map((t, i) => {
+                const sessions = DB.getAbaSessionsByTarget(t.id);
+                return { label: t.name, data: sessions.map(s => s.frequency), borderColor: colors[i % colors.length], backgroundColor: colors[i % colors.length] + '66', tension: 0.3 };
+            });
+            const freqLabels = freqTargets.length > 0 ? DB.getAbaSessionsByTarget(freqTargets[0].id).map((s,i) => 'S' + (i+1)) : [];
+            abaCharts.frequency = new Chart(freqCtx, { type: 'bar', data: { labels: freqLabels.length > 0 ? freqLabels : [''], datasets: freqDatasets.length > 0 ? freqDatasets : [{ label: 'Sem dados', data: [] }] }, options: { responsive: true, plugins: { legend: { position: 'bottom' } } } });
+
+            // Duration chart
+            const durTargets = targets.filter(t => t.type === 'duracao');
+            const durCtx = document.getElementById('chartDuration').getContext('2d');
+            const durDatasets = durTargets.map((t, i) => {
+                const sessions = DB.getAbaSessionsByTarget(t.id);
+                return { label: t.name, data: sessions.map(s => s.duration), borderColor: colors[i % colors.length], backgroundColor: colors[i % colors.length] + '33', tension: 0.3, fill: true };
+            });
+            const durLabels = durTargets.length > 0 ? DB.getAbaSessionsByTarget(durTargets[0].id).map((s,i) => 'S' + (i+1)) : [];
+            abaCharts.duration = new Chart(durCtx, { type: 'line', data: { labels: durLabels.length > 0 ? durLabels : [''], datasets: durDatasets.length > 0 ? durDatasets : [{ label: 'Sem dados', data: [] }] }, options: { responsive: true, scales: { y: { title: { display: true, text: 'min' } } }, plugins: { legend: { position: 'bottom' } } } });
+
+            // DTT chart (stacked bar showing correct vs incorrect)
+            const dttTargets = targets.filter(t => t.type === 'dtt');
+            const dttCtx = document.getElementById('chartDTT').getContext('2d');
+            if (dttTargets.length > 0) {
+                const firstTarget = dttTargets[0];
+                const sessions = DB.getAbaSessionsByTarget(firstTarget.id);
+                abaCharts.dtt = new Chart(dttCtx, { type: 'bar', data: {
+                    labels: sessions.map((s, i) => formatDate(s.date)),
+                    datasets: [
+                        { label: 'Acertos', data: sessions.map(s => s.correct), backgroundColor: '#5DB87E' },
+                        { label: 'Erros', data: sessions.map(s => s.total - s.correct), backgroundColor: '#E85D5D66' }
+                    ]
+                }, options: { responsive: true, scales: { x: { stacked: true }, y: { stacked: true, title: { display: true, text: 'Tentativas' } } }, plugins: { legend: { position: 'bottom' }, title: { display: true, text: firstTarget.name } } } });
+            } else {
+                abaCharts.dtt = new Chart(dttCtx, { type: 'bar', data: { labels: [''], datasets: [{ label: 'Sem dados DTT', data: [] }] }, options: { responsive: true } });
+            }
+        }
+
+        // ABA Modals
+        function openAddTargetModal() {
+            document.getElementById('formAbaTarget').reset();
+            document.getElementById('modalAbaTarget').classList.add('active');
+        }
+
+        function openAddSessionModal(targetId) {
+            document.getElementById('formAbaSession').reset();
+            document.getElementById('sessionTargetId').value = targetId;
+            document.getElementById('sessionDate').value = new Date().toISOString().split('T')[0];
+            const target = DB.getAbaTargetById(targetId);
+            document.getElementById('sessionModalTitle').textContent = 'Registrar: ' + (target ? target.name : '');
+            // Show correct fields
+            document.getElementById('sessionFieldsDTT').style.display = target && target.type === 'dtt' ? '' : 'none';
+            document.getElementById('sessionFieldsFreq').style.display = target && target.type === 'frequencia' ? '' : 'none';
+            document.getElementById('sessionFieldsDur').style.display = target && target.type === 'duracao' ? '' : 'none';
+            document.getElementById('sessionFieldsPct').style.display = target && target.type === 'porcentagem' ? '' : 'none';
+            document.getElementById('modalAbaSession').classList.add('active');
+        }
+
+        document.getElementById('formAbaTarget').addEventListener('submit', function(e) {
+            e.preventDefault();
+            DB.addAbaTarget({
+                patientId: currentPatientId,
+                therapistId: currentUser.id,
+                therapistName: currentUser.name,
+                name: document.getElementById('targetName').value.trim(),
+                program: document.getElementById('targetProgram').value,
+                type: document.getElementById('targetType').value,
+                criteria: document.getElementById('targetCriteria').value.trim(),
+                description: document.getElementById('targetDescription').value.trim()
+            });
+            closeModal('modalAbaTarget');
+            loadAbaData();
+            showToast('Alvo adicionado!');
+        });
+
+        document.getElementById('formAbaSession').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const targetId = document.getElementById('sessionTargetId').value;
+            const target = DB.getAbaTargetById(targetId);
+            const data = {
+                targetId: targetId,
+                patientId: currentPatientId,
+                therapistId: currentUser.id,
+                therapistName: currentUser.name,
+                date: document.getElementById('sessionDate').value,
+                prompt: document.getElementById('sessionPrompt').value,
+                notes: document.getElementById('sessionNotes').value.trim()
+            };
+            if (target.type === 'dtt') { data.correct = parseInt(document.getElementById('sessionCorrect').value); data.total = parseInt(document.getElementById('sessionTotal').value); }
+            else if (target.type === 'frequencia') { data.frequency = parseInt(document.getElementById('sessionFrequency').value); }
+            else if (target.type === 'duracao') { data.duration = parseFloat(document.getElementById('sessionDuration').value); }
+            else if (target.type === 'porcentagem') { data.percentage = parseInt(document.getElementById('sessionPercentage').value); }
+            DB.addAbaSession(data);
+            closeModal('modalAbaSession');
+            loadAbaData();
+            showToast('Registro salvo!');
+        });
+
+        function changeTargetStatus(id, status) {
+            DB.updateAbaTarget(id, { status: status });
+            loadAbaTargets();
+            showToast('Status atualizado!');
+        }
+
+        function deleteTarget(id) {
+            if (confirm('Excluir este alvo e todos os registros?')) { DB.removeAbaTarget(id); loadAbaData(); showToast('Alvo excluido.'); }
+        }
+
+        function deleteAbaSession(id) {
+            if (confirm('Excluir este registro?')) { DB.removeAbaSession(id); loadAbaData(); showToast('Registro excluido.'); }
+        }
+
+        function doLogout() { DB.logout(); window.location.href = 'login.html'; }
+    </script>
+</body>
+</html>

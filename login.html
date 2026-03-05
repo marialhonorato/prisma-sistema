@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prisma - Login</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="../prisma_logo-removebg-preview.png">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <img src="../prisma_logo-removebg-preview.png" alt="Prisma" class="login-logo">
+            <h1>Clinica Prisma</h1>
+            <p class="subtitle">Cuidado que Transforma</p>
+
+            <form id="loginForm" style="display:none">
+                <div class="form-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" placeholder="Digite seu usuario" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" placeholder="Digite sua senha" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary">Entrar</button>
+                <p class="login-error" id="loginError">Usuario ou senha incorretos.</p>
+            </form>
+            <p id="loadingMsg" style="color:var(--text-light);font-size:0.9rem;margin-top:20px">Carregando sistema...</p>
+        </div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/data.js"></script>
+    <script>
+        // Redirecionar se ja logado
+        const user = DB.getCurrentUser();
+        if (user) {
+            window.location.href = user.role === 'coordenacao' ? 'coordenacao.html' : 'terapeuta.html';
+        }
+
+        // Esperar Firebase carregar
+        DB.init().then(() => {
+            document.getElementById('loadingMsg').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+
+            const user = DB.authenticate(username, password);
+
+            if (user) {
+                DB.setCurrentUser(user);
+                if (user.role === 'coordenacao') {
+                    window.location.href = 'coordenacao.html';
+                } else {
+                    window.location.href = 'terapeuta.html';
+                }
+            } else {
+                document.getElementById('loginError').classList.add('show');
+                setTimeout(() => {
+                    document.getElementById('loginError').classList.remove('show');
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
