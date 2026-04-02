@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prisma - Gerar PDFs de Acesso</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="img/logo.png">
+    <style>
+        .access-page { max-width: 900px; margin: 0 auto; padding: 30px 20px; }
+        .access-page h1 { color: var(--primary); font-family: Poppins, sans-serif; margin-bottom: 8px; }
+        .access-page .subtitle { color: var(--text-light); margin-bottom: 30px; }
+        .user-card-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 30px; }
+        .user-access-card { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+        .user-access-card h3 { margin: 0 0 4px; font-size: 1rem; }
+        .user-access-card .role-label { font-size: 0.8rem; color: var(--text-light); margin-bottom: 12px; display: block; }
+        .user-access-card .credentials { background: #f8f9fa; border-radius: 8px; padding: 10px; margin-bottom: 12px; font-size: 0.85rem; }
+        .user-access-card .credentials strong { color: var(--primary); }
+        .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+        .print-all-bar { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+        @media print { .no-print { display: none !important; } }
+    </style>
+</head>
+<body>
+    <div class="access-page">
+        <div class="no-print">
+            <a href="coordenacao.html" style="color:var(--primary);text-decoration:none;font-size:0.9rem;font-family:Poppins,sans-serif">&larr; Voltar ao Sistema</a>
+            <h1 style="margin-top:12px">Gerar PDFs de Acesso</h1>
+            <p class="subtitle">Gere e imprima as informacoes de acesso de cada usuario do sistema Prisma.</p>
+
+            <div class="print-all-bar">
+                <div>
+                    <strong>Gerar todos de uma vez</strong>
+                    <p style="font-size:0.85rem;color:var(--text-light);margin:0">Abre uma pagina com todos os acessos para impressao</p>
+                </div>
+                <button class="btn btn-primary" style="width:auto" onclick="printAllAccess()">Imprimir Todos</button>
+            </div>
+
+            <div class="user-card-list" id="userCards"></div>
+
+            <hr style="margin:40px 0;border:none;border-top:2px solid var(--border)">
+
+            <h1 style="color:var(--primary)">Guias de Acesso - Pacientes</h1>
+            <p class="subtitle">Gere o guia do Portal do Paciente para entregar as familias.</p>
+
+            <div class="print-all-bar">
+                <div>
+                    <strong>Gerar todos os guias de pacientes</strong>
+                    <p style="font-size:0.85rem;color:var(--text-light);margin:0">Abre uma pagina com todos os guias para impressao</p>
+                </div>
+                <button class="btn btn-primary" style="width:auto" onclick="printAllPatientGuides()">Imprimir Todos</button>
+            </div>
+
+            <div class="user-card-list" id="patientCards"></div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/data.js?v=20260313a"></script>
+    <script>
+        const currentUser = DB.getCurrentUser();
+        if (!currentUser || (currentUser.role !== 'coordenacao' && currentUser.role !== 'direcao' && currentUser.role !== 'adm')) {
+            window.location.href = 'login.html';
+        }
+
+        const roleDescriptions = {
+            'coordenacao': {
+                label: 'Coordenacao',
+                color: '#7BA89A',
+                sections: [
+                    'Painel Geral - Visao geral de toda a clinica com estatisticas e alertas',
+                    'Agenda - Visualize e gerencie todos os agendamentos (dia, semana ou calendario mensal)',
+                    'Terapeutas - Veja a equipe, seus pacientes e evolucoes',
+                    'Todos os Pacientes - Lista completa de pacientes da clinica',
+                    'Todas as Evolucoes - Historico de evolucoes de todos os terapeutas',
+                    'Todos os Relatorios - Relatorios produzidos pela equipe',
+                    'Solicitacoes - Solicite e acompanhe pedidos de relatorios',
+                    'Devolutivas - Registre devolutivas para familias',
+                    'Atendimentos Familia - Reunioes e atendimentos com responsaveis',
+                    'Objetivos - Objetivos terapeuticos individuais e multiprofissionais',
+                    'Dados ABA - Registro e analise de dados ABA',
+                    'Gerenciar Usuarios - Cadastre e edite usuarios do sistema',
+                    'Contratos - Gere e gerencie contratos de pacientes'
+                ]
+            },
+            'direcao': {
+                label: 'Direcao',
+                color: '#7B1FA2',
+                sections: [
+                    'Painel Geral - Visao executiva da clinica',
+                    'Agenda - Calendario completo de atendimentos (semanal e mensal)',
+                    'Financeiro - Controle de pagamentos e valores',
+                    'Frequencia - Registro de presenca dos pacientes',
+                    'Evolucoes - Todas as evolucoes registradas',
+                    'Documentacao - Upload e gestao de documentos',
+                    'Relatorios - Relatorios clinicos da equipe',
+                    'Atendimentos Familia - Reunioes com responsaveis',
+                    'Espelhos - Espelhos mensais de pagamento',
+                    'Contratos - Gestao contratual',
+                    'Perfil - Seus dados pessoais'
+                ]
+            },
+            'terapeuta': {
+                label: 'Terapeuta',
+                color: '#1976D2',
+                sections: [
+                    'Painel Inicial - Resumo dos seus atendimentos e evolucoes recentes',
+                    'Minha Agenda - Seus agendamentos (dia, semana ou calendario mensal)',
+                    'Meus Pacientes - Lista dos pacientes que voce atende',
+                    'Evolucoes - Registre e consulte evolucoes de cada sessao',
+                    'Relatorios - Crie relatorios mensais, trimestrais e de alta',
+                    'Objetivos - Defina e acompanhe objetivos terapeuticos',
+                    'Dados ABA - Registre alvos, sessoes e analise graficos de progresso',
+                    'Meu Perfil - Seus dados profissionais'
+                ]
+            },
+            'adm': {
+                label: 'Administracao',
+                color: '#E65100',
+                sections: [
+                    'Painel - Visao geral do sistema',
+                    'Agenda - Todos os agendamentos',
+                    'Pacientes - Cadastro e gestao de pacientes',
+                    'Terapeutas - Equipe terapeutica',
+                    'Espelhos - Espelhos mensais',
+                    'Dados Gerais - Configuracoes do sistema'
+                ]
+            }
+        };
+
+        DB.onReady(function() {
+            const users = DB.getUsers();
+            const container = document.getElementById('userCards');
+            container.innerHTML = users.map(u => {
+                const rd = roleDescriptions[u.role] || { label: u.role, color: '#666', sections: [] };
+                return `<div class="user-access-card">
+                    <h3>${u.name}</h3>
+                    <span class="role-label" style="color:${rd.color};font-weight:600">${rd.label} - ${u.specialty || ''}</span>
+                    <div class="credentials">
+                        <div><strong>Usuario:</strong> ${u.username}</div>
+                        <div><strong>Senha:</strong> ${u.password}</div>
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn btn-primary btn-small" style="width:auto" onclick="printSingleAccess('${u.id}')">Imprimir PDF</button>
+                    </div>
+                </div>`;
+            }).join('');
+        });
+
+        function generateAccessHTML(user) {
+            const rd = roleDescriptions[user.role] || { label: user.role, color: '#666', sections: [] };
+            return `
+                <div style="page-break-after:always;padding:40px;font-family:Poppins,Arial,sans-serif;color:#333;max-width:700px;margin:0 auto">
+                    <div style="text-align:center;border-bottom:3px solid ${rd.color};padding-bottom:20px;margin-bottom:30px">
+                        <h1 style="color:${rd.color};font-size:28px;margin:0">PRISMA</h1>
+                        <p style="color:#999;font-size:12px;letter-spacing:3px;margin:4px 0 0">CUIDADO QUE TRANSFORMA</p>
+                    </div>
+
+                    <h2 style="color:${rd.color};font-size:20px;margin-bottom:20px;text-align:center">Informacoes de Acesso ao Sistema</h2>
+
+                    <div style="background:#f8f9fa;border-radius:12px;padding:24px;margin-bottom:24px;border-left:4px solid ${rd.color}">
+                        <h3 style="margin:0 0 12px;color:${rd.color}">Seus Dados</h3>
+                        <table style="width:100%;font-size:14px;border-collapse:collapse">
+                            <tr><td style="padding:6px 0;font-weight:600;width:140px">Nome:</td><td style="padding:6px 0">${user.name}</td></tr>
+                            <tr><td style="padding:6px 0;font-weight:600">Funcao:</td><td style="padding:6px 0">${rd.label} - ${user.specialty || ''}</td></tr>
+                            <tr><td style="padding:6px 0;font-weight:600">Usuario:</td><td style="padding:6px 0;font-family:monospace;font-size:15px;background:#fff3e0;padding:4px 8px;border-radius:4px;display:inline-block">${user.username}</td></tr>
+                            <tr><td style="padding:6px 0;font-weight:600">Senha:</td><td style="padding:6px 0;font-family:monospace;font-size:15px;background:#fff3e0;padding:4px 8px;border-radius:4px;display:inline-block">${user.password}</td></tr>
+                        </table>
+                    </div>
+
+                    <div style="background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:24px;margin-bottom:24px">
+                        <h3 style="margin:0 0 12px;color:${rd.color}">Como Acessar</h3>
+                        <ol style="font-size:13px;line-height:2;padding-left:20px;margin:0">
+                            <li>Abra o navegador (Chrome, Firefox, Edge ou Safari)</li>
+                            <li>Acesse o endereco do sistema fornecido pela coordenacao</li>
+                            <li>Na tela de login, digite seu <strong>usuario</strong> e <strong>senha</strong></li>
+                            <li>Clique em <strong>"Entrar"</strong></li>
+                            <li>Voce sera direcionado(a) ao seu painel automaticamente</li>
+                        </ol>
+                    </div>
+
+                    <div style="background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:24px;margin-bottom:24px">
+                        <h3 style="margin:0 0 12px;color:${rd.color}">O que voce encontra no sistema</h3>
+                        <p style="font-size:13px;color:#666;margin:0 0 12px">Como <strong>${rd.label}</strong>, voce tem acesso as seguintes funcionalidades:</p>
+                        <ul style="font-size:13px;line-height:2;padding-left:20px;margin:0">
+                            ${rd.sections.map(s => {
+                                const parts = s.split(' - ');
+                                return `<li><strong>${parts[0]}</strong>${parts[1] ? ' - ' + parts[1] : ''}</li>`;
+                            }).join('')}
+                        </ul>
+                    </div>
+
+                    <div style="background:#FFF3E0;border-radius:12px;padding:20px;margin-bottom:24px;border-left:4px solid #FF9800">
+                        <h3 style="margin:0 0 8px;color:#E65100;font-size:14px">Importante</h3>
+                        <ul style="font-size:12px;line-height:1.8;padding-left:18px;margin:0;color:#555">
+                            <li>Mantenha seu usuario e senha em local seguro</li>
+                            <li>Nao compartilhe suas credenciais com terceiros</li>
+                            <li>Ao terminar, clique em <strong>"Sair"</strong> no menu lateral</li>
+                            <li>Em caso de duvidas, procure a coordenacao</li>
+                        </ul>
+                    </div>
+
+                    <div style="text-align:center;padding-top:20px;border-top:2px solid #eee;font-size:11px;color:#999">
+                        <p style="margin:0">Prisma Saude - Sistema de Gestao Clinica</p>
+                        <p style="margin:4px 0 0">Documento gerado em ${new Date().toLocaleDateString('pt-BR')}</p>
+                    </div>
+                </div>`;
+        }
+
+        function printSingleAccess(userId) {
+            const user = DB.getUsers().find(u => u.id === userId);
+            if (!user) return;
+            const w = window.open('', '_blank');
+            w.document.write(`<html><head><title>Acesso - ${user.name}</title><style>@media print{body{margin:0}}</style></head><body>${generateAccessHTML(user)}</body></html>`);
+            w.document.close();
+            setTimeout(() => w.print(), 300);
+        }
+
+        function printAllAccess() {
+            const users = DB.getUsers();
+            const w = window.open('', '_blank');
+            let html = '<html><head><title>Acessos - Prisma</title><style>@media print{body{margin:0}}</style></head><body>';
+            users.forEach(u => { html += generateAccessHTML(u); });
+            html += '</body></html>';
+            w.document.write(html);
+            w.document.close();
+            setTimeout(() => w.print(), 500);
+        }
+
+        // ====================================================
+        // GUIAS DE ACESSO - PACIENTES (Portal do Paciente)
+        // ====================================================
+
+        function loadPatientCards() {
+            const patients = DB.getPatients ? DB.getPatients() : [];
+            const users = DB.getUsers();
+            const container = document.getElementById('patientCards');
+            if (!container) return;
+
+            // Find patient users (role === 'paciente' or match by name)
+            container.innerHTML = patients.map(p => {
+                const patientUser = users.find(u => u.patientId === p.id || (u.role === 'paciente' && u.name && u.name.toLowerCase().includes(p.name.split(' ')[0].toLowerCase())));
+                const username = patientUser ? patientUser.username : 'Nao cadastrado';
+                const password = patientUser ? patientUser.password : '-';
+
+                return `<div class="user-access-card" style="border-left:4px solid #7ECAB1">
+                    <h3>${p.name}</h3>
+                    <span class="role-label" style="color:#7ECAB1;font-weight:600">Paciente - Portal da Familia</span>
+                    <div class="credentials">
+                        <div><strong>Usuario:</strong> ${username}</div>
+                        <div><strong>Senha:</strong> ${password}</div>
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn btn-primary btn-small" style="width:auto;background:#7ECAB1;border-color:#7ECAB1" onclick="printPatientGuide('${p.id}')">Gerar Guia PDF</button>
+                    </div>
+                </div>`;
+            }).join('');
+
+            if (patients.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-light);padding:20px">Nenhum paciente cadastrado.</p>';
+            }
+        }
+
+        function generatePatientGuideHTML(patient, user) {
+            const username = user ? user.username : '___________';
+            const password = user ? user.password : '___________';
+            const systemUrl = 'https://marialhonorato.github.io/prisma-sistema/';
+
+            return `
+            <div style="width:210mm;min-height:297mm;padding:15mm 18mm;position:relative;background:#fff;font-family:'Segoe UI',Arial,sans-serif;color:#333;page-break-after:always">
+                <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #7ECAB1;padding-bottom:5mm;margin-bottom:6mm">
+                    <div><h1 style="font-size:22pt;color:#7ECAB1;font-weight:800;letter-spacing:1px;margin:0">PRISMA</h1><p style="font-size:8pt;color:#999;letter-spacing:2px;text-transform:uppercase;margin:2px 0 0">Clinica de Terapias Multidisciplinares</p></div>
+                    <div style="background:#7ECAB1;color:#fff;padding:2mm 5mm;border-radius:8px;font-size:9pt;font-weight:700">Portal do Paciente</div>
+                </div>
+
+                <div style="background:linear-gradient(135deg,#F0FFF8,#E8F8F5);border-radius:10px;padding:6mm;margin-bottom:5mm;border-left:4px solid #7ECAB1">
+                    <h2 style="font-size:14pt;color:#7ECAB1;margin:0 0 2mm">Bem-vindo(a), familia de ${patient.name}!</h2>
+                    <p style="font-size:10pt;color:#555;line-height:1.5;margin:0">Este guia contem todas as informacoes para acessar o Portal do Paciente da Prisma Saude. Atraves dele, voces podem acompanhar a agenda, frequencia, pagamentos e muito mais.</p>
+                </div>
+
+                <div style="background:#F0ECE3;border-radius:10px;padding:5mm 6mm;margin-bottom:5mm;border:1.5px dashed #7ECAB1">
+                    <h3 style="font-size:11pt;color:#7ECAB1;margin:0 0 3mm">Seus Dados de Acesso</h3>
+                    <table style="width:100%;border-collapse:collapse">
+                        <tr><td style="padding:2mm 3mm;font-weight:700;color:#555;width:35%;font-size:10pt">Link do Sistema:</td><td style="padding:2mm 4mm;color:#333;font-family:Consolas,monospace;background:#fff;border-radius:4px;font-size:10pt">${systemUrl}</td></tr>
+                        <tr><td style="padding:2mm 3mm;font-weight:700;color:#555;width:35%;font-size:10pt">Usuario:</td><td style="padding:2mm 4mm;color:#333;font-family:Consolas,monospace;background:#fff;border-radius:4px;font-size:10pt">${username}</td></tr>
+                        <tr><td style="padding:2mm 3mm;font-weight:700;color:#555;width:35%;font-size:10pt">Senha:</td><td style="padding:2mm 4mm;color:#333;font-family:Consolas,monospace;background:#fff;border-radius:4px;font-size:10pt">${password}</td></tr>
+                    </table>
+                </div>
+
+                <div style="background:#F8F8F5;border-radius:8px;padding:4mm 5mm;margin:4mm 0;border:1px solid #E0E0D8">
+                    <h4 style="font-size:10pt;color:#7ECAB1;margin:0 0 2mm">Como acessar pela primeira vez:</h4>
+                    <ol style="font-size:9pt;color:#555;padding-left:5mm;line-height:1.7;margin:0">
+                        <li>Abra o link acima no navegador do celular ou computador</li>
+                        <li>Digite seu <b>usuario</b> e <b>senha</b></li>
+                        <li>Clique em <b>"Entrar"</b></li>
+                        <li>Voce sera direcionado ao painel com todas as informacoes</li>
+                    </ol>
+                </div>
+
+                <div style="font-size:13pt;color:#7ECAB1;font-weight:700;margin:5mm 0 3mm;padding-bottom:2mm;border-bottom:1.5px solid #A8E4E0">Funcionalidades Disponiveis</div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:2mm">
+                    <div style="display:flex;align-items:flex-start;padding:3mm;border-radius:6px"><div style="width:9mm;height:9mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12pt;margin-right:3mm;flex-shrink:0;background:#E8F5E9">&#128202;</div><div><h4 style="font-size:10pt;color:#333;margin:0 0 1mm">Painel Inicial</h4><p style="font-size:8.5pt;color:#777;line-height:1.4;margin:0">Visao geral com proximos atendimentos e resumo.</p></div></div>
+                    <div style="display:flex;align-items:flex-start;padding:3mm;border-radius:6px;background:#FAFAF8"><div style="width:9mm;height:9mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12pt;margin-right:3mm;flex-shrink:0;background:#E3F2FD">&#128197;</div><div><h4 style="font-size:10pt;color:#333;margin:0 0 1mm">Minha Agenda</h4><p style="font-size:8.5pt;color:#777;line-height:1.4;margin:0">Visualize todos os atendimentos agendados.</p></div></div>
+                    <div style="display:flex;align-items:flex-start;padding:3mm;border-radius:6px;background:#FAFAF8"><div style="width:9mm;height:9mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12pt;margin-right:3mm;flex-shrink:0;background:#E0F2F1">&#9989;</div><div><h4 style="font-size:10pt;color:#333;margin:0 0 1mm">Frequencia</h4><p style="font-size:8.5pt;color:#777;line-height:1.4;margin:0">Acompanhe presencas e faltas mes a mes.</p></div></div>
+                    <div style="display:flex;align-items:flex-start;padding:3mm;border-radius:6px"><div style="width:9mm;height:9mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12pt;margin-right:3mm;flex-shrink:0;background:#F3E5F5">&#128196;</div><div><h4 style="font-size:10pt;color:#333;margin:0 0 1mm">Espelhos</h4><p style="font-size:8.5pt;color:#777;line-height:1.4;margin:0">Espelhos mensais por terapeuta e especialidade.</p></div></div>
+                    <div style="display:flex;align-items:flex-start;padding:3mm;border-radius:6px"><div style="width:9mm;height:9mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12pt;margin-right:3mm;flex-shrink:0;background:#FFF8E1">&#128176;</div><div><h4 style="font-size:10pt;color:#333;margin:0 0 1mm">Pagamentos</h4><p style="font-size:8.5pt;color:#777;line-height:1.4;margin:0">Historico de pagamentos, valores e status.</p></div></div>
+                    <div style="display:flex;align-items:flex-start;padding:3mm;border-radius:6px;background:#FAFAF8"><div style="width:9mm;height:9mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12pt;margin-right:3mm;flex-shrink:0;background:#FFF3E0">&#128221;</div><div><h4 style="font-size:10pt;color:#333;margin:0 0 1mm">Solicitar Relatorio</h4><p style="font-size:8.5pt;color:#777;line-height:1.4;margin:0">Solicite relatorios (escolar, medico, etc.).</p></div></div>
+                    <div style="display:flex;align-items:flex-start;padding:3mm;border-radius:6px;background:#FAFAF8"><div style="width:9mm;height:9mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12pt;margin-right:3mm;flex-shrink:0;background:#FCE4EC">&#128218;</div><div><h4 style="font-size:10pt;color:#333;margin:0 0 1mm">Relatorio Semestral</h4><p style="font-size:8.5pt;color:#777;line-height:1.4;margin:0">Evolucao terapeutica do paciente.</p></div></div>
+                    <div style="display:flex;align-items:flex-start;padding:3mm;border-radius:6px"><div style="width:9mm;height:9mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12pt;margin-right:3mm;flex-shrink:0;background:#E8F8F5">&#128172;</div><div><h4 style="font-size:10pt;color:#333;margin:0 0 1mm">Atendimento Coordenacao</h4><p style="font-size:8.5pt;color:#777;line-height:1.4;margin:0">Solicite atendimento com a coordenacao.</p></div></div>
+                    <div style="display:flex;align-items:flex-start;padding:3mm;border-radius:6px"><div style="width:9mm;height:9mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12pt;margin-right:3mm;flex-shrink:0;background:#FFEBEE">&#128203;</div><div><h4 style="font-size:10pt;color:#333;margin:0 0 1mm">Devolutivas</h4><p style="font-size:8.5pt;color:#777;line-height:1.4;margin:0">Devolutivas das sessoes e acompanhamentos.</p></div></div>
+                    <div style="display:flex;align-items:flex-start;padding:3mm;border-radius:6px;background:#FAFAF8"><div style="width:9mm;height:9mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12pt;margin-right:3mm;flex-shrink:0;background:#E3F2FD">&#128196;</div><div><h4 style="font-size:10pt;color:#333;margin:0 0 1mm">Contratos</h4><p style="font-size:8.5pt;color:#777;line-height:1.4;margin:0">Acesse seus contratos com a clinica.</p></div></div>
+                    <div style="display:flex;align-items:flex-start;padding:3mm;border-radius:6px;background:#FAFAF8"><div style="width:9mm;height:9mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12pt;margin-right:3mm;flex-shrink:0;background:#E8F5E9">&#128100;</div><div><h4 style="font-size:10pt;color:#333;margin:0 0 1mm">Meu Perfil</h4><p style="font-size:8.5pt;color:#777;line-height:1.4;margin:0">Visualize e atualize seus dados.</p></div></div>
+                </div>
+
+                <div style="background:#FFF8E1;border-radius:8px;padding:4mm 5mm;margin:4mm 0;border-left:3px solid #F5EAB8">
+                    <h4 style="font-size:10pt;color:#C8A415;margin:0 0 2mm">Dicas Importantes:</h4>
+                    <ul style="font-size:9pt;color:#666;padding-left:5mm;line-height:1.6;margin:0">
+                        <li>Salve o link nos favoritos do navegador para acesso rapido</li>
+                        <li>Nao compartilhe usuario e senha com terceiros</li>
+                        <li>Em caso de duvidas, entre em contato com a coordenacao</li>
+                        <li>O sistema funciona no celular, tablet e computador</li>
+                    </ul>
+                </div>
+
+                <div style="position:absolute;bottom:10mm;left:18mm;right:18mm;text-align:center;font-size:7pt;color:#bbb;border-top:1px solid #eee;padding-top:3mm;letter-spacing:1px">PRISMA Saude - Clinica de Terapias Multidisciplinares | Documento confidencial - uso exclusivo da familia</div>
+            </div>`;
+        }
+
+        function printPatientGuide(patientId) {
+            const patients = DB.getPatients ? DB.getPatients() : [];
+            const patient = patients.find(p => p.id === patientId);
+            if (!patient) return alert('Paciente nao encontrado');
+            const users = DB.getUsers();
+            const user = users.find(u => u.patientId === patientId || (u.role === 'paciente' && u.name && u.name.toLowerCase().includes(patient.name.split(' ')[0].toLowerCase())));
+            const w = window.open('', '_blank');
+            w.document.write(`<html><head><title>Guia - ${patient.name}</title><style>@page{size:A4 portrait;margin:0}*{box-sizing:border-box;margin:0;padding:0}@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body>${generatePatientGuideHTML(patient, user)}</body></html>`);
+            w.document.close();
+            setTimeout(() => w.print(), 400);
+        }
+
+        function printAllPatientGuides() {
+            const patients = DB.getPatients ? DB.getPatients() : [];
+            const users = DB.getUsers();
+            const w = window.open('', '_blank');
+            let html = '<html><head><title>Guias Pacientes - Prisma</title><style>@page{size:A4 portrait;margin:0}*{box-sizing:border-box;margin:0;padding:0}@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body>';
+            patients.forEach(p => {
+                const user = users.find(u => u.patientId === p.id || (u.role === 'paciente' && u.name && u.name.toLowerCase().includes(p.name.split(' ')[0].toLowerCase())));
+                html += generatePatientGuideHTML(p, user);
+            });
+            html += '</body></html>';
+            w.document.write(html);
+            w.document.close();
+            setTimeout(() => w.print(), 600);
+        }
+
+        // Load patient cards after DB is ready
+        DB.onReady(function() {
+            loadPatientCards();
+        });
+    </script>
+</body>
+</html>
