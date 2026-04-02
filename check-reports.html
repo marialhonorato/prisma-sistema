@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html><head><title>Verificar Relatorios</title></head>
+<body style="font-family:Arial;padding:20px">
+<h2>Relatorios no Firestore</h2>
+<div id="output">Carregando...</div>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script>
+async function check() {
+    const out = document.getElementById('output');
+    let html = '';
+
+    // Check reports
+    const reportsSnap = await db.collection('reports').get();
+    html += '<h3>Reports (' + reportsSnap.size + ')</h3>';
+    reportsSnap.docs.forEach(d => {
+        const r = d.data();
+        html += '<div style="border:1px solid #ccc;padding:10px;margin:5px 0;border-radius:8px">';
+        html += '<strong>ID:</strong> ' + d.id + '<br>';
+        html += '<strong>PatientId:</strong> ' + (r.patientId || 'N/A') + '<br>';
+        html += '<strong>Type:</strong> ' + (r.type || 'N/A') + '<br>';
+        html += '<strong>Date:</strong> ' + (r.date || r.createdAt || 'N/A') + '<br>';
+        html += '<strong>FileName:</strong> ' + (r.fileName || 'N/A') + '<br>';
+        html += '<strong>HasFile:</strong> ' + (r.hasFile || false) + '<br>';
+        html += '<strong>Content:</strong> ' + ((r.content || r.text || '').substring(0, 100)) + '<br>';
+        html += '</div>';
+    });
+
+    // Check report file chunks
+    try {
+        const filesSnap = await db.collection('reports_files').get();
+        html += '<h3>Report File Chunks (' + filesSnap.size + ')</h3>';
+        filesSnap.docs.forEach(d => {
+            const f = d.data();
+            html += '<div style="border:1px solid #ddd;padding:5px;margin:3px 0">';
+            html += d.id + ' | parentId: ' + f.parentId + ' | chunk: ' + f.chunkIndex + '/' + f.totalChunks + ' | size: ' + (f.data ? f.data.length : 0);
+            html += '</div>';
+        });
+    } catch(e) { html += '<p style="color:red">Erro ao carregar chunks: ' + e.message + '</p>'; }
+
+    // Check users with patientId
+    const usersSnap = await db.collection('users').get();
+    html += '<h3>Usuarios tipo paciente</h3>';
+    usersSnap.docs.forEach(d => {
+        const u = d.data();
+        if (u.role === 'paciente') {
+            html += '<div>' + d.id + ' | name: ' + u.name + ' | patientId: ' + (u.patientId || 'N/A') + '</div>';
+        }
+    });
+
+    out.innerHTML = html;
+}
+check();
+</script>
+</body></html>
