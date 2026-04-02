@@ -1,17 +1,18 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prisma - Painel do Terapeuta</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="../prisma_logo-removebg-preview.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="img/logo.png">
 </head>
 <body>
     <!-- Loading -->
     <div id="loadingScreen" style="position:fixed;top:0;left:0;right:0;bottom:0;background:var(--background);display:flex;align-items:center;justify-content:center;z-index:9999">
         <div style="text-align:center">
-            <img src="../prisma_logo-removebg-preview.png" alt="Prisma" style="width:100px;margin-bottom:16px">
+            <img src="img/logo.png" alt="Prisma" style="max-width:120px;height:auto;margin-bottom:8px" onerror="this.style.display='none';this.nextElementSibling.style.display=''">
+            <h2 style="color:var(--primary);font-family:Poppins,sans-serif;font-size:1.8rem;display:none">PRISMA</h2>
             <p style="color:var(--text-light);font-family:Poppins,sans-serif">Carregando...</p>
         </div>
     </div>
@@ -21,14 +22,19 @@
     <div class="app-layout">
         <aside class="sidebar">
             <div class="sidebar-header">
-                <img src="../prisma_logo-removebg-preview.png" alt="Prisma" class="sidebar-logo">
-                <h2 id="sidebarUserName">Terapeuta</h2>
+                <img src="img/logo.png" alt="Prisma" style="max-width:100px;height:auto;margin-bottom:4px" onerror="this.style.display='none';this.nextElementSibling.style.display=''">
+                <h2 style="font-size:1.4rem;font-weight:700;margin-bottom:4px;display:none">PRISMA</h2>
+                <p id="sidebarUserName" style="font-size:0.85rem;opacity:0.9;margin-bottom:6px">Terapeuta</p>
                 <span class="role-badge terapeuta" id="sidebarSpecialty">Terapeuta</span>
             </div>
             <nav class="sidebar-nav">
                 <a class="nav-item active" onclick="showSection('dashboard')" data-section="dashboard">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
                     Painel Inicial
+                </a>
+                <a class="nav-item" onclick="showSection('agenda')" data-section="agenda">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    Minha Agenda
                 </a>
                 <a class="nav-item" onclick="showSection('patients')" data-section="patients">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -42,9 +48,35 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
                     Relatorios
                 </a>
+                <a class="nav-item" onclick="showSection('objectives')" data-section="objectives">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    Objetivos
+                </a>
                 <a class="nav-item" onclick="showSection('aba')" data-section="aba">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                     Dados ABA
+                </a>
+                <a class="nav-item" onclick="showSection('devolutivas')" data-section="devolutivas">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    Devolutivas
+                </a>
+                <a class="nav-item" onclick="showSection('notificacoes')" data-section="notificacoes">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    Notificacoes
+                    <span class="notif-badge" id="notifBadgeTer" style="display:none">0</span>
+                </a>
+                <a class="nav-item" onclick="showSection('busca')" data-section="busca">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Busca
+                </a>
+                <a class="nav-item" onclick="showSection('mensagens')" data-section="mensagens">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    Mensagens
+                    <span class="notif-badge" id="msgBadgeTer2" style="display:none">0</span>
+                </a>
+                <a class="nav-item" onclick="showSection('engajamento')" data-section="engajamento">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+                    Engajamento
                 </a>
                 <a class="nav-item" onclick="showSection('profile')" data-section="profile">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -72,9 +104,46 @@
                 </div>
                 <div class="stats-grid" id="statsGrid"></div>
                 <div class="card">
+                    <div class="card-header"><h2>Minhas Tarefas</h2></div>
+                    <div id="dashTodoListTer"></div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h2>Proximos Atendimentos</h2></div>
+                    <div id="dashAgenda"></div>
+                </div>
+                <div class="card">
                     <div class="card-header"><h2>Ultimas Evolucoes</h2></div>
                     <div id="recentEvolutions"></div>
                 </div>
+
+                <div class="card" style="margin-top:20px">
+                    <div class="card-header">
+                        <h2>Minhas Sessoes: Realizadas vs Agendadas</h2>
+                        <input type="month" id="sessaoMesTer" onchange="loadSessaoCountTer()" style="padding:6px 10px;border:1px solid var(--border);border-radius:8px;font-family:Poppins,sans-serif;font-size:0.85rem">
+                    </div>
+                    <div id="sessaoCountTer"></div>
+                </div>
+
+                <div class="card" style="margin-top:20px">
+                    <div class="card-header"><h2>Reavaliacoes Proximas</h2></div>
+                    <div id="reavAlertsTer"></div>
+                </div>
+            </div>
+
+            <!-- AGENDA -->
+            <div class="section" id="section-agenda">
+                <div class="page-header">
+                    <h1>Minha Agenda</h1>
+                </div>
+                <div class="filter-bar">
+                    <input type="date" id="agendaDate" onchange="loadAgenda()">
+                    <select id="agendaView" onchange="loadAgenda()">
+                        <option value="dia">Dia</option>
+                        <option value="semana" selected>Semana</option>
+                        <option value="mes">Mês</option>
+                    </select>
+                </div>
+                <div id="agendaContent"></div>
             </div>
 
             <!-- PACIENTES -->
@@ -107,6 +176,25 @@
                 <div id="reportsList" class="evolution-list"></div>
             </div>
 
+            <!-- OBJETIVOS TERAPEUTICOS -->
+            <div class="section" id="section-objectives">
+                <div class="page-header">
+                    <h1>Objetivos Terapeuticos</h1>
+                    <button class="btn btn-primary" style="width:auto" onclick="openAddObjectiveModal()">+ Novo Objetivo</button>
+                </div>
+                <div class="filter-bar">
+                    <select id="objPatientFilter" onchange="loadObjectives()">
+                        <option value="">Todos os pacientes</option>
+                    </select>
+                    <select id="objTypeFilter" onchange="loadObjectives()">
+                        <option value="">Todos os tipos</option>
+                        <option value="individual">Individuais</option>
+                        <option value="multiprofissional">Multiprofissionais</option>
+                    </select>
+                </div>
+                <div id="objectivesList" class="evolution-list"></div>
+            </div>
+
             <!-- DETALHE PACIENTE -->
             <div class="section" id="section-patient-detail">
                 <a class="back-btn" onclick="showSection('patients')">&#8592; Voltar</a>
@@ -114,18 +202,24 @@
                     <div>
                         <h1 id="detailPatientName"></h1>
                         <p class="welcome-text" id="detailPatientInfo"></p>
+                        <div id="detailTherapists" style="margin-top:6px"></div>
                     </div>
                     <div style="display:flex;gap:8px;flex-wrap:wrap">
                         <button class="btn btn-primary" style="width:auto" onclick="openAddEvolutionModal()">+ Evolucao</button>
                         <button class="btn btn-secondary" style="width:auto" onclick="openAddReportModal()">+ Relatorio</button>
+                        <button class="btn btn-outline" style="width:auto" onclick="openEditPatientModalTer()">Editar Paciente</button>
                     </div>
                 </div>
                 <div class="tabs">
-                    <div class="tab active" onclick="switchDetailTab('evo')">Evolucoes</div>
+                    <div class="tab active" onclick="switchDetailTab('evo')">Minhas Evolucoes</div>
+                    <div class="tab" onclick="switchDetailTab('multi')">Evolucoes Multiprofissional</div>
                     <div class="tab" onclick="switchDetailTab('rep')">Relatorios</div>
+                    <div class="tab" onclick="switchDetailTab('obj')">Objetivos</div>
                 </div>
                 <div id="patientEvolutions" class="evolution-list"></div>
+                <div id="patientMultiEvolutions" class="evolution-list" style="display:none"></div>
                 <div id="patientReports" class="evolution-list" style="display:none"></div>
+                <div id="patientObjectives" class="evolution-list" style="display:none"></div>
             </div>
 
             <!-- DADOS ABA -->
@@ -140,7 +234,6 @@
                 </div>
 
                 <div id="abaContent" style="display:none">
-                    <!-- Alvos -->
                     <div class="card">
                         <div class="card-header">
                             <h2>Alvos / Programas</h2>
@@ -149,7 +242,6 @@
                         <div id="abaTargetsList"></div>
                     </div>
 
-                    <!-- Graficos -->
                     <div class="card" id="abaChartsCard" style="display:none">
                         <div class="card-header">
                             <h2>Graficos de Progresso</h2>
@@ -165,7 +257,6 @@
                         </div>
                     </div>
 
-                    <!-- Historico de registros -->
                     <div class="card">
                         <div class="card-header"><h2>Historico de Registros</h2></div>
                         <div id="abaSessionsList" class="evolution-list"></div>
@@ -174,6 +265,99 @@
 
                 <div id="abaEmpty">
                     <div class="empty-state"><h3>Selecione um paciente</h3><p>Escolha um paciente acima para ver e registrar dados ABA.</p></div>
+                </div>
+            </div>
+
+
+            <!-- DEVOLUTIVAS -->
+            <div class="section" id="section-devolutivas">
+                <div class="page-header"><h1>Devolutivas dos Meus Pacientes</h1></div>
+                <div class="filter-bar">
+                    <select id="devFilterPatTer" onchange="loadDevolutivasTer()">
+                        <option value="">Todos os pacientes</option>
+                    </select>
+                    <select id="devFilterStatusTer" onchange="loadDevolutivasTer()">
+                        <option value="">Todos os status</option>
+                        <option value="agendada">Agendadas</option>
+                        <option value="realizada">Realizadas</option>
+                        <option value="cancelada">Canceladas</option>
+                    </select>
+                </div>
+                <div id="devolutivasListTer" class="evolution-list"></div>
+            </div>
+
+            <!-- NOTIFICACOES -->
+            <div class="section" id="section-notificacoes">
+                <div class="page-header">
+                    <h1>Notificacoes</h1>
+                    <button class="btn btn-secondary" style="width:auto" onclick="markAllReadTer()">Marcar todas como lidas</button>
+                </div>
+                <div id="notificacoesListTer" class="evolution-list"></div>
+            </div>
+
+            <!-- === MENSAGENS INTERNAS === -->
+            <div class="section" id="section-mensagens">
+                <div class="page-header">
+                    <h1>Mensagens Internas</h1>
+                    <button class="btn btn-primary" style="width:auto" onclick="openNewMessageModalTer()">+ Nova Mensagem</button>
+                </div>
+                <div class="filter-bar">
+                    <select id="msgFilterTer" onchange="loadMessagesTer()">
+                        <option value="all">Todas</option>
+                        <option value="received">Recebidas</option>
+                        <option value="sent">Enviadas</option>
+                        <option value="unread">Nao lidas</option>
+                    </select>
+                    <button class="btn btn-secondary btn-small" style="width:auto" onclick="markAllMsgReadTer()">Marcar todas como lidas</button>
+                </div>
+                <div id="messagesListTer"></div>
+            </div>
+
+            <!-- Modal Nova Mensagem Terapeuta -->
+            <div class="modal-overlay" id="modalNewMessageTer" style="display:none">
+                <div class="modal">
+                    <div class="modal-header">
+                        <h2>Nova Mensagem</h2>
+                        <button class="modal-close" onclick="document.getElementById('modalNewMessageTer').style.display='none'">&times;</button>
+                    </div>
+                    <form id="formNewMessageTer">
+                        <div class="form-group">
+                            <label>Destinatario</label>
+                            <select id="msgToTer" required>
+                                <option value="">Selecione...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Assunto</label>
+                            <input type="text" id="msgSubjectTer" placeholder="Assunto da mensagem" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Mensagem</label>
+                            <textarea id="msgBodyTer" rows="5" placeholder="Escreva sua mensagem..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- === ENGAJAMENTO === -->
+            <div class="section" id="section-engajamento">
+                <div class="page-header">
+                    <h1>Evolucao do Engajamento</h1>
+                </div>
+                <div class="filter-bar">
+                    <select id="engajPatientTer" onchange="loadEngajChartTer()">
+                        <option value="">Selecione um paciente...</option>
+                    </select>
+                    <select id="engajPeriodTer" onchange="loadEngajChartTer()">
+                        <option value="3">Ultimos 3 meses</option>
+                        <option value="6" selected>Ultimos 6 meses</option>
+                        <option value="12">Ultimo ano</option>
+                        <option value="0">Todo o periodo</option>
+                    </select>
+                </div>
+                <div class="card" id="engajChartCardTer">
+                    <p class="empty-state">Selecione um paciente para ver o grafico de engajamento.</p>
                 </div>
             </div>
 
@@ -186,6 +370,14 @@
                         <h2 id="profileName"></h2>
                         <p id="profileSpecialty"></p>
                     </div>
+                    <form id="formProfileContact" style="margin-bottom:20px">
+                        <div class="form-row">
+                            <div class="form-group"><label>Email</label><input type="email" id="profileEmail" placeholder="seu@email.com"></div>
+                            <div class="form-group"><label>Celular</label><input type="tel" id="profilePhone" placeholder="(00) 00000-0000"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width:auto;margin-top:8px">Salvar Contato</button>
+                    </form>
+                    <hr style="border:none;border-top:1px solid var(--border);margin:20px 0">
                     <form id="formPassword">
                         <div class="form-group">
                             <label>Senha atual</label>
@@ -202,7 +394,31 @@
                         <button type="submit" class="btn btn-primary">Alterar Senha</button>
                     </form>
                 </div>
+
+                <!-- Meus Documentos -->
+                <div class="card" style="margin-top:20px;max-width:600px">
+                    <div class="card-header">
+                        <h2>Meus Documentos</h2>
+                        <button class="btn btn-primary btn-small" style="width:auto" onclick="openUploadDocModal()">+ Upload</button>
+                    </div>
+                    <div id="myDocumentsList"></div>
+                </div>
             </div>
+
+            <!-- === BUSCA === -->
+            <div class="section" id="section-busca">
+                <div class="page-header">
+                    <h1>Busca</h1>
+                </div>
+                <div class="global-search-bar">
+                    <svg class="search-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" id="globalSearchInputTer" placeholder="Buscar nos meus pacientes, evolucoes, relatorios, objetivos..." oninput="debounceSearchTer()">
+                </div>
+                <div id="globalSearchResultsTer">
+                    <p class="empty-state">Digite pelo menos 3 caracteres para buscar.</p>
+                </div>
+            </div>
+
         </main>
     </div>
 
@@ -233,7 +449,14 @@
             <form id="formEvolution">
                 <input type="hidden" id="editEvoId">
                 <div class="form-group"><label>Paciente</label><select id="evoPatient" required></select></div>
-                <div class="form-group"><label>Data da sessao</label><input type="date" id="evoDate" required></div>
+                <div class="form-group"><label>Data da sessao</label><input type="date" id="evoDate" required onchange="checkEvoAtrasada()"></div>
+                <div id="evoAtrasadaAlert" style="display:none;background:#FFF3E0;border-left:4px solid #FF9800;padding:10px 14px;border-radius:6px;margin-bottom:12px;font-size:0.85rem;color:#E65100">
+                    <strong>Evolucao atrasada</strong> - A data selecionada e anterior a hoje. Informe o motivo do atraso.
+                </div>
+                <div class="form-group" id="evoJustificativaGroup" style="display:none">
+                    <label>Justificativa do atraso</label>
+                    <input type="text" id="evoJustificativa" placeholder="Ex: Falta de tempo, problema tecnico...">
+                </div>
                 <div class="form-group">
                     <label>Tipo de atendimento</label>
                     <select id="evoType">
@@ -244,6 +467,50 @@
                         <option value="escolar">Escolar</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label>Abordagem utilizada</label>
+                    <select id="evoAbordagem">
+                        <option value="">-- Selecionar --</option>
+                        <option value="ABA">ABA (Analise do Comportamento Aplicada)</option>
+                        <option value="TCC">TCC (Terapia Cognitivo-Comportamental)</option>
+                        <option value="integracao_sensorial">Integracao Sensorial</option>
+                        <option value="TEACCH">TEACCH</option>
+                        <option value="PECS">PECS (Sistema de Comunicacao por Troca de Figuras)</option>
+                        <option value="Denver">Modelo Denver (ESDM)</option>
+                        <option value="neuropsico">Avaliacao Neuropsicologica</option>
+                        <option value="psicopedagogia">Psicopedagogia</option>
+                        <option value="fonoaudiologia">Fonoaudiologia</option>
+                        <option value="TO">Terapia Ocupacional</option>
+                        <option value="ludoterapia">Ludoterapia</option>
+                        <option value="outra">Outra</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Comportamento do paciente na sessao</label>
+                    <select id="evoComportamento">
+                        <option value="">-- Selecionar --</option>
+                        <option value="colaborativo">Colaborativo / Engajado</option>
+                        <option value="resistente">Resistente inicialmente, cedeu</option>
+                        <option value="agitado">Agitado / Hiperativo</option>
+                        <option value="apatico">Apatico / Pouco responsivo</option>
+                        <option value="ansioso">Ansioso / Inseguro</option>
+                        <option value="agressivo">Comportamento agressivo / opositor</option>
+                        <option value="choroso">Choroso / Emocionalmente desregulado</option>
+                        <option value="variavel">Variavel ao longo da sessao</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Nivel de engajamento (1 a 5)</label>
+                    <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
+                        <input type="range" id="evoEngajamento" min="1" max="5" value="3" style="flex:1" oninput="document.getElementById('evoEngajamentoLabel').textContent=this.value">
+                        <span id="evoEngajamentoLabel" style="font-weight:600;min-width:20px;text-align:center">3</span>
+                        <span style="font-size:0.75rem;color:var(--text-light)">(1=baixo, 5=alto)</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Reforçadores utilizados</label>
+                    <input type="text" id="evoReforcadores" placeholder="Ex: elogio social, tablet, adesivos, intervalo...">
+                </div>
                 <div class="form-group"><label>Objetivos trabalhados</label><input type="text" id="evoObjectives" placeholder="Ex: Comunicacao, Interacao social..."></div>
                 <div class="form-group"><label>Descricao da evolucao</label><textarea id="evoDescription" required placeholder="Descreva o que foi trabalhado, como o paciente respondeu, progressos observados..."></textarea></div>
                 <div class="form-group"><label>Intercorrencias</label><textarea id="evoIncidents" rows="2" placeholder="Alguma intercorrencia?"></textarea></div>
@@ -253,6 +520,13 @@
                         <option value="presente">Presente</option>
                         <option value="faltou">Faltou</option>
                         <option value="faltou_justificado">Faltou (justificado)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Visibilidade</label>
+                    <select id="evoScope">
+                        <option value="individual">Individual (somente eu vejo)</option>
+                        <option value="multiprofissional">Multiprofissional (todos os terapeutas do caso veem)</option>
                     </select>
                 </div>
                 <div class="modal-actions">
@@ -271,6 +545,11 @@
                 <input type="hidden" id="editRepId">
                 <div class="form-group"><label>Paciente</label><select id="repPatient" required></select></div>
                 <div class="form-group">
+                    <label>Terapeutas co-autores (opcional)</label>
+                    <select id="repCoAuthors" multiple style="min-height:80px"></select>
+                    <span style="font-size:0.75rem;color:var(--text-light)">Segure Ctrl para selecionar outros terapeutas que participaram</span>
+                </div>
+                <div class="form-group">
                     <label>Tipo de relatorio</label>
                     <select id="repType" required>
                         <option value="mensal">Relatorio Mensal</option>
@@ -283,9 +562,87 @@
                     </select>
                 </div>
                 <div class="form-group"><label>Periodo de referencia</label><input type="text" id="repPeriod" placeholder="Ex: Janeiro/2026 a Marco/2026"></div>
-                <div class="form-group"><label>Conteudo do relatorio</label><textarea id="repContent" required style="min-height:200px" placeholder="Escreva o relatorio completo..."></textarea></div>
+                <div class="form-group">
+                    <label>Conteudo do relatorio</label>
+                    <button type="button" class="btn btn-secondary btn-small" style="width:auto;margin-bottom:8px;font-size:0.75rem" onclick="applyTemplateTer()">Usar Template</button>
+                    <textarea id="repContent" required style="min-height:200px" placeholder="Escreva o relatorio completo ou clique em 'Usar Template' para carregar um modelo..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Anexar arquivo (opcional)</label>
+                    <input type="file" id="repFile" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx">
+                    <span style="font-size:0.75rem;color:var(--text-light)">PDF, imagem ou documento (max 5MB)</span>
+                    <div id="repFileInfo" style="display:none;margin-top:6px;font-size:0.85rem;color:var(--primary)"></div>
+                </div>
                 <div class="modal-actions">
                     <button type="button" class="btn btn-secondary" onclick="closeModal('modalReport')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="width:auto">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Novo Objetivo Terapeutico -->
+    <div class="modal-overlay" id="modalObjective">
+        <div class="modal">
+            <h2 id="modalObjTitle">Novo Objetivo Terapeutico</h2>
+            <form id="formObjective">
+                <input type="hidden" id="editObjId">
+                <div class="form-group"><label>Paciente</label><select id="objPatient" required></select></div>
+                <div class="form-group">
+                    <label>Tipo</label>
+                    <select id="objType">
+                        <option value="individual">Individual (minha especialidade)</option>
+                        <option value="multiprofissional">Multiprofissional (visivel para todos)</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Titulo do objetivo</label><input type="text" id="objTitle" required placeholder="Ex: Desenvolver comunicacao funcional"></div>
+                <div class="form-group"><label>Descricao</label><textarea id="objDescription" required rows="3" placeholder="Descreva o objetivo, estrategias e metas..."></textarea></div>
+                <div class="form-group"><label>Data alvo</label><input type="date" id="objTargetDate"></div>
+                <div class="form-group">
+                    <label>Dominio / Area do desenvolvimento</label>
+                    <select id="objDomain">
+                        <option value="">-- Selecionar --</option>
+                        <option value="comunicacao">Comunicacao e Linguagem</option>
+                        <option value="social">Interacao Social</option>
+                        <option value="comportamento">Comportamento Adaptativo</option>
+                        <option value="cognitivo">Cognitivo / Academico</option>
+                        <option value="motor">Motor (fino/grosso)</option>
+                        <option value="autonomia">Autonomia / AVDs</option>
+                        <option value="sensorial">Processamento Sensorial</option>
+                        <option value="emocional">Regulacao Emocional</option>
+                        <option value="brincar">Brincar Funcional/Simbolico</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Criterio de maestria</label>
+                    <input type="text" id="objMaestriaCriteria" placeholder="Ex: 80% de acerto em 3 sessoes consecutivas">
+                </div>
+                <div class="form-group">
+                    <label>Estrategia / Procedimento</label>
+                    <select id="objEstrategia">
+                        <option value="">-- Selecionar --</option>
+                        <option value="DTT">DTT (Ensino por Tentativas Discretas)</option>
+                        <option value="NET">NET (Ensino em Ambiente Natural)</option>
+                        <option value="modelagem">Modelagem</option>
+                        <option value="encadeamento">Encadeamento (chaining)</option>
+                        <option value="esvanecimento">Esvanecimento de dica (fading)</option>
+                        <option value="reforco_diferencial">Reforco Diferencial (DRA/DRO/DRI)</option>
+                        <option value="video_modelagem">Video Modelagem</option>
+                        <option value="historias_sociais">Historias Sociais</option>
+                        <option value="reestruturacao_cognitiva">Reestruturacao Cognitiva (TCC)</option>
+                        <option value="dessensibilizacao">Dessensibilizacao Sistematica</option>
+                        <option value="economia_fichas">Economia de Fichas (token economy)</option>
+                        <option value="treino_habilidades">Treino de Habilidades Sociais</option>
+                        <option value="outra">Outra</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Linha de base (baseline)</label>
+                    <input type="text" id="objBaseline" placeholder="Ex: 20% de acerto, 0 ocorrencias, nao inicia sem ajuda...">
+                </div>
+                <div class="form-group"><label>Notas</label><textarea id="objNotes" rows="2" placeholder="Observacoes adicionais..."></textarea></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalObjective')">Cancelar</button>
                     <button type="submit" class="btn btn-primary" style="width:auto">Salvar</button>
                 </div>
             </form>
@@ -330,6 +687,25 @@
                     <input type="text" id="targetCriteria" placeholder="Ex: 80% de acerto em 3 sessoes consecutivas">
                 </div>
                 <div class="form-group">
+                    <label>Hierarquia de dica planejada</label>
+                    <select id="targetPromptHierarchy">
+                        <option value="mtl">Mais-para-Menos (Most-to-Least)</option>
+                        <option value="ltm">Menos-para-Mais (Least-to-Most)</option>
+                        <option value="graduated">Graduada</option>
+                        <option value="time_delay">Atraso temporal (Time Delay)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Esquema de reforco</label>
+                    <select id="targetReinforcementSchedule">
+                        <option value="CRF">CRF (Reforco continuo)</option>
+                        <option value="FR">FR (Razao fixa)</option>
+                        <option value="VR">VR (Razao variavel)</option>
+                        <option value="FI">FI (Intervalo fixo)</option>
+                        <option value="VI">VI (Intervalo variavel)</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label>Descricao / Procedimento</label>
                     <textarea id="targetDescription" rows="3" placeholder="Descreva o procedimento, dica, consequencia..."></textarea>
                 </div>
@@ -372,6 +748,25 @@
                         <option value="fisica_total">Fisica Total</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label>Comportamentos problematicos na sessao</label>
+                    <select id="sessionProblemBehavior">
+                        <option value="nenhum">Nenhum</option>
+                        <option value="leve">Leve (recusa breve, choro breve)</option>
+                        <option value="moderado">Moderado (fuga, esquiva, choro prolongado)</option>
+                        <option value="intenso">Intenso (agressao, autolesao, crise)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Generalizacao</label>
+                    <select id="sessionGeneralization">
+                        <option value="">-- Selecionar --</option>
+                        <option value="nao_testada">Nao testada</option>
+                        <option value="generalizado">Generalizado (responde com outras pessoas/ambientes)</option>
+                        <option value="parcial">Parcial (responde em alguns contextos)</option>
+                        <option value="nao_generalizado">Nao generalizado (apenas em sessao)</option>
+                    </select>
+                </div>
                 <div class="form-group"><label>Observacao</label><textarea id="sessionNotes" rows="2" placeholder="Notas sobre a sessao..."></textarea></div>
                 <div class="modal-actions">
                     <button type="button" class="btn btn-secondary" onclick="closeModal('modalAbaSession')">Cancelar</button>
@@ -381,7 +776,61 @@
         </div>
     </div>
 
+    <!-- Modal: Upload Documento -->
+    <div class="modal-overlay" id="modalDocument">
+        <div class="modal">
+            <h2>Upload de Documento</h2>
+            <form id="formDocument">
+                <div class="form-group">
+                    <label>Tipo de documento</label>
+                    <select id="docType" required>
+                        <option value="crp">CRP / Registro Profissional</option>
+                        <option value="certificado">Certificado</option>
+                        <option value="diploma">Diploma</option>
+                        <option value="contrato">Contrato</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Titulo</label>
+                    <input type="text" id="docTitle" required placeholder="Ex: CRP 2025, Certificado ABA...">
+                </div>
+                <div class="form-group">
+                    <label>Arquivo (PDF ou imagem)</label>
+                    <input type="file" id="docFile" accept=".pdf,.jpg,.jpeg,.png" required style="padding:10px">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalDocument')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="width:auto">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="toast" id="toast"></div>
+
+    <!-- Modal: Editar Paciente -->
+    <div class="modal-overlay" id="modalEditPatientTer">
+        <div class="modal">
+            <h2>Editar Paciente</h2>
+            <form id="formEditPatientTer">
+                <input type="hidden" id="editPatIdTer">
+                <div class="form-group"><label>Nome completo</label><input type="text" id="editPatNameTer" required></div>
+                <div class="form-group"><label>Data de nascimento</label><input type="date" id="editPatBirthTer"></div>
+                <div class="form-group"><label>Responsavel</label><input type="text" id="editPatGuardianTer"></div>
+                <div class="form-group"><label>Telefone</label><input type="tel" id="editPatPhoneTer"></div>
+                <div class="form-group"><label>Diagnostico / CID</label><input type="text" id="editPatDiagnosisTer" placeholder="Ex: TEA, TDAH, F84.0..."></div>
+                <div class="form-group"><label>Convenio</label><input type="text" id="editPatInsuranceTer"></div>
+                <div class="form-group"><label>Turma / Serie</label><input type="text" id="editPatSerieTer" placeholder="Ex: Infantil 3, 1o ano..."></div>
+                <div class="form-group"><label>Turno</label><select id="editPatTurnoTer"><option value="">--</option><option value="Manhã">Manha</option><option value="Tarde">Tarde</option><option value="Integral">Integral</option></select></div>
+                <div class="form-group"><label>Observacoes</label><textarea id="editPatNotesTer" rows="3"></textarea></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalEditPatientTer')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="width:auto">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -389,8 +838,8 @@
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    <script src="firebase-config.js"></script>
-    <script src="data.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/data.js?v=20260313a"></script>
     <script>
         const currentUser = DB.getCurrentUser();
         if (!currentUser || currentUser.role !== 'terapeuta') window.location.href = 'login.html';
@@ -400,16 +849,24 @@
         DB.init().then(() => {
             document.getElementById('loadingScreen').style.display = 'none';
             startApp();
+        }).catch(err => {
+            console.error('Erro DB.init:', err);
+            document.getElementById('loadingScreen').innerHTML = '<div style="text-align:center;padding:40px;color:#e74c3c"><h2>Erro ao carregar</h2><p>' + (err.message || err) + '</p><button onclick="location.reload()" style="padding:10px 20px;margin-top:20px;cursor:pointer">Tentar novamente</button></div>';
         });
 
         function startApp() {
             document.getElementById('sidebarUserName').textContent = currentUser.name;
             document.getElementById('sidebarSpecialty').textContent = currentUser.specialty;
             document.getElementById('welcomeName').textContent = currentUser.name.split(' ')[0];
+            document.getElementById('agendaDate').value = new Date().toISOString().split('T')[0];
             loadDashboard();
             loadPatientFilters();
             loadAbaPatientFilter();
             loadProfile();
+            loadTodosTer();
+            loadObjPatientFilter();
+            updateNotifBadgeTer();
+            updateMsgBadgeTer();
         }
 
         // ======= NAVIGATION =======
@@ -424,6 +881,12 @@
             if (name === 'evolutions') loadEvolutionsList();
             if (name === 'reports') loadReportsList();
             if (name === 'dashboard') loadDashboard();
+            if (name === 'agenda') loadAgenda();
+            if (name === 'objectives') loadObjectives();
+            if (name === 'devolutivas') { loadDevPatFilterTer(); loadDevolutivasTer(); }
+            if (name === 'notificacoes') loadNotificacoesTer();
+            if (name === 'mensagens') { loadMessagesTer(); updateMsgBadgeTer(); }
+            if (name === 'engajamento') { initEngajFiltersTer(); }
         }
 
         // ======= DASHBOARD =======
@@ -435,6 +898,19 @@
                 <div class="stat-card"><div class="stat-icon coral">&#128202;</div><div class="stat-info"><h3>${stats.totalReports}</h3><p>Relatorios</p></div></div>
                 <div class="stat-card"><div class="stat-icon blue">&#128197;</div><div class="stat-info"><h3>${stats.evolutionsThisMonth}</h3><p>Evolucoes este mes</p></div></div>
             `;
+            // Proximos atendimentos
+            const today = new Date().toISOString().split('T')[0];
+            const upcoming = DB.getAgendaByTherapist(currentUser.id).filter(a => a.date >= today).slice(0, 5);
+            if (upcoming.length === 0) {
+                document.getElementById('dashAgenda').innerHTML = '<div class="empty-state"><p>Nenhum atendimento agendado.</p></div>';
+            } else {
+                document.getElementById('dashAgenda').innerHTML = upcoming.map(a => {
+                    const p = DB.getPatientById(a.patientId);
+                    const statusClass = a.status === 'realizado' ? 'badge-green' : a.status === 'cancelado' ? 'badge-coral' : 'badge-yellow';
+                    return `<div class="evolution-item" style="padding:14px"><div class="evo-header"><strong>${p ? p.name : '?'}</strong><span class="evo-date">${formatDate(a.date)} ${a.startTime || ''} - ${a.endTime || ''}</span></div><div style="display:flex;gap:8px;align-items:center"><span class="badge ${statusClass}">${a.status || 'agendado'}</span>${a.shift ? `<span style="font-size:0.8rem;color:var(--text-light)">${a.shift}</span>` : ''}</div></div>`;
+                }).join('');
+            }
+            // Ultimas evolucoes
             const evos = DB.getEvolutionsByTherapist(currentUser.id).slice(0, 5);
             if (evos.length === 0) {
                 document.getElementById('recentEvolutions').innerHTML = '<div class="empty-state"><h3>Nenhuma evolucao ainda</h3><p>Adicione pacientes e registre suas evolucoes.</p></div>';
@@ -444,6 +920,246 @@
                     return `<div class="evolution-item"><div class="evo-header"><strong>${patient ? patient.name : '?'}</strong><span class="evo-date">${formatDate(e.date)}</span></div><div class="evo-content">${truncate(e.description, 150)}</div></div>`;
                 }).join('');
             }
+            loadSessaoCountTer();
+            loadReavAlertsTer();
+        }
+
+        function loadSessaoCountTer() {
+            const mesInput = document.getElementById('sessaoMesTer');
+            if (!mesInput.value) {
+                const now = new Date();
+                mesInput.value = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+            }
+            const mes = mesInput.value;
+            const terId = currentUser.id;
+
+            const agenda = DB.getAgenda();
+            const attendance = DB.getAttendance ? DB.getAttendance() : (DB._cache.attendance || []);
+            const patients = DB.getPatients();
+
+            const agendaMes = agenda.filter(a => a.date && a.date.startsWith(mes) && a.therapistId === terId);
+
+            const stats = {};
+            patients.forEach(p => {
+                const patAgenda = agendaMes.filter(a => a.patientId === p.id);
+                if (patAgenda.length === 0) return;
+
+                const agendadas = patAgenda.length;
+                const patAttendance = attendance.filter(at => at.patientId === p.id && at.date && at.date.startsWith(mes) && at.therapistId === terId);
+                const realizadas = patAttendance.filter(at => at.status === 'presente' || at.status === 'realizada').length;
+                const faltas = patAttendance.filter(at => at.status === 'falta' || at.status === 'ausente').length;
+
+                if (agendadas > 0 || realizadas > 0) {
+                    stats[p.id] = { name: p.name, agendadas, realizadas, faltas, taxa: agendadas > 0 ? Math.round((realizadas / agendadas) * 100) : 0 };
+                }
+            });
+
+            const container = document.getElementById('sessaoCountTer');
+            const entries = Object.values(stats);
+            if (!entries.length) {
+                container.innerHTML = '<p class="empty-state">Nenhuma sessao encontrada para este periodo.</p>';
+                return;
+            }
+
+            const totalAgd = entries.reduce((s, e) => s + e.agendadas, 0);
+            const totalReal = entries.reduce((s, e) => s + e.realizadas, 0);
+            const totalFalta = entries.reduce((s, e) => s + e.faltas, 0);
+            const taxaGeral = totalAgd > 0 ? Math.round((totalReal / totalAgd) * 100) : 0;
+
+            let html = '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;padding:12px;background:var(--background);border-radius:10px">';
+            html += '<div style="text-align:center"><div style="font-size:1.4rem;font-weight:700;color:var(--primary)">' + totalAgd + '</div><div style="font-size:0.75rem;color:var(--text-light)">Agendadas</div></div>';
+            html += '<div style="text-align:center"><div style="font-size:1.4rem;font-weight:700;color:var(--success)">' + totalReal + '</div><div style="font-size:0.75rem;color:var(--text-light)">Realizadas</div></div>';
+            html += '<div style="text-align:center"><div style="font-size:1.4rem;font-weight:700;color:var(--danger)">' + totalFalta + '</div><div style="font-size:0.75rem;color:var(--text-light)">Faltas</div></div>';
+            html += '<div style="text-align:center"><div style="font-size:1.4rem;font-weight:700;color:' + (taxaGeral >= 75 ? 'var(--success)' : taxaGeral >= 50 ? '#FF9800' : 'var(--danger)') + '">' + taxaGeral + '%</div><div style="font-size:0.75rem;color:var(--text-light)">Taxa Presenca</div></div>';
+            html += '</div>';
+
+            html += '<div class="table-responsive"><table class="data-table"><thead><tr><th>Paciente</th><th style="text-align:center">Agendadas</th><th style="text-align:center">Realizadas</th><th style="text-align:center">Faltas</th><th style="text-align:center">Taxa</th><th style="text-align:center">Progresso</th></tr></thead><tbody>';
+            entries.sort((a, b) => b.taxa - a.taxa);
+            entries.forEach(e => {
+                const barColor = e.taxa >= 75 ? 'var(--success)' : e.taxa >= 50 ? '#FF9800' : 'var(--danger)';
+                html += '<tr><td>' + e.name + '</td><td style="text-align:center">' + e.agendadas + '</td><td style="text-align:center;color:var(--success)">' + e.realizadas + '</td><td style="text-align:center;color:var(--danger)">' + e.faltas + '</td><td style="text-align:center;font-weight:600;color:' + barColor + '">' + e.taxa + '%</td>';
+                html += '<td style="text-align:center"><div style="background:var(--border);border-radius:4px;height:8px;width:100%;overflow:hidden"><div style="height:100%;width:' + e.taxa + '%;background:' + barColor + ';border-radius:4px;transition:width 0.5s"></div></div></td></tr>';
+            });
+            html += '</tbody></table></div>';
+
+            container.innerHTML = html;
+        }
+
+        // ======= AGENDA =======
+        function loadAgenda() {
+            const dateStr = document.getElementById('agendaDate').value;
+            const view = document.getElementById('agendaView').value;
+            const container = document.getElementById('agendaContent');
+
+            if (view === 'mes') {
+                renderCalendarMonthTer(dateStr, container);
+                return;
+            }
+
+            let slots;
+            if (view === 'semana') {
+                const d = new Date(dateStr + 'T00:00:00');
+                const day = d.getDay();
+                const monday = new Date(d);
+                monday.setDate(d.getDate() - (day === 0 ? 6 : day - 1));
+                const sunday = new Date(monday);
+                sunday.setDate(monday.getDate() + 6);
+                slots = DB.getAgendaByTherapist(currentUser.id).filter(a =>
+                    a.date >= monday.toISOString().split('T')[0] && a.date <= sunday.toISOString().split('T')[0]
+                );
+            } else {
+                slots = DB.getAgendaByTherapist(currentUser.id).filter(a => a.date === dateStr);
+            }
+
+            if (slots.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>Nenhum atendimento</h3><p>Nao ha atendimentos agendados para este periodo.</p></div>';
+                return;
+            }
+
+            // Agrupar por data
+            const byDate = {};
+            slots.forEach(s => {
+                if (!byDate[s.date]) byDate[s.date] = [];
+                byDate[s.date].push(s);
+            });
+
+            container.innerHTML = Object.entries(byDate).sort((a,b) => a[0].localeCompare(b[0])).map(([date, daySlots]) => {
+                const dayName = new Date(date + 'T00:00:00').toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+                return `<div class="card"><div class="card-header"><h2>${dayName}</h2></div>
+                    ${daySlots.sort((a,b) => (a.startTime||'').localeCompare(b.startTime||'')).map(s => {
+                        const p = DB.getPatientById(s.patientId);
+                        const statusClass = s.status === 'realizado' ? 'badge-green' : s.status === 'cancelado' ? 'badge-coral' : s.status === 'confirmado' ? 'badge-green' : 'badge-yellow';
+                        return `<div class="evolution-item" style="padding:14px;margin-bottom:8px">
+                            <div class="evo-header">
+                                <strong>${p ? p.name : '?'}</strong>
+                                <span class="evo-date">${s.startTime || ''} - ${s.endTime || ''}</span>
+                            </div>
+                            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                                <span class="badge ${statusClass}">${s.status || 'agendado'}</span>
+                                ${s.shift ? `<span style="font-size:0.8rem;color:var(--text-light)">Turno: ${s.shift}</span>` : ''}
+                                ${s.notes ? `<span style="font-size:0.8rem;color:var(--text-light)">${s.notes}</span>` : ''}
+                            </div>
+                            ${s.status !== 'realizado' && s.status !== 'cancelado' ? `<div class="evo-actions"><button class="btn btn-success btn-small" onclick="markAttendance('${s.id}','presente')">Presente</button><button class="btn btn-danger btn-small" onclick="markAttendance('${s.id}','falta')">Faltou</button></div>` : ''}
+                        </div>`;
+                    }).join('')}
+                </div>`;
+            }).join('');
+        }
+
+        function renderCalendarMonthTer(dateStr, container) {
+            const baseDate = new Date(dateStr + 'T00:00:00');
+            const year = baseDate.getFullYear();
+            const month = baseDate.getMonth();
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startWeekday = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
+
+            const startStr = firstDay.toISOString().split('T')[0];
+            const endStr = lastDay.toISOString().split('T')[0];
+            let slots = DB.getAgendaByDateRange(startStr, endStr).filter(s => s.therapistId === currentUser.id);
+
+            const slotsByDay = {};
+            slots.forEach(s => {
+                const dayNum = parseInt(s.date.split('-')[2]);
+                if (!slotsByDay[dayNum]) slotsByDay[dayNum] = [];
+                slotsByDay[dayNum].push(s);
+            });
+
+            const monthNames = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+            const today = new Date();
+            const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
+            const todayDate = today.getDate();
+
+            let html = `<div class="card">
+                <div class="card-header" style="display:flex;align-items:center;justify-content:space-between">
+                    <button class="btn btn-secondary btn-small" style="width:auto" onclick="changeCalendarMonthTer(-1)">&#8592; Anterior</button>
+                    <h2 style="margin:0">${monthNames[month]} ${year}</h2>
+                    <button class="btn btn-secondary btn-small" style="width:auto" onclick="changeCalendarMonthTer(1)">Próximo &#8594;</button>
+                </div>
+                <div style="overflow-x:auto">
+                <table style="width:100%;border-collapse:collapse;table-layout:fixed;min-width:700px">
+                    <thead>
+                        <tr>
+                            <th style="padding:10px;text-align:center;background:var(--primary);color:#fff;font-size:0.85rem;font-weight:600">Seg</th>
+                            <th style="padding:10px;text-align:center;background:var(--primary);color:#fff;font-size:0.85rem;font-weight:600">Ter</th>
+                            <th style="padding:10px;text-align:center;background:var(--primary);color:#fff;font-size:0.85rem;font-weight:600">Qua</th>
+                            <th style="padding:10px;text-align:center;background:var(--primary);color:#fff;font-size:0.85rem;font-weight:600">Qui</th>
+                            <th style="padding:10px;text-align:center;background:var(--primary);color:#fff;font-size:0.85rem;font-weight:600">Sex</th>
+                            <th style="padding:10px;text-align:center;background:#e0e0e0;color:#666;font-size:0.85rem;font-weight:600">Sáb</th>
+                            <th style="padding:10px;text-align:center;background:#e0e0e0;color:#666;font-size:0.85rem;font-weight:600">Dom</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+            let dayCounter = 1;
+            for (let row = 0; row < 6; row++) {
+                if (dayCounter > daysInMonth) break;
+                html += '<tr>';
+                for (let col = 0; col < 7; col++) {
+                    if (row === 0 && col < startWeekday) {
+                        html += '<td style="padding:4px;border:1px solid var(--border);background:#fafafa;vertical-align:top;height:100px"></td>';
+                    } else if (dayCounter > daysInMonth) {
+                        html += '<td style="padding:4px;border:1px solid var(--border);background:#fafafa;vertical-align:top;height:100px"></td>';
+                    } else {
+                        const isToday = isCurrentMonth && dayCounter === todayDate;
+                        const isWeekend = col >= 5;
+                        const daySlots = slotsByDay[dayCounter] || [];
+                        daySlots.sort((a, b) => (a.startTime || '').localeCompare(b.startTime || ''));
+
+                        html += `<td style="padding:4px;border:1px solid var(--border);vertical-align:top;height:100px;${isToday ? 'background:#E8F5E9;' : isWeekend ? 'background:#fafafa;' : ''}">
+                            <div style="font-weight:${isToday ? '700' : '600'};font-size:0.85rem;color:${isToday ? 'var(--primary)' : '#333'};margin-bottom:4px;${isToday ? 'background:var(--primary);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;' : ''}">${dayCounter}</div>
+                            <div style="overflow-y:auto;max-height:72px">`;
+
+                        daySlots.forEach(s => {
+                            const p = DB.getPatientById(s.patientId);
+                            const statusDot = s.status === 'realizado' ? '🟢' : s.status === 'cancelado' ? '🔴' : '🟡';
+                            html += `<div style="font-size:0.7rem;padding:2px 4px;margin-bottom:2px;border-radius:4px;background:#E3F2FD;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${p ? p.name : '?'} (${s.startTime || ''}-${s.endTime || ''}) [${s.status || 'agendado'}]">
+                                ${statusDot} ${s.startTime || ''} ${p ? p.name.split(' ')[0] : '?'}
+                            </div>`;
+                        });
+
+                        html += '</div></td>';
+                        dayCounter++;
+                    }
+                }
+                html += '</tr>';
+            }
+
+            html += '</tbody></table></div></div>';
+
+            html += `<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;padding:12px;background:#fff;border-radius:10px;border:1px solid var(--border)">
+                <span style="font-size:0.8rem;font-weight:600;color:var(--text-medium)">Legenda:</span>
+                <span style="font-size:0.75rem">🟡 Agendado</span>
+                <span style="font-size:0.75rem">🟢 Realizado</span>
+                <span style="font-size:0.75rem">🔴 Cancelado</span>
+            </div>`;
+
+            container.innerHTML = html;
+        }
+
+        function changeCalendarMonthTer(offset) {
+            const dateEl = document.getElementById('agendaDate');
+            const d = new Date(dateEl.value + 'T00:00:00');
+            d.setMonth(d.getMonth() + offset);
+            dateEl.value = d.toISOString().split('T')[0];
+            document.getElementById('agendaView').value = 'mes';
+            loadAgenda();
+        }
+
+        async function markAttendance(slotId, status) {
+            const slot = DB.getAgenda().find(a => a.id === slotId);
+            if (!slot) return;
+            await DB.updateAgendaSlot(slotId, { status: 'realizado' });
+            await DB.addAttendance({
+                patientId: slot.patientId,
+                therapistId: currentUser.id,
+                agendaSlotId: slotId,
+                date: slot.date,
+                status: status
+            });
+            loadAgenda();
+            showToast('Presenca registrada!');
         }
 
         // ======= PACIENTES =======
@@ -455,7 +1171,8 @@
             }
             document.getElementById('patientList').innerHTML = patients.map(p => {
                 const evoCount = DB.getEvolutionsByPatient(p.id).length;
-                return `<div class="patient-card" onclick="openPatientDetail('${p.id}')"><h3>${p.name}</h3><div class="patient-info"><span>Nasc: ${formatDate(p.birthDate)}</span>${p.diagnosis ? `<span>Diag: ${p.diagnosis}</span>` : ''}${p.guardian ? `<span>Resp: ${p.guardian}</span>` : ''}${p.insurance ? `<span>Plano: ${p.insurance}</span>` : ''}</div><span class="evo-count">${evoCount} evolucao(oes)</span></div>`;
+                const therapistNames = (p.therapistIds || []).map(tid => { const t = DB.getUserById(tid); return t ? t.name.split(' ')[0] : ''; }).filter(Boolean).join(', ');
+                return `<div class="patient-card" onclick="openPatientDetail('${p.id}')"><h3>${p.name}</h3><div class="patient-info">${p.diagnosis ? `<span>Diag: ${p.diagnosis}</span>` : ''}${therapistNames ? `<span>Terapeutas: ${therapistNames}</span>` : ''}</div><span class="evo-count">${evoCount} evolucao(oes)</span></div>`;
             }).join('');
         }
 
@@ -464,14 +1181,20 @@
             const patient = DB.getPatientById(patientId);
             if (!patient) return;
             document.getElementById('detailPatientName').textContent = patient.name;
-            document.getElementById('detailPatientInfo').textContent = `${patient.diagnosis || ''} | Nasc: ${formatDate(patient.birthDate)} | Resp: ${patient.guardian || '-'}${patient.phone ? ' | Tel: ' + patient.phone : ''}`;
+            document.getElementById('detailPatientInfo').innerHTML = `${patient.diagnosis ? '<strong>Diagnostico:</strong> ' + patient.diagnosis + ' | ' : ''}Resp: ${patient.guardian || '-'}${patient.phone ? ' | Tel: ' + patient.phone : ''}`;
+            // Mostrar terapeutas
+            const therapists = (patient.therapistIds || []).map(tid => DB.getUserById(tid)).filter(Boolean);
+            document.getElementById('detailTherapists').innerHTML = therapists.map(t =>
+                `<span class="badge badge-green" style="margin-right:4px">${t.name} (${t.specialty})</span>`
+            ).join('');
             showSection('patient-detail');
             loadPatientEvolutions();
             loadPatientReports();
+            loadPatientObjectives();
         }
 
         function loadPatientEvolutions() {
-            const evos = DB.getEvolutionsByPatient(currentPatientId).filter(e => e.therapistId === currentUser.id);
+            const evos = DB.getEvolutionsByPatientAndScope(currentPatientId, 'individual', currentUser.id);
             const container = document.getElementById('patientEvolutions');
             if (evos.length === 0) {
                 container.innerHTML = '<div class="empty-state"><h3>Nenhuma evolucao registrada</h3><p>Clique em "+ Evolucao" para adicionar.</p></div>';
@@ -479,7 +1202,7 @@
             }
             container.innerHTML = evos.map(e => {
                 const presenceLabel = e.presence === 'faltou' ? '<span class="badge badge-coral">Faltou</span>' : e.presence === 'faltou_justificado' ? '<span class="badge badge-yellow">Falta justificada</span>' : '';
-                return `<div class="evolution-item"><div class="evo-header"><div><strong>${e.objectives || 'Sem objetivo especificado'}</strong> ${presenceLabel} ${e.incidents ? '<span class="badge badge-yellow">Intercorrencia</span>' : ''}</div><span class="evo-date">${formatDate(e.date)}</span></div><div class="evo-content">${e.description}</div>${e.incidents ? `<div class="evo-content" style="margin-top:8px;color:var(--danger)"><strong>Intercorrencias:</strong> ${e.incidents}</div>` : ''}<div class="evo-actions"><button class="btn btn-edit btn-small" onclick="editEvolution('${e.id}')">Editar</button><button class="btn btn-danger btn-small" onclick="deleteEvolution('${e.id}')">Excluir</button></div></div>`;
+                return `<div class="evolution-item"><div class="evo-header"><div><strong>${e.objectives || 'Sem objetivo especificado'}</strong> ${presenceLabel} ${e.incidents ? '<span class="badge badge-yellow">Intercorrencia</span>' : ''}</div><span class="evo-date">${formatDate(e.date)}</span></div><div class="evo-content">${e.description}</div>${e.abordagem ? `<div style="font-size:0.8rem;color:var(--text-light);margin-top:4px"><strong>Abordagem:</strong> ${e.abordagem} ${e.comportamento ? '| <strong>Comportamento:</strong> ' + e.comportamento : ''} ${e.engajamento ? '| <strong>Engajamento:</strong> ' + e.engajamento + '/5' : ''}</div>` : ''}${e.reforcadores ? `<div style="font-size:0.8rem;color:var(--text-light);margin-top:2px"><strong>Reforcadores:</strong> ${e.reforcadores}</div>` : ''}${e.incidents ? `<div class="evo-content" style="margin-top:8px;color:var(--danger)"><strong>Intercorrencias:</strong> ${e.incidents}</div>` : ''}<div class="evo-actions"><button class="btn btn-edit btn-small" onclick="editEvolution('${e.id}')">Editar</button><button class="btn btn-secondary btn-small" onclick="printEvolution('${e.id}')">Imprimir</button><button class="btn btn-danger btn-small" onclick="deleteEvolution('${e.id}')">Excluir</button></div></div>`;
             }).join('');
         }
 
@@ -493,10 +1216,31 @@
             container.innerHTML = reps.map(r => `<div class="evolution-item"><div class="evo-header"><div><strong>${getReportTypeName(r.type)}</strong><span class="badge badge-green" style="margin-left:8px">${r.period || ''}</span></div><span class="evo-date">${formatDate(r.date || r.createdAt)}</span></div><div class="evo-content">${r.content}</div><div class="evo-actions"><button class="btn btn-edit btn-small" onclick="editReport('${r.id}')">Editar</button><button class="btn btn-secondary btn-small" onclick="printReport('${r.id}')">Imprimir</button><button class="btn btn-danger btn-small" onclick="deleteReport('${r.id}')">Excluir</button></div></div>`).join('');
         }
 
+        function loadPatientObjectives() {
+            const objs = DB.getObjectivesByPatient(currentPatientId);
+            const container = document.getElementById('patientObjectives');
+            if (objs.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>Nenhum objetivo</h3></div>';
+                return;
+            }
+            container.innerHTML = objs.map(o => {
+                const therapist = DB.getUserById(o.therapistId);
+                const statusClass = o.status === 'atingido' ? 'badge-green' : o.status === 'pausado' ? 'badge-coral' : 'badge-yellow';
+                return `<div class="evolution-item"><div class="evo-header"><div><strong>${o.title}</strong><span class="badge ${o.type === 'multiprofissional' ? 'badge-green' : 'badge-yellow'}" style="margin-left:8px">${o.type === 'multiprofissional' ? 'Multiprofissional' : 'Individual'}</span><span class="badge ${statusClass}" style="margin-left:4px">${o.status}</span></div><span class="evo-date">${formatDate(o.createdAt)}</span></div><div class="evo-content">${o.description}</div>${o.domain ? `<div style="font-size:0.8rem;color:var(--text-light);margin-top:4px"><strong>Dominio:</strong> ${o.domain} ${o.estrategia ? '| <strong>Estrategia:</strong> ' + o.estrategia : ''}</div>` : ''}${o.maestriaCriteria ? `<div style="font-size:0.8rem;color:var(--text-light);margin-top:2px"><strong>Criterio:</strong> ${o.maestriaCriteria}</div>` : ''}${o.baseline ? `<div style="font-size:0.8rem;color:var(--text-light);margin-top:2px"><strong>Baseline:</strong> ${o.baseline}</div>` : ''}${therapist ? `<div style="font-size:0.8rem;color:var(--text-light);margin-top:6px">Por: ${therapist.name}</div>` : ''}${o.therapistId === currentUser.id ? `<div class="evo-actions"><button class="btn btn-edit btn-small" onclick="editObjective('${o.id}')">Editar</button><button class="btn btn-success btn-small" onclick="updateObjStatus('${o.id}','atingido')">Atingido</button><button class="btn btn-danger btn-small" onclick="deleteObjective('${o.id}')">Excluir</button></div>` : ''}</div>`;
+            }).join('');
+        }
+
         function switchDetailTab(tab) {
-            document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
-            if (tab === 'evo') { document.querySelectorAll('.tabs .tab')[0].classList.add('active'); document.getElementById('patientEvolutions').style.display=''; document.getElementById('patientReports').style.display='none'; }
-            else { document.querySelectorAll('.tabs .tab')[1].classList.add('active'); document.getElementById('patientEvolutions').style.display='none'; document.getElementById('patientReports').style.display=''; }
+            document.querySelectorAll('#section-patient-detail .tabs .tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('patientEvolutions').style.display = 'none';
+            document.getElementById('patientMultiEvolutions').style.display = 'none';
+            document.getElementById('patientReports').style.display = 'none';
+            document.getElementById('patientObjectives').style.display = 'none';
+            const tabs = document.querySelectorAll('#section-patient-detail .tabs .tab');
+            if (tab === 'evo') { tabs[0].classList.add('active'); document.getElementById('patientEvolutions').style.display=''; }
+            else if (tab === 'multi') { tabs[1].classList.add('active'); document.getElementById('patientMultiEvolutions').style.display=''; loadPatientMultiEvolutions(); }
+            else if (tab === 'rep') { tabs[2].classList.add('active'); document.getElementById('patientReports').style.display=''; }
+            else { tabs[3].classList.add('active'); document.getElementById('patientObjectives').style.display=''; }
         }
 
         // ======= EVOLUCOES LISTA =======
@@ -506,7 +1250,7 @@
             if (filter) evos = evos.filter(e => e.patientId === filter);
             const container = document.getElementById('evolutionsList');
             if (evos.length === 0) { container.innerHTML = '<div class="empty-state"><h3>Nenhuma evolucao encontrada</h3></div>'; return; }
-            container.innerHTML = evos.map(e => { const p = DB.getPatientById(e.patientId); return `<div class="evolution-item"><div class="evo-header"><div><strong>${p ? p.name : '?'}</strong><span style="color:var(--text-light);font-size:0.85rem;margin-left:8px">${e.objectives || ''}</span></div><span class="evo-date">${formatDate(e.date)}</span></div><div class="evo-content">${truncate(e.description, 300)}</div><div class="evo-actions"><button class="btn btn-edit btn-small" onclick="editEvolution('${e.id}')">Editar</button></div></div>`; }).join('');
+            container.innerHTML = evos.map(e => { const p = DB.getPatientById(e.patientId); return `<div class="evolution-item"><div class="evo-header"><div><strong>${p ? p.name : '?'}</strong><span style="color:var(--text-light);font-size:0.85rem;margin-left:8px">${e.objectives || ''}</span></div><span class="evo-date">${formatDate(e.date)}</span></div><div class="evo-content">${truncate(e.description, 300)}</div>${e.abordagem ? `<div style="font-size:0.8rem;color:var(--text-light);margin-top:4px"><strong>Abordagem:</strong> ${e.abordagem} ${e.comportamento ? '| <strong>Comportamento:</strong> ' + e.comportamento : ''} ${e.engajamento ? '| <strong>Engajamento:</strong> ' + e.engajamento + '/5' : ''}</div>` : ''}${e.reforcadores ? `<div style="font-size:0.8rem;color:var(--text-light);margin-top:2px"><strong>Reforcadores:</strong> ${e.reforcadores}</div>` : ''}<div class="evo-actions"><button class="btn btn-edit btn-small" onclick="editEvolution('${e.id}')">Editar</button><button class="btn btn-secondary btn-small" onclick="printEvolution('${e.id}')">Imprimir</button></div></div>`; }).join('');
         }
 
         // ======= RELATORIOS LISTA =======
@@ -516,8 +1260,116 @@
             if (filter) reps = reps.filter(r => r.patientId === filter);
             const container = document.getElementById('reportsList');
             if (reps.length === 0) { container.innerHTML = '<div class="empty-state"><h3>Nenhum relatorio encontrado</h3></div>'; return; }
-            container.innerHTML = reps.map(r => { const p = DB.getPatientById(r.patientId); return `<div class="evolution-item"><div class="evo-header"><div><strong>${p ? p.name : '?'}</strong><span class="badge badge-green" style="margin-left:8px">${getReportTypeName(r.type)}</span></div><span class="evo-date">${formatDate(r.date || r.createdAt)}</span></div><div class="evo-content">${truncate(r.content, 300)}</div><div class="evo-actions"><button class="btn btn-edit btn-small" onclick="editReport('${r.id}')">Editar</button><button class="btn btn-secondary btn-small" onclick="printReport('${r.id}')">Imprimir</button></div></div>`; }).join('');
+            container.innerHTML = reps.map(r => { const p = DB.getPatientById(r.patientId); const tNames = r.therapistNames ? r.therapistNames.join(', ') : r.therapistName; return `<div class="evolution-item"><div class="evo-header"><div><strong>${p ? p.name : '?'}</strong><span class="badge badge-green" style="margin-left:8px">${getReportTypeName(r.type)}</span>${r.therapistIds && r.therapistIds.length > 1 ? '<span class="badge badge-purple" style="margin-left:4px">Multiprofissional</span>' : ''}</div><span class="evo-date">${formatDate(r.date || r.createdAt)}</span></div><div style="font-size:0.8rem;color:var(--text-light);margin-bottom:4px">Terapeutas: ${tNames}</div><div class="evo-content">${truncate(r.content, 300)}</div>${r.fileName ? '<div style="margin-top:6px;font-size:0.8rem;color:var(--primary)">📎 ' + r.fileName + '</div>' : ''}<div class="evo-actions"><button class="btn btn-edit btn-small" onclick="editReport('${r.id}')">Editar</button><button class="btn btn-secondary btn-small" onclick="printReport('${r.id}')">Imprimir</button>${r.fileData ? '<button class="btn btn-secondary btn-small" onclick="viewReportFile(\'' + r.id + '\')">Ver Anexo</button>' : ''}</div></div>`; }).join('');
         }
+
+        // ======= OBJETIVOS =======
+        function loadObjPatientFilter() {
+            const patients = DB.getPatientsByTherapist(currentUser.id);
+            document.getElementById('objPatientFilter').innerHTML = '<option value="">Todos os pacientes</option>' + patients.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+        }
+
+        function loadObjectives() {
+            const patientFilter = document.getElementById('objPatientFilter').value;
+            const typeFilter = document.getElementById('objTypeFilter').value;
+            let objs = DB.getObjectivesByTherapist(currentUser.id);
+            // Tambem incluir multiprofissionais de outros terapeutas para pacientes compartilhados
+            const myPatients = DB.getPatientsByTherapist(currentUser.id).map(p => p.id);
+            const multiObjs = DB.getTherapeuticObjectives().filter(o =>
+                o.type === 'multiprofissional' && myPatients.includes(o.patientId) && o.therapistId !== currentUser.id
+            );
+            objs = [...objs, ...multiObjs].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            // Remover duplicatas
+            objs = objs.filter((o, i, arr) => arr.findIndex(x => x.id === o.id) === i);
+            if (patientFilter) objs = objs.filter(o => o.patientId === patientFilter);
+            if (typeFilter) objs = objs.filter(o => o.type === typeFilter);
+
+            const container = document.getElementById('objectivesList');
+            if (objs.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>Nenhum objetivo encontrado</h3><p>Clique em "+ Novo Objetivo" para criar.</p></div>';
+                return;
+            }
+            container.innerHTML = objs.map(o => {
+                const patient = DB.getPatientById(o.patientId);
+                const therapist = DB.getUserById(o.therapistId);
+                const statusClass = o.status === 'atingido' ? 'badge-green' : o.status === 'pausado' ? 'badge-coral' : 'badge-yellow';
+                const isOwner = o.therapistId === currentUser.id;
+                return `<div class="evolution-item"><div class="evo-header"><div><strong>${patient ? patient.name : '?'}</strong> - ${o.title}<span class="badge ${o.type === 'multiprofissional' ? 'badge-green' : 'badge-yellow'}" style="margin-left:8px">${o.type === 'multiprofissional' ? 'Multi' : 'Individual'}</span><span class="badge ${statusClass}" style="margin-left:4px">${o.status}</span></div><span class="evo-date">${formatDate(o.createdAt)}</span></div><div class="evo-content">${o.description}</div>${o.domain ? `<div style="font-size:0.8rem;color:var(--text-light);margin-top:4px"><strong>Dominio:</strong> ${o.domain} ${o.estrategia ? '| <strong>Estrategia:</strong> ' + o.estrategia : ''}</div>` : ''}${o.maestriaCriteria ? `<div style="font-size:0.8rem;color:var(--text-light);margin-top:2px"><strong>Criterio:</strong> ${o.maestriaCriteria}</div>` : ''}${o.baseline ? `<div style="font-size:0.8rem;color:var(--text-light);margin-top:2px"><strong>Baseline:</strong> ${o.baseline}</div>` : ''}${o.targetDate ? `<div style="font-size:0.8rem;color:var(--text-light);margin-top:4px">Meta: ${formatDate(o.targetDate)}</div>` : ''}${therapist ? `<div style="font-size:0.8rem;color:var(--text-light);margin-top:2px">Por: ${therapist.name} (${therapist.specialty})</div>` : ''}${isOwner ? `<div class="evo-actions"><button class="btn btn-edit btn-small" onclick="editObjective('${o.id}')">Editar</button><button class="btn btn-success btn-small" onclick="updateObjStatus('${o.id}','atingido')">Atingido</button><button class="btn btn-small" style="background:var(--accent-yellow);color:#B8960A" onclick="updateObjStatus('${o.id}','pausado')">Pausar</button><button class="btn btn-danger btn-small" onclick="deleteObjective('${o.id}')">Excluir</button></div>` : ''}</div>`;
+            }).join('');
+        }
+
+        function openAddObjectiveModal() {
+            document.getElementById('formObjective').reset();
+            document.getElementById('editObjId').value = '';
+            document.getElementById('modalObjTitle').textContent = 'Novo Objetivo Terapeutico';
+            const patients = DB.getPatientsByTherapist(currentUser.id);
+            document.getElementById('objPatient').innerHTML = patients.map(p => `<option value="${p.id}" ${p.id === currentPatientId ? 'selected' : ''}>${p.name}</option>`).join('');
+            document.getElementById('modalObjective').classList.add('active');
+        }
+
+        function editObjective(id) {
+            const obj = DB.getTherapeuticObjectives().find(o => o.id === id);
+            if (!obj || obj.therapistId !== currentUser.id) return;
+            const patients = DB.getPatientsByTherapist(currentUser.id);
+            document.getElementById('objPatient').innerHTML = patients.map(p => `<option value="${p.id}" ${p.id === obj.patientId ? 'selected' : ''}>${p.name}</option>`).join('');
+            document.getElementById('editObjId').value = obj.id;
+            document.getElementById('modalObjTitle').textContent = 'Editar Objetivo';
+            document.getElementById('objType').value = obj.type || 'individual';
+            document.getElementById('objTitle').value = obj.title || '';
+            document.getElementById('objDescription').value = obj.description || '';
+            document.getElementById('objTargetDate').value = obj.targetDate || '';
+            document.getElementById('objDomain').value = obj.domain || '';
+            document.getElementById('objMaestriaCriteria').value = obj.maestriaCriteria || '';
+            document.getElementById('objEstrategia').value = obj.estrategia || '';
+            document.getElementById('objBaseline').value = obj.baseline || '';
+            document.getElementById('objNotes').value = obj.notes || '';
+            document.getElementById('modalObjective').classList.add('active');
+        }
+
+        async function updateObjStatus(id, status) {
+            await DB.updateTherapeuticObjective(id, { status: status });
+            loadObjectives();
+            if (currentPatientId) loadPatientObjectives();
+            showToast('Status atualizado!');
+        }
+
+        async function deleteObjective(id) {
+            if (confirm('Excluir este objetivo?')) {
+                await DB.removeTherapeuticObjective(id);
+                loadObjectives();
+                if (currentPatientId) loadPatientObjectives();
+                showToast('Objetivo excluido.');
+            }
+        }
+
+        document.getElementById('formObjective').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const editId = document.getElementById('editObjId').value;
+            const data = {
+                patientId: document.getElementById('objPatient').value,
+                therapistId: currentUser.id,
+                therapistName: currentUser.name,
+                type: document.getElementById('objType').value,
+                title: document.getElementById('objTitle').value.trim(),
+                description: document.getElementById('objDescription').value.trim(),
+                targetDate: document.getElementById('objTargetDate').value,
+                domain: document.getElementById('objDomain').value,
+                maestriaCriteria: document.getElementById('objMaestriaCriteria').value.trim(),
+                estrategia: document.getElementById('objEstrategia').value,
+                baseline: document.getElementById('objBaseline').value.trim(),
+                notes: document.getElementById('objNotes').value.trim()
+            };
+            if (editId) {
+                await DB.updateTherapeuticObjective(editId, data);
+                showToast('Objetivo atualizado!');
+            } else {
+                await DB.addTherapeuticObjective(data);
+                showToast('Objetivo criado!');
+            }
+            closeModal('modalObjective');
+            loadObjectives();
+            if (currentPatientId) loadPatientObjectives();
+        });
 
         // ======= FILTERS =======
         function loadPatientFilters() {
@@ -537,8 +1389,59 @@
             const patients = DB.getPatientsByTherapist(currentUser.id);
             document.getElementById('evoPatient').innerHTML = patients.map(p => `<option value="${p.id}" ${p.id === currentPatientId ? 'selected' : ''}>${p.name}</option>`).join('');
             document.getElementById('evoDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('evoAtrasadaAlert').style.display = 'none';
+            document.getElementById('evoJustificativaGroup').style.display = 'none';
+            document.getElementById('evoJustificativa').value = '';
             document.getElementById('modalEvolution').classList.add('active');
         }
+
+        function checkEvoAtrasada() {
+            const dateVal = document.getElementById('evoDate').value;
+            const today = new Date().toISOString().split('T')[0];
+            const isLate = dateVal < today;
+            document.getElementById('evoAtrasadaAlert').style.display = isLate ? '' : 'none';
+            document.getElementById('evoJustificativaGroup').style.display = isLate ? '' : 'none';
+        }
+
+        function openEditPatientModalTer() {
+            if (!currentPatientId) return;
+            const p = DB.getPatientById(currentPatientId);
+            if (!p) return;
+            document.getElementById('editPatIdTer').value = p.id;
+            document.getElementById('editPatNameTer').value = p.name || '';
+            document.getElementById('editPatBirthTer').value = p.birthDate || '';
+            document.getElementById('editPatGuardianTer').value = p.guardian || '';
+            document.getElementById('editPatPhoneTer').value = p.phone || '';
+            document.getElementById('editPatDiagnosisTer').value = p.diagnosis || '';
+            document.getElementById('editPatInsuranceTer').value = p.insurance || '';
+            document.getElementById('editPatSerieTer').value = p.serie || '';
+            document.getElementById('editPatTurnoTer').value = p.turno || '';
+            document.getElementById('editPatNotesTer').value = p.notes || '';
+            document.getElementById('modalEditPatientTer').classList.add('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('formEditPatientTer');
+            if (form) form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const id = document.getElementById('editPatIdTer').value;
+                const data = {
+                    name: document.getElementById('editPatNameTer').value.trim(),
+                    birthDate: document.getElementById('editPatBirthTer').value,
+                    guardian: document.getElementById('editPatGuardianTer').value.trim(),
+                    phone: document.getElementById('editPatPhoneTer').value.trim(),
+                    diagnosis: document.getElementById('editPatDiagnosisTer').value.trim(),
+                    insurance: document.getElementById('editPatInsuranceTer').value.trim(),
+                    serie: document.getElementById('editPatSerieTer').value.trim(),
+                    turno: document.getElementById('editPatTurnoTer').value,
+                    notes: document.getElementById('editPatNotesTer').value.trim()
+                };
+                await DB.updatePatient(id, data);
+                closeModal('modalEditPatientTer');
+                openPatientDetail(id);
+                showToast('Paciente atualizado!');
+            });
+        });
 
         function editEvolution(id) {
             const evo = DB.getEvolutions().find(e => e.id === id);
@@ -553,7 +1456,26 @@
             document.getElementById('evoIncidents').value = evo.incidents || '';
             document.getElementById('evoType').value = evo.type || 'individual';
             document.getElementById('evoPresence').value = evo.presence || 'presente';
+            document.getElementById('evoScope').value = evo.scope || 'individual';
+            document.getElementById('evoAbordagem').value = evo.abordagem || '';
+            document.getElementById('evoComportamento').value = evo.comportamento || '';
+            document.getElementById('evoEngajamento').value = evo.engajamento || 3;
+            document.getElementById('evoEngajamentoLabel').textContent = evo.engajamento || 3;
+            document.getElementById('evoReforcadores').value = evo.reforcadores || '';
             document.getElementById('modalEvolution').classList.add('active');
+        }
+
+        function applyTemplateTer() {
+            const type = document.getElementById('repType').value;
+            const template = DB.getTemplateByType(type);
+            if (template) {
+                const content = document.getElementById('repContent');
+                if (content.value.trim() && !confirm('Substituir o conteudo atual pelo template?')) return;
+                content.value = template.content;
+                showToast('Template carregado!');
+            } else {
+                showToast('Nenhum template disponivel para este tipo.');
+            }
         }
 
         function openAddReportModal() {
@@ -562,6 +1484,11 @@
             document.getElementById('modalRepTitle').textContent = 'Novo Relatorio';
             const patients = DB.getPatientsByTherapist(currentUser.id);
             document.getElementById('repPatient').innerHTML = patients.map(p => `<option value="${p.id}" ${p.id === currentPatientId ? 'selected' : ''}>${p.name}</option>`).join('');
+            // Popular co-autores (outros terapeutas)
+            const others = DB.getTherapists().filter(t => t.id !== currentUser.id);
+            document.getElementById('repCoAuthors').innerHTML = others.map(t => `<option value="${t.id}">${t.name} (${t.specialty || ''})</option>`).join('');
+            document.getElementById('repFile').value = '';
+            document.getElementById('repFileInfo').style.display = 'none';
             document.getElementById('modalReport').classList.add('active');
         }
 
@@ -570,12 +1497,36 @@
             if (!rep) return;
             const patients = DB.getPatientsByTherapist(currentUser.id);
             document.getElementById('repPatient').innerHTML = patients.map(p => `<option value="${p.id}" ${p.id === rep.patientId ? 'selected' : ''}>${p.name}</option>`).join('');
+            // Popular co-autores e selecionar os existentes
+            const others = DB.getTherapists().filter(t => t.id !== currentUser.id);
+            const coAuthorIds = (rep.therapistIds || []).filter(tid => tid !== currentUser.id);
+            document.getElementById('repCoAuthors').innerHTML = others.map(t => `<option value="${t.id}" ${coAuthorIds.includes(t.id) ? 'selected' : ''}>${t.name} (${t.specialty || ''})</option>`).join('');
             document.getElementById('editRepId').value = rep.id;
             document.getElementById('modalRepTitle').textContent = 'Editar Relatorio';
             document.getElementById('repType').value = rep.type || 'mensal';
             document.getElementById('repPeriod').value = rep.period || '';
             document.getElementById('repContent').value = rep.content || '';
+            document.getElementById('repFile').value = '';
+            const fileInfo = document.getElementById('repFileInfo');
+            if (rep.fileName) {
+                fileInfo.style.display = '';
+                fileInfo.innerHTML = '📎 Anexo atual: ' + rep.fileName;
+            } else {
+                fileInfo.style.display = 'none';
+            }
             document.getElementById('modalReport').classList.add('active');
+        }
+
+        function viewReportFile(id) {
+            const rep = DB.getReports().find(r => r.id === id);
+            if (!rep || !rep.fileData) return;
+            const w = window.open('', '_blank');
+            if (rep.fileType && rep.fileType.startsWith('image/')) {
+                w.document.write('<html><head><title>' + rep.fileName + '</title></head><body style="margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f5f5"><img src="' + rep.fileData + '" style="max-width:90%;max-height:90vh"></body></html>');
+            } else {
+                w.document.write('<html><head><title>' + rep.fileName + '</title></head><body style="margin:0"><iframe src="' + rep.fileData + '" style="width:100%;height:100vh;border:none"></iframe></body></html>');
+            }
+            w.document.close();
         }
 
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
@@ -591,7 +1542,7 @@
                 diagnosis: document.getElementById('patientDiagnosis').value.trim(),
                 insurance: document.getElementById('patientInsurance').value.trim(),
                 notes: document.getElementById('patientNotes').value.trim(),
-                therapistId: currentUser.id
+                therapistIds: [currentUser.id]
             });
             closeModal('modalPatient');
             loadPatients();
@@ -611,7 +1562,14 @@
                 objectives: document.getElementById('evoObjectives').value.trim(),
                 description: document.getElementById('evoDescription').value.trim(),
                 incidents: document.getElementById('evoIncidents').value.trim(),
-                presence: document.getElementById('evoPresence').value
+                presence: document.getElementById('evoPresence').value,
+                scope: document.getElementById('evoScope').value,
+                lateEntry: document.getElementById('evoDate').value < new Date().toISOString().split('T')[0],
+                lateJustification: document.getElementById('evoJustificativa').value.trim(),
+                abordagem: document.getElementById('evoAbordagem').value,
+                comportamento: document.getElementById('evoComportamento').value,
+                engajamento: parseInt(document.getElementById('evoEngajamento').value),
+                reforcadores: document.getElementById('evoReforcadores').value.trim()
             };
             if (editId) {
                 DB.updateEvolution(editId, data);
@@ -628,15 +1586,44 @@
         document.getElementById('formReport').addEventListener('submit', function(e) {
             e.preventDefault();
             const editId = document.getElementById('editRepId').value;
+            // Montar lista de terapeutas (autor + co-autores)
+            const coAuthors = Array.from(document.getElementById('repCoAuthors').selectedOptions).map(o => o.value);
+            const allTherapistIds = [currentUser.id, ...coAuthors];
+            const allTherapistNames = allTherapistIds.map(tid => {
+                const u = DB.getUserById(tid);
+                return u ? u.name : '';
+            }).filter(n => n);
             const data = {
                 patientId: document.getElementById('repPatient').value,
                 therapistId: currentUser.id,
-                therapistName: currentUser.name,
+                therapistIds: allTherapistIds,
+                therapistName: allTherapistNames.join(', '),
+                therapistNames: allTherapistNames,
                 type: document.getElementById('repType').value,
                 period: document.getElementById('repPeriod').value.trim(),
                 content: document.getElementById('repContent').value.trim(),
                 date: new Date().toISOString()
             };
+
+            const fileInput = document.getElementById('repFile');
+            const file = fileInput.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) { showToast('Arquivo muito grande (max 5MB)!'); return; }
+                const reader = new FileReader();
+                reader.onload = async function(ev) {
+                    data.fileName = file.name;
+                    data.fileType = file.type;
+                    data.fileData = ev.target.result;
+                    if (editId) { await DB.updateReport(editId, data); showToast('Relatorio atualizado!'); }
+                    else { await DB.addReport(data); showToast('Relatorio salvo!'); }
+                    closeModal('modalReport');
+                    if (currentPatientId) loadPatientReports();
+                    loadReportsList();
+                };
+                reader.readAsDataURL(file);
+                return;
+            }
+
             if (editId) {
                 DB.updateReport(editId, data);
                 showToast('Relatorio atualizado!');
@@ -655,18 +1642,24 @@
             document.getElementById('profileAvatar').textContent = initials;
             document.getElementById('profileName').textContent = currentUser.name;
             document.getElementById('profileSpecialty').textContent = currentUser.specialty;
+            // Load contact info
+            const fullUser = DB.getUserById(currentUser.id);
+            if (fullUser) {
+                document.getElementById('profileEmail').value = fullUser.email || '';
+                document.getElementById('profilePhone').value = fullUser.phone || '';
+            }
+            loadDocuments();
         }
 
         document.getElementById('formPassword').addEventListener('submit', function(e) {
             e.preventDefault();
             const current = document.getElementById('currentPassword').value;
             const newPwd = document.getElementById('newPassword').value;
-            const confirm = document.getElementById('confirmPassword').value;
+            const confirmPwd = document.getElementById('confirmPassword').value;
 
-            // Verificar senha atual
             const user = DB.authenticate(currentUser.username, current);
             if (!user) { showToast('Senha atual incorreta!'); return; }
-            if (newPwd !== confirm) { showToast('As senhas nao conferem!'); return; }
+            if (newPwd !== confirmPwd) { showToast('As senhas nao conferem!'); return; }
             if (newPwd.length < 6) { showToast('A nova senha deve ter pelo menos 6 caracteres!'); return; }
 
             DB.changePassword(currentUser.id, newPwd);
@@ -697,6 +1690,7 @@
         function truncate(s, m) { if (!s) return ''; return s.length > m ? s.substring(0, m) + '...' : s; }
         function getReportTypeName(t) { return { mensal:'Relatorio Mensal', trimestral:'Relatorio Trimestral', semestral:'Relatorio Semestral', alta:'Relatorio de Alta', devolutiva:'Devolutiva para Familia', escolar:'Relatorio Escolar', outro:'Outro' }[t] || t; }
         function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
+
         // ======= ABA =======
         let abaCharts = {};
 
@@ -782,7 +1776,9 @@
                 else if (s.duration !== undefined) valueStr = `${s.duration} min`;
                 else if (s.percentage !== undefined) valueStr = `${s.percentage}%`;
                 const promptNames = { independente:'Independente', dica_gestual:'Dica Gestual', dica_verbal:'Dica Verbal', modelo:'Modelo', fisica_parcial:'Fisica Parcial', fisica_total:'Fisica Total' };
-                return `<div class="evolution-item"><div class="evo-header"><div><strong>${target ? target.name : '?'}</strong><span class="badge badge-green" style="margin-left:8px">${valueStr}</span><span style="margin-left:8px;font-size:0.8rem;color:var(--text-light)">${promptNames[s.prompt] || s.prompt || ''}</span></div><span class="evo-date">${formatDate(s.date)}</span></div>${s.notes ? `<div class="evo-content">${s.notes}</div>` : ''}<div class="evo-actions"><button class="btn btn-danger btn-small" onclick="deleteAbaSession('${s.id}')">Excluir</button></div></div>`;
+                const probBehaviorNames = { nenhum:'Nenhum', leve:'Leve', moderado:'Moderado', intenso:'Intenso' };
+                const genNames = { nao_testada:'Nao testada', generalizado:'Generalizado', parcial:'Parcial', nao_generalizado:'Nao generalizado' };
+                return `<div class="evolution-item"><div class="evo-header"><div><strong>${target ? target.name : '?'}</strong><span class="badge badge-green" style="margin-left:8px">${valueStr}</span><span style="margin-left:8px;font-size:0.8rem;color:var(--text-light)">${promptNames[s.prompt] || s.prompt || ''}</span></div><span class="evo-date">${formatDate(s.date)}</span></div>${s.problemBehavior && s.problemBehavior !== 'nenhum' ? `<div style="font-size:0.8rem;color:var(--danger);margin-top:4px"><strong>Comportamento problematico:</strong> ${probBehaviorNames[s.problemBehavior] || s.problemBehavior}</div>` : ''}${s.generalization ? `<div style="font-size:0.8rem;color:var(--text-light);margin-top:2px"><strong>Generalizacao:</strong> ${genNames[s.generalization] || s.generalization}</div>` : ''}${s.notes ? `<div class="evo-content">${s.notes}</div>` : ''}<div class="evo-actions"><button class="btn btn-danger btn-small" onclick="deleteAbaSession('${s.id}')">Excluir</button></div></div>`;
             }).join('');
         }
 
@@ -797,29 +1793,20 @@
             let targets = DB.getAbaTargetsByPatient(currentPatientId);
             if (filterTarget !== 'all') targets = targets.filter(t => t.id === filterTarget);
 
-            // Destroy old charts
             Object.values(abaCharts).forEach(c => c.destroy());
             abaCharts = {};
 
             const colors = ['#7BA89A','#F5C9B8','#F5E5A8','#A8D4D4','#E85D5D','#5DB87E','#4A90B8','#C07050'];
 
-            // Accuracy chart (DTT + porcentagem)
             const accTargets = targets.filter(t => t.type === 'dtt' || t.type === 'porcentagem');
             const accCtx = document.getElementById('chartAccuracy').getContext('2d');
             const accDatasets = accTargets.map((t, i) => {
                 const sessions = DB.getAbaSessionsByTarget(t.id);
-                return {
-                    label: t.name,
-                    data: sessions.map(s => t.type === 'dtt' ? Math.round((s.correct/s.total)*100) : s.percentage),
-                    borderColor: colors[i % colors.length],
-                    backgroundColor: colors[i % colors.length] + '33',
-                    tension: 0.3, fill: false, pointRadius: 4
-                };
+                return { label: t.name, data: sessions.map(s => t.type === 'dtt' ? Math.round((s.correct/s.total)*100) : s.percentage), borderColor: colors[i % colors.length], backgroundColor: colors[i % colors.length] + '33', tension: 0.3, fill: false, pointRadius: 4 };
             });
             const accLabels = accTargets.length > 0 ? DB.getAbaSessionsByTarget(accTargets[0].id).map((s,i) => 'S' + (i+1)) : [];
             abaCharts.accuracy = new Chart(accCtx, { type: 'line', data: { labels: accLabels.length > 0 ? accLabels : [''], datasets: accDatasets.length > 0 ? accDatasets : [{ label: 'Sem dados', data: [] }] }, options: { responsive: true, scales: { y: { min: 0, max: 100, title: { display: true, text: '%' } } }, plugins: { legend: { position: 'bottom' } } } });
 
-            // Frequency chart
             const freqTargets = targets.filter(t => t.type === 'frequencia');
             const freqCtx = document.getElementById('chartFrequency').getContext('2d');
             const freqDatasets = freqTargets.map((t, i) => {
@@ -829,7 +1816,6 @@
             const freqLabels = freqTargets.length > 0 ? DB.getAbaSessionsByTarget(freqTargets[0].id).map((s,i) => 'S' + (i+1)) : [];
             abaCharts.frequency = new Chart(freqCtx, { type: 'bar', data: { labels: freqLabels.length > 0 ? freqLabels : [''], datasets: freqDatasets.length > 0 ? freqDatasets : [{ label: 'Sem dados', data: [] }] }, options: { responsive: true, plugins: { legend: { position: 'bottom' } } } });
 
-            // Duration chart
             const durTargets = targets.filter(t => t.type === 'duracao');
             const durCtx = document.getElementById('chartDuration').getContext('2d');
             const durDatasets = durTargets.map((t, i) => {
@@ -839,25 +1825,17 @@
             const durLabels = durTargets.length > 0 ? DB.getAbaSessionsByTarget(durTargets[0].id).map((s,i) => 'S' + (i+1)) : [];
             abaCharts.duration = new Chart(durCtx, { type: 'line', data: { labels: durLabels.length > 0 ? durLabels : [''], datasets: durDatasets.length > 0 ? durDatasets : [{ label: 'Sem dados', data: [] }] }, options: { responsive: true, scales: { y: { title: { display: true, text: 'min' } } }, plugins: { legend: { position: 'bottom' } } } });
 
-            // DTT chart (stacked bar showing correct vs incorrect)
             const dttTargets = targets.filter(t => t.type === 'dtt');
             const dttCtx = document.getElementById('chartDTT').getContext('2d');
             if (dttTargets.length > 0) {
                 const firstTarget = dttTargets[0];
                 const sessions = DB.getAbaSessionsByTarget(firstTarget.id);
-                abaCharts.dtt = new Chart(dttCtx, { type: 'bar', data: {
-                    labels: sessions.map((s, i) => formatDate(s.date)),
-                    datasets: [
-                        { label: 'Acertos', data: sessions.map(s => s.correct), backgroundColor: '#5DB87E' },
-                        { label: 'Erros', data: sessions.map(s => s.total - s.correct), backgroundColor: '#E85D5D66' }
-                    ]
-                }, options: { responsive: true, scales: { x: { stacked: true }, y: { stacked: true, title: { display: true, text: 'Tentativas' } } }, plugins: { legend: { position: 'bottom' }, title: { display: true, text: firstTarget.name } } } });
+                abaCharts.dtt = new Chart(dttCtx, { type: 'bar', data: { labels: sessions.map((s, i) => formatDate(s.date)), datasets: [{ label: 'Acertos', data: sessions.map(s => s.correct), backgroundColor: '#5DB87E' }, { label: 'Erros', data: sessions.map(s => s.total - s.correct), backgroundColor: '#E85D5D66' }] }, options: { responsive: true, scales: { x: { stacked: true }, y: { stacked: true, title: { display: true, text: 'Tentativas' } } }, plugins: { legend: { position: 'bottom' }, title: { display: true, text: firstTarget.name } } } });
             } else {
                 abaCharts.dtt = new Chart(dttCtx, { type: 'bar', data: { labels: [''], datasets: [{ label: 'Sem dados DTT', data: [] }] }, options: { responsive: true } });
             }
         }
 
-        // ABA Modals
         function openAddTargetModal() {
             document.getElementById('formAbaTarget').reset();
             document.getElementById('modalAbaTarget').classList.add('active');
@@ -869,7 +1847,6 @@
             document.getElementById('sessionDate').value = new Date().toISOString().split('T')[0];
             const target = DB.getAbaTargetById(targetId);
             document.getElementById('sessionModalTitle').textContent = 'Registrar: ' + (target ? target.name : '');
-            // Show correct fields
             document.getElementById('sessionFieldsDTT').style.display = target && target.type === 'dtt' ? '' : 'none';
             document.getElementById('sessionFieldsFreq').style.display = target && target.type === 'frequencia' ? '' : 'none';
             document.getElementById('sessionFieldsDur').style.display = target && target.type === 'duracao' ? '' : 'none';
@@ -887,6 +1864,8 @@
                 program: document.getElementById('targetProgram').value,
                 type: document.getElementById('targetType').value,
                 criteria: document.getElementById('targetCriteria').value.trim(),
+                promptHierarchy: document.getElementById('targetPromptHierarchy').value,
+                reinforcementSchedule: document.getElementById('targetReinforcementSchedule').value,
                 description: document.getElementById('targetDescription').value.trim()
             });
             closeModal('modalAbaTarget');
@@ -905,6 +1884,8 @@
                 therapistName: currentUser.name,
                 date: document.getElementById('sessionDate').value,
                 prompt: document.getElementById('sessionPrompt').value,
+                problemBehavior: document.getElementById('sessionProblemBehavior').value,
+                generalization: document.getElementById('sessionGeneralization').value,
                 notes: document.getElementById('sessionNotes').value.trim()
             };
             if (target.type === 'dtt') { data.correct = parseInt(document.getElementById('sessionCorrect').value); data.total = parseInt(document.getElementById('sessionTotal').value); }
@@ -931,7 +1912,645 @@
             if (confirm('Excluir este registro?')) { DB.removeAbaSession(id); loadAbaData(); showToast('Registro excluido.'); }
         }
 
+        // ======= MULTI EVOLUCOES =======
+        function loadPatientMultiEvolutions() {
+            const evos = DB.getEvolutionsByPatientAndScope(currentPatientId, 'multiprofissional', currentUser.id);
+            const container = document.getElementById('patientMultiEvolutions');
+            if (evos.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>Nenhuma evolucao multiprofissional</h3><p>Ao registrar uma evolucao, marque como "Multiprofissional" para que outros terapeutas do caso vejam.</p></div>';
+                return;
+            }
+            container.innerHTML = evos.map(e => {
+                const therapist = DB.getUserById(e.therapistId);
+                const isOwner = e.therapistId === currentUser.id;
+                return `<div class="evolution-item"><div class="evo-header"><div><strong>${e.objectives || 'Sem objetivo'}</strong><span class="badge badge-multi" style="margin-left:8px">Multiprofissional</span></div><span class="evo-date">${formatDate(e.date)}</span></div><div class="evo-therapist">${therapist ? therapist.name + ' (' + therapist.specialty + ')' : ''}</div><div class="evo-content">${e.description}</div>${isOwner ? `<div class="evo-actions"><button class="btn btn-edit btn-small" onclick="editEvolution('${e.id}')">Editar</button><button class="btn btn-danger btn-small" onclick="deleteEvolution('${e.id}')">Excluir</button></div>` : ''}</div>`;
+            }).join('');
+        }
+
+        // ======= PROFILE CONTACT =======
+        document.getElementById('formProfileContact').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('profileEmail').value.trim();
+            const phone = document.getElementById('profilePhone').value.trim();
+            await DB.updateUser(currentUser.id, { email, phone });
+            showToast('Contato atualizado!');
+        });
+
+        // ======= DOCUMENTOS =======
+        function loadDocuments() {
+            const docs = DB.getDocumentsByTherapist(currentUser.id);
+            const container = document.getElementById('myDocumentsList');
+            if (docs.length === 0) {
+                container.innerHTML = '<div class="empty-state" style="padding:30px"><h3>Nenhum documento</h3><p>Clique em "+ Upload" para adicionar documentos.</p></div>';
+                return;
+            }
+            const typeIcons = { crp: '&#128196;', certificado: '&#127941;', diploma: '&#127891;', contrato: '&#128221;', outro: '&#128195;' };
+            const typeNames = { crp: 'CRP / Registro', certificado: 'Certificado', diploma: 'Diploma', contrato: 'Contrato', outro: 'Outro' };
+            container.innerHTML = docs.map(d => `<div class="doc-item"><div class="doc-icon">${typeIcons[d.type] || '&#128195;'}</div><div class="doc-info"><h4>${d.title}</h4><p>${typeNames[d.type] || d.type} - ${formatDate(d.uploadedAt)}</p></div><div style="display:flex;gap:6px"><button class="btn btn-small btn-edit" onclick="viewDocument('${d.id}')">Ver</button><button class="btn btn-small btn-danger" onclick="deleteDocument('${d.id}')">Excluir</button></div></div>`).join('');
+        }
+
+        function openUploadDocModal() {
+            document.getElementById('formDocument').reset();
+            document.getElementById('modalDocument').classList.add('active');
+        }
+
+        document.getElementById('formDocument').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const file = document.getElementById('docFile').files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async function(ev) {
+                await DB.addDocument({
+                    therapistId: currentUser.id,
+                    type: document.getElementById('docType').value,
+                    title: document.getElementById('docTitle').value.trim(),
+                    fileName: file.name,
+                    fileData: ev.target.result
+                });
+                closeModal('modalDocument');
+                loadDocuments();
+                showToast('Documento salvo!');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        function viewDocument(id) {
+            const doc = DB.getDocuments().find(d => d.id === id);
+            if (!doc || !doc.fileData) return;
+            const w = window.open('');
+            if (doc.fileData.startsWith('data:application/pdf')) {
+                w.document.write('<iframe src="' + doc.fileData + '" style="width:100%;height:100%;border:none"></iframe>');
+            } else {
+                w.document.write('<img src="' + doc.fileData + '" style="max-width:100%;height:auto">');
+            }
+        }
+
+        async function deleteDocument(id) {
+            if (confirm('Excluir este documento?')) {
+                await DB.removeDocument(id);
+                loadDocuments();
+                showToast('Documento excluido.');
+            }
+        }
+
+        // ======= NOTIFICACOES =======
+        function loadNotificacoesTer() {
+            const user = DB.getCurrentUser();
+            if (!user) return;
+            const notifs = (DB._cache.notifications || []).filter(n =>
+                n.targetRole === 'terapeuta' || n.targetUserId === user.id || n.targetRole === 'all'
+            ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+            const container = document.getElementById('notificacoesListTer');
+            if (notifs.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>Nenhuma notificacao</h3><p>Voce esta em dia!</p></div>';
+                return;
+            }
+            container.innerHTML = notifs.map(n => {
+                const isUnread = !n.read;
+                return `<div class="evolution-item" style="${isUnread ? 'border-left:4px solid var(--primary);background:#f0faf5' : ''}">
+                    <div class="evo-header">
+                        <strong>${n.title || 'Notificacao'}</strong>
+                        <span class="evo-date">${formatDate(n.createdAt)}</span>
+                    </div>
+                    <div class="evo-content">${n.message || ''}</div>
+                    ${isUnread ? `<button class="btn btn-secondary btn-small" style="margin-top:6px" onclick="markReadTer('${n.id}')">Marcar como lida</button>` : '<span style="font-size:0.75rem;color:var(--text-light)">Lida</span>'}
+                </div>`;
+            }).join('');
+            updateNotifBadgeTer();
+        }
+
+        function markReadTer(id) {
+            const notif = (DB._cache.notifications || []).find(n => n.id === id);
+            if (notif) { notif.read = true; DB._syncToLS('notifications'); }
+            loadNotificacoesTer();
+        }
+
+        function markAllReadTer() {
+            const user = DB.getCurrentUser();
+            (DB._cache.notifications || []).forEach(n => {
+                if (n.targetRole === 'terapeuta' || n.targetUserId === (user && user.id) || n.targetRole === 'all') {
+                    n.read = true;
+                }
+            });
+            DB._syncToLS('notifications');
+            loadNotificacoesTer();
+            showToast('Todas marcadas como lidas.');
+        }
+
+        function updateNotifBadgeTer() {
+            const user = DB.getCurrentUser();
+            if (!user) return;
+            const unread = (DB._cache.notifications || []).filter(n =>
+                !n.read && (n.targetRole === 'terapeuta' || n.targetUserId === user.id || n.targetRole === 'all')
+            ).length;
+            const badge = document.getElementById('notifBadgeTer');
+            if (badge) {
+                badge.textContent = unread;
+                badge.style.display = unread > 0 ? '' : 'none';
+            }
+        }
+
+        // ======= DEVOLUTIVAS =======
+        function loadDevPatFilterTer() {
+            const user = DB.getCurrentUser();
+            if (!user) return;
+            const patients = DB.getPatients().filter(p => (p.therapistIds || []).includes(user.id));
+            document.getElementById('devFilterPatTer').innerHTML = '<option value="">Todos os pacientes</option>' +
+                patients.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+        }
+
+        function loadDevolutivasTer() {
+            const user = DB.getCurrentUser();
+            if (!user) return;
+            const patFilter = document.getElementById('devFilterPatTer').value;
+            const statusFilter = document.getElementById('devFilterStatusTer').value;
+
+            const myPatients = DB.getPatients().filter(p => (p.therapistIds || []).includes(user.id)).map(p => p.id);
+            let devs = (DB._cache.devolutivas || []).filter(d =>
+                myPatients.includes(d.patientId) || (d.therapistIds || []).includes(user.id)
+            );
+            if (patFilter) devs = devs.filter(d => d.patientId === patFilter);
+            if (statusFilter) devs = devs.filter(d => d.status === statusFilter);
+            devs.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            const container = document.getElementById('devolutivasListTer');
+            if (devs.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>Nenhuma devolutiva encontrada</h3><p>As devolutivas dos seus pacientes aparecerão aqui.</p></div>';
+                return;
+            }
+            container.innerHTML = devs.map(d => {
+                const patient = DB.getPatientById(d.patientId);
+                const statusClass = d.status === 'realizada' ? 'badge-green' : d.status === 'cancelada' ? 'badge-coral' : 'badge-yellow';
+                const statusName = d.status === 'realizada' ? 'Realizada' : d.status === 'cancelada' ? 'Cancelada' : 'Agendada';
+                const typeName = d.type === 'familia' ? 'Familia' : 'Escola';
+                return `<div class="evolution-item">
+                    <div class="evo-header">
+                        <div>
+                            <strong>${patient ? patient.name : '?'}</strong>
+                            <span class="badge badge-green" style="margin-left:8px">${typeName}</span>
+                            <span class="badge ${statusClass}" style="margin-left:4px">${statusName}</span>
+                        </div>
+                        <span class="evo-date">${formatDate(d.date)}${d.time ? ' ' + d.time : ''}</span>
+                    </div>
+                    ${d.participants ? `<div style="font-size:0.85rem;color:var(--text-light);margin-top:4px">Participantes: ${d.participants}</div>` : ''}
+                    ${(d.supervisors && d.supervisors.length) || d.supervisor ? `<div style="font-size:0.85rem;color:var(--text-light);margin-top:2px">Coordenacao/Supervisao: ${d.supervisors ? d.supervisors.join(', ') : d.supervisor}</div>` : ''}
+                    ${d.orientacoes ? `<div style="font-size:0.85rem;color:var(--primary);margin-top:4px;background:#E3F2FD;padding:8px 12px;border-radius:6px"><strong>Orientacoes:</strong> ${d.orientacoes}</div>` : ''}
+                    ${d.notes ? `<div class="evo-content">${d.notes}</div>` : ''}
+                </div>`;
+            }).join('');
+        }
+
+        // ======= PRINT EVOLUCAO =======
+        function printEvolution(id) {
+            const evo = (DB._cache.evolutions || []).find(e => e.id === id);
+            if (!evo) return;
+            const patient = DB.getPatientById(evo.patientId);
+            const therapist = DB.getUserById(evo.therapistId);
+            const win = window.open('', '_blank');
+            win.document.write(`<html><head><title>Evolucao - ${patient ? patient.name : ''}</title>
+            <style>body{font-family:Arial,sans-serif;padding:30px;max-width:800px;margin:0 auto}h1{color:#7BA89A;font-size:1.4rem;border-bottom:2px solid #7BA89A;padding-bottom:8px}h2{font-size:1.1rem;margin-top:20px;color:#333}.field{margin:8px 0}.label{font-weight:bold;color:#555}.value{margin-left:8px}.footer{margin-top:40px;border-top:1px solid #ddd;padding-top:16px;font-size:0.85rem;color:#888}</style></head><body>
+            <h1>EVOLUCAO TERAPEUTICA</h1>
+            <div class="field"><span class="label">Paciente:</span><span class="value">${patient ? patient.name : '-'}</span></div>
+            <div class="field"><span class="label">Terapeuta:</span><span class="value">${therapist ? therapist.name : '-'}</span></div>
+            <div class="field"><span class="label">Data:</span><span class="value">${formatDate(evo.date)}</span></div>
+            <div class="field"><span class="label">Tipo:</span><span class="value">${evo.type || '-'}</span></div>
+            ${evo.abordagem ? `<div class="field"><span class="label">Abordagem:</span><span class="value">${evo.abordagem}</span></div>` : ''}
+            ${evo.comportamento ? `<div class="field"><span class="label">Comportamento:</span><span class="value">${evo.comportamento}</span></div>` : ''}
+            ${evo.engajamento ? `<div class="field"><span class="label">Engajamento:</span><span class="value">${evo.engajamento}/5</span></div>` : ''}
+            ${evo.objectives ? `<div class="field"><span class="label">Objetivos trabalhados:</span><span class="value">${evo.objectives}</span></div>` : ''}
+            <h2>Descricao</h2>
+            <p>${(evo.description || '').replace(/\n/g, '<br>')}</p>
+            ${evo.incidents ? `<h2>Intercorrencias</h2><p>${evo.incidents.replace(/\n/g, '<br>')}</p>` : ''}
+            ${evo.reforcadores ? `<div class="field"><span class="label">Reforcadores:</span><span class="value">${evo.reforcadores}</span></div>` : ''}
+            <div class="field"><span class="label">Presenca:</span><span class="value">${evo.presence || '-'}</span></div>
+            <div style="margin-top:60px;display:flex;justify-content:space-between;gap:40px">
+                <div style="flex:1;text-align:center;border-top:1px solid #333;padding-top:8px">
+                    <p style="font-size:12px;margin:0">Assinatura do(a) Terapeuta</p>
+                    <p style="font-size:11px;color:#888;margin:4px 0 0">${therapist ? therapist.name : '____________________________'}</p>
+                    <p style="font-size:11px;color:#888;margin:2px 0 0">CRP/CRFa/CREFITO: ________________</p>
+                </div>
+                <div style="flex:1;text-align:center;border-top:1px solid #333;padding-top:8px">
+                    <p style="font-size:12px;margin:0">Assinatura da Coordenacao</p>
+                    <p style="font-size:11px;color:#888;margin:4px 0 0">Nome: ____________________________</p>
+                    <p style="font-size:11px;color:#888;margin:2px 0 0">Cargo: ___________________________</p>
+                </div>
+            </div>
+            <div class="footer">Prisma Saude - Cuidado que Transforma<br>Gerado em ${new Date().toLocaleDateString('pt-BR')}</div>
+            </body></html>`);
+            win.document.close();
+            win.print();
+        }
+
+        // ====== BUSCA (filtrada por terapeuta) ======
+        let _searchTimerTer = null;
+        function debounceSearchTer() {
+            clearTimeout(_searchTimerTer);
+            _searchTimerTer = setTimeout(() => doGlobalSearchTer(), 300);
+        }
+
+        function doGlobalSearchTer() {
+            const query = document.getElementById('globalSearchInputTer').value.trim().toLowerCase();
+            const container = document.getElementById('globalSearchResultsTer');
+
+            if (query.length < 3) {
+                container.innerHTML = '<p class="empty-state">Digite pelo menos 3 caracteres para buscar.</p>';
+                return;
+            }
+
+            function hl(text) {
+                if (!text) return '';
+                const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                return text.replace(new RegExp('(' + escaped + ')', 'gi'), '<span class="search-highlight">$1</span>');
+            }
+
+            const terId = currentUser.id;
+            const myPatientIds = (DB.getPatientsByTherapist ? DB.getPatientsByTherapist(terId) : DB.getPatients().filter(p => (p.therapists || []).includes(terId))).map(p => p.id);
+            const myPatients = DB.getPatients().filter(p => myPatientIds.includes(p.id));
+
+            let html = '<div class="search-results-container">';
+            let totalResults = 0;
+
+            // Search patients (only mine)
+            const patients = myPatients.filter(p =>
+                (p.name && p.name.toLowerCase().includes(query)) ||
+                (p.diagnosis && p.diagnosis.toLowerCase().includes(query)) ||
+                (p.notes && p.notes.toLowerCase().includes(query)) ||
+                (p.guardian && p.guardian.toLowerCase().includes(query))
+            );
+            if (patients.length) {
+                totalResults += patients.length;
+                html += '<div class="search-result-group"><h3>Pacientes (' + patients.length + ')</h3>';
+                patients.forEach(p => {
+                    html += '<div class="search-result-item" onclick="showSection(\'patients\')">' +
+                        '<strong>' + hl(p.name) + '</strong>' +
+                        (p.diagnosis ? '<br><small style="color:var(--text-light)">Diagnostico: ' + hl(p.diagnosis) + '</small>' : '') +
+                        (p.notes ? '<br><small style="color:var(--text-light)">' + hl(p.notes.substring(0, 80)) + '</small>' : '') +
+                        '</div>';
+                });
+                html += '</div>';
+            }
+
+            // Search evolutions (only for my patients)
+            const evolutions = DB.getEvolutions().filter(e =>
+                myPatientIds.includes(e.patientId) &&
+                ((e.text && e.text.toLowerCase().includes(query)) ||
+                (e.description && e.description.toLowerCase().includes(query)) ||
+                (e.abordagem && e.abordagem.toLowerCase().includes(query)) ||
+                (e.comportamento && e.comportamento.toLowerCase().includes(query)))
+            ).slice(0, 20);
+            if (evolutions.length) {
+                totalResults += evolutions.length;
+                html += '<div class="search-result-group"><h3>Evolucoes (' + evolutions.length + ')</h3>';
+                evolutions.forEach(e => {
+                    const patient = myPatients.find(p => p.id === e.patientId);
+                    html += '<div class="search-result-item" onclick="showSection(\'evolutions\')">' +
+                        '<strong>' + (patient ? patient.name : 'Paciente') + '</strong> <small style="color:var(--text-light)">' + (e.date ? new Date(e.date).toLocaleDateString('pt-BR') : '') + '</small>' +
+                        '<br><small>' + hl(((e.text || e.description || '')).substring(0, 120)) + '...</small>' +
+                        '</div>';
+                });
+                html += '</div>';
+            }
+
+            // Search reports (only for my patients)
+            const reports = DB.getReports().filter(r =>
+                myPatientIds.includes(r.patientId) &&
+                ((r.content && r.content.toLowerCase().includes(query)) ||
+                (r.type && r.type.toLowerCase().includes(query)))
+            ).slice(0, 10);
+            if (reports.length) {
+                totalResults += reports.length;
+                html += '<div class="search-result-group"><h3>Relatorios (' + reports.length + ')</h3>';
+                reports.forEach(r => {
+                    const patient = myPatients.find(p => p.id === r.patientId);
+                    html += '<div class="search-result-item" onclick="showSection(\'reports\')">' +
+                        '<strong>' + (patient ? patient.name : 'Paciente') + '</strong> <small style="color:var(--text-light)">' + (r.date ? new Date(r.date).toLocaleDateString('pt-BR') : '') + '</small>' +
+                        '<br><small>' + hl((r.content || '').substring(0, 120)) + '...</small>' +
+                        '</div>';
+                });
+                html += '</div>';
+            }
+
+            // Search objectives (only for my patients)
+            const objectives = (DB.getTherapeuticObjectives ? DB.getTherapeuticObjectives() : DB._cache.therapeuticObjectives || []).filter(o =>
+                myPatientIds.includes(o.patientId) &&
+                ((o.description && o.description.toLowerCase().includes(query)) ||
+                (o.domain && o.domain.toLowerCase().includes(query)) ||
+                (o.estrategia && o.estrategia.toLowerCase().includes(query)))
+            ).slice(0, 10);
+            if (objectives.length) {
+                totalResults += objectives.length;
+                html += '<div class="search-result-group"><h3>Objetivos (' + objectives.length + ')</h3>';
+                objectives.forEach(o => {
+                    const patient = myPatients.find(p => p.id === o.patientId);
+                    html += '<div class="search-result-item" onclick="showSection(\'objectives\')">' +
+                        '<strong>' + (patient ? patient.name : 'Paciente') + '</strong> <span class="badge">' + (o.status || '') + '</span>' +
+                        '<br><small>' + hl((o.description || '').substring(0, 120)) + '</small>' +
+                        '</div>';
+                });
+                html += '</div>';
+            }
+
+            // Search devolutivas (only for my patients)
+            const devolutivas = (DB.getDevolutivas ? DB.getDevolutivas() : DB._cache.devolutivas || []).filter(d =>
+                myPatientIds.includes(d.patientId) &&
+                ((d.notes && d.notes.toLowerCase().includes(query)) ||
+                (d.orientacoes && d.orientacoes.toLowerCase().includes(query)))
+            ).slice(0, 10);
+            if (devolutivas.length) {
+                totalResults += devolutivas.length;
+                html += '<div class="search-result-group"><h3>Devolutivas (' + devolutivas.length + ')</h3>';
+                devolutivas.forEach(d => {
+                    const patient = myPatients.find(p => p.id === d.patientId);
+                    html += '<div class="search-result-item" onclick="showSection(\'devolutivas\')">' +
+                        '<strong>' + (patient ? patient.name : 'Paciente') + '</strong> <small style="color:var(--text-light)">' + (d.date ? new Date(d.date).toLocaleDateString('pt-BR') : '') + '</small>' +
+                        '<br><small>' + hl((d.notes || d.orientacoes || '').substring(0, 120)) + '</small>' +
+                        '</div>';
+                });
+                html += '</div>';
+            }
+
+            if (totalResults === 0) {
+                html += '<p class="empty-state">Nenhum resultado encontrado para "' + query + '".</p>';
+            } else {
+                html = '<p style="color:var(--text-light);font-size:0.85rem;margin-bottom:12px">' + totalResults + ' resultado(s) encontrado(s)</p>' + html;
+            }
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function initEngajFiltersTer() {
+            var sel = document.getElementById('engajPatientTer');
+            if (!sel) return;
+            var myPatients = DB.getPatientsByTherapist(currentUser.id);
+            sel.innerHTML = '<option value="">Selecione um paciente...</option>';
+            for (var i = 0; i < myPatients.length; i++) {
+                sel.innerHTML += '<option value="' + myPatients[i].id + '">' + myPatients[i].name + '</option>';
+            }
+        }
+
+        function loadEngajChartTer() {
+            const patientId = document.getElementById('engajPatientTer').value;
+            const period = parseInt(document.getElementById('engajPeriodTer').value);
+            const container = document.getElementById('engajChartCardTer');
+            const user = currentUser;
+
+            const sel = document.getElementById('engajPatientTer');
+            if (sel.options.length <= 1) {
+                initEngajFiltersTer();
+            }
+
+            if (!patientId) {
+                container.innerHTML = '<p class="empty-state">Selecione um paciente para ver o grafico de engajamento.</p>';
+                return;
+            }
+
+            let evos = DB.getEvolutionsByPatient(patientId).filter(e => e.engajamento);
+
+            if (period > 0) {
+                const cutoff = new Date();
+                cutoff.setMonth(cutoff.getMonth() - period);
+                evos = evos.filter(e => new Date(e.date) >= cutoff);
+            }
+
+            evos.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            if (!evos.length) {
+                container.innerHTML = '<p class="empty-state">Nenhuma evolucao com registro de engajamento encontrada.</p>';
+                return;
+            }
+
+            const patient = DB.getPatientsByTherapist(user.id).find(p => p.id === patientId);
+            const avg = (evos.reduce((s, e) => s + parseInt(e.engajamento), 0) / evos.length).toFixed(1);
+            const trend = evos.length >= 2 ? (parseInt(evos[evos.length-1].engajamento) - parseInt(evos[0].engajamento)) : 0;
+            const trendIcon = trend > 0 ? '&#8593;' : trend < 0 ? '&#8595;' : '&#8594;';
+            const trendColor = trend > 0 ? 'var(--success)' : trend < 0 ? 'var(--danger)' : 'var(--text-light)';
+
+            function getBarColor(val) {
+                if (val >= 4) return 'var(--success)';
+                if (val >= 3) return '#FF9800';
+                return 'var(--danger)';
+            }
+
+            let html = '<div class="card-header"><h2>Engajamento - ' + (patient ? patient.name : '') + '</h2></div>';
+
+            html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;padding:12px;background:var(--background);border-radius:10px">';
+            html += '<div style="text-align:center"><div style="font-size:1.4rem;font-weight:700;color:var(--primary)">' + avg + '/5</div><div style="font-size:0.75rem;color:var(--text-light)">Media</div></div>';
+            html += '<div style="text-align:center"><div style="font-size:1.4rem;font-weight:700;color:var(--primary)">' + evos.length + '</div><div style="font-size:0.75rem;color:var(--text-light)">Registros</div></div>';
+            html += '<div style="text-align:center"><div style="font-size:1.4rem;font-weight:700;color:' + trendColor + '">' + trendIcon + '</div><div style="font-size:0.75rem;color:var(--text-light)">Tendencia</div></div>';
+            html += '</div>';
+
+            html += '<div class="engagement-chart">';
+            evos.forEach(e => {
+                const val = parseInt(e.engajamento);
+                const heightPct = (val / 5) * 100;
+                const color = getBarColor(val);
+                html += '<div class="chart-bar" style="height:' + heightPct + '%;background:' + color + '"><div class="chart-tooltip">' + new Date(e.date).toLocaleDateString('pt-BR') + ' - Nota: ' + val + '/5</div></div>';
+            });
+            html += '</div>';
+
+            html += '<div class="chart-labels">';
+            evos.forEach(e => {
+                const d = new Date(e.date);
+                html += '<span>' + String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0') + '</span>';
+            });
+            html += '</div>';
+
+            html += '<div class="chart-legend">';
+            html += '<div class="chart-legend-item"><div class="chart-legend-dot" style="background:var(--success)"></div> Bom (4-5)</div>';
+            html += '<div class="chart-legend-item"><div class="chart-legend-dot" style="background:#FF9800"></div> Regular (3)</div>';
+            html += '<div class="chart-legend-item"><div class="chart-legend-dot" style="background:var(--danger)"></div> Baixo (1-2)</div>';
+            html += '</div>';
+
+            container.innerHTML = html;
+        }
+
+        // ====== MENSAGENS INTERNAS ======
+        function openNewMessageModalTer() {
+            const select = document.getElementById('msgToTer');
+            select.innerHTML = '<option value="">Selecione...</option>';
+            const users = DB.getUsers().filter(u => u.role !== 'paciente' && u.id !== currentUser.id);
+            users.forEach(u => {
+                select.innerHTML += '<option value="' + u.id + '">' + u.name + ' (' + u.role + ')</option>';
+            });
+            document.getElementById('formNewMessageTer').reset();
+            document.getElementById('modalNewMessageTer').style.display = 'flex';
+        }
+
+        document.getElementById('formNewMessageTer').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = this.querySelector('button[type=submit]');
+            setLoadingBtn(btn, true);
+            const toUser = DB.getUsers().find(u => u.id === document.getElementById('msgToTer').value);
+            await DB.addMessage({
+                fromId: currentUser.id,
+                fromName: currentUser.name,
+                toId: document.getElementById('msgToTer').value,
+                toName: toUser ? toUser.name : '',
+                subject: document.getElementById('msgSubjectTer').value,
+                body: document.getElementById('msgBodyTer').value
+            });
+            setLoadingBtn(btn, false);
+            document.getElementById('modalNewMessageTer').style.display = 'none';
+            showToast('Mensagem enviada com sucesso!');
+            loadMessagesTer();
+            updateMsgBadgeTer();
+        });
+
+        function loadMessagesTer() {
+            const filter = document.getElementById('msgFilterTer').value;
+            let msgs = DB.getMessagesByUser(currentUser.id);
+            if (filter === 'received') msgs = msgs.filter(m => m.toId === currentUser.id);
+            else if (filter === 'sent') msgs = msgs.filter(m => m.fromId === currentUser.id);
+            else if (filter === 'unread') msgs = msgs.filter(m => m.toId === currentUser.id && !m.read);
+
+            const container = document.getElementById('messagesListTer');
+            if (!msgs.length) {
+                container.innerHTML = '<p class="empty-state">Nenhuma mensagem encontrada.</p>';
+                return;
+            }
+            container.innerHTML = msgs.map(m => {
+                const isSent = m.fromId === currentUser.id;
+                const otherName = isSent ? m.toName : m.fromName;
+                const direction = isSent ? 'Enviada para' : 'Recebida de';
+                const unreadClass = (!isSent && !m.read) ? 'msg-unread' : '';
+                return '<div class="card msg-card ' + unreadClass + '" style="margin-bottom:10px;cursor:pointer" onclick="viewMessageTer(\'' + m.id + '\')">' +
+                    '<div style="display:flex;justify-content:space-between;align-items:center">' +
+                    '<div><strong>' + m.subject + '</strong><br><small style="color:var(--text-light)">' + direction + ' <b>' + otherName + '</b></small></div>' +
+                    '<div style="text-align:right"><small style="color:var(--text-light)">' + new Date(m.createdAt).toLocaleDateString('pt-BR') + '</small>' +
+                    (!isSent && !m.read ? '<br><span class="badge badge-blue" style="font-size:0.65rem">Nova</span>' : '') +
+                    '</div></div></div>';
+            }).join('');
+        }
+
+        function viewMessageTer(id) {
+            const m = DB.getMessages().find(msg => msg.id === id);
+            if (!m) return;
+            if (m.toId === currentUser.id && !m.read) {
+                DB.markMessageRead(id);
+                updateMsgBadgeTer();
+            }
+            const isSent = m.fromId === currentUser.id;
+            const html = '<div class="card"><div class="card-header"><h2>' + m.subject + '</h2></div>' +
+                '<p style="color:var(--text-light);font-size:0.85rem;margin-bottom:12px">' + (isSent ? 'Para: ' + m.toName : 'De: ' + m.fromName) + ' &mdash; ' + new Date(m.createdAt).toLocaleString('pt-BR') + '</p>' +
+                '<div style="white-space:pre-wrap;line-height:1.6">' + m.body + '</div>' +
+                (!isSent ? '<div style="margin-top:16px"><button class="btn btn-primary btn-small" style="width:auto" onclick="replyMessageTer(\'' + id + '\')">Responder</button></div>' : '') +
+                '</div>';
+            document.getElementById('messagesListTer').innerHTML = '<a class="back-btn" onclick="loadMessagesTer()" style="cursor:pointer">&#8592; Voltar</a>' + html;
+        }
+
+        function replyMessageTer(id) {
+            const m = DB.getMessages().find(msg => msg.id === id);
+            if (!m) return;
+            document.getElementById('msgToTer').innerHTML = '<option value="' + m.fromId + '">' + m.fromName + '</option>';
+            document.getElementById('msgSubjectTer').value = 'Re: ' + m.subject;
+            document.getElementById('msgBodyTer').value = '';
+            document.getElementById('modalNewMessageTer').style.display = 'flex';
+        }
+
+        async function markAllMsgReadTer() {
+            await DB.markAllMessagesRead(currentUser.id);
+            loadMessagesTer();
+            updateMsgBadgeTer();
+            showToast('Todas as mensagens marcadas como lidas.');
+        }
+
+        function updateMsgBadgeTer() {
+            const count = DB.getUnreadMessages(currentUser.id).length;
+            const badge = document.getElementById('msgBadgeTer2');
+            if (badge) {
+                badge.textContent = count;
+                badge.style.display = count > 0 ? '' : 'none';
+            }
+        }
+
+        // ====== REAVALIACOES PROXIMAS (read-only) ======
+        function loadReavAlertsTer() {
+            const myPatients = DB.getPatientsByTherapist(currentUser.id).map(p => p.id);
+            const reavals = DB.getReassessments().filter(r =>
+                myPatients.includes(r.patientId) && r.status !== 'concluida'
+            ).sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+
+            const container = document.getElementById('reavAlertsTer');
+            if (!reavals.length) {
+                container.innerHTML = '<p class="empty-state">Nenhuma reavaliacao pendente.</p>';
+                return;
+            }
+
+            const today = new Date().toISOString().split('T')[0];
+            container.innerHTML = reavals.map(r => {
+                const patient = DB.getPatients().find(p => p.id === r.patientId);
+                const isOverdue = r.dueDate < today;
+                return '<div style="padding:10px;border-left:4px solid ' + (isOverdue ? 'var(--danger)' : 'var(--primary)') + ';background:' + (isOverdue ? 'var(--danger-light)' : 'rgba(123,168,154,0.04)') + ';border-radius:0 8px 8px 0;margin-bottom:8px">' +
+                    '<strong>' + (patient ? patient.name : '') + '</strong> - ' + r.type +
+                    '<br><small style="color:var(--text-light)">' + new Date(r.dueDate).toLocaleDateString('pt-BR') + (isOverdue ? ' <span style="color:var(--danger)">(ATRASADA)</span>' : '') + '</small>' +
+                    '</div>';
+            }).join('');
+        }
+
+        // ======= MINHAS TAREFAS =======
+        function loadTodosTer() {
+            var container = document.getElementById('dashTodoListTer');
+            if (!container) return;
+            db.collection('config').doc('todos').get().then(function(snap) {
+                if (!snap.exists || !snap.data().items) {
+                    container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-light)">Nenhuma tarefa.</div>';
+                    return;
+                }
+                var allTodos = snap.data().items;
+                var myId = currentUser ? currentUser.id : '';
+                var todos = [];
+                for (var i = 0; i < allTodos.length; i++) {
+                    if (allTodos[i].assignee === myId && allTodos[i].status === 'pendente') todos.push(allTodos[i]);
+                }
+                if (todos.length === 0) {
+                    container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-light)">Nenhuma tarefa pendente.</div>';
+                    return;
+                }
+                var prioColors = { alta: 'badge-coral', media: 'badge-yellow', baixa: 'badge-green' };
+                var prioNames = { alta: 'Alta', media: 'Media', baixa: 'Baixa' };
+                var prioBorderColors = { alta: '#c0392b', media: '#e67e22', baixa: '#27ae60' };
+                var prioBgColors = { alta: '#f9d6d5', media: '#fdebd0', baixa: '#d5f5e3' };
+                var html = '';
+                for (var i = 0; i < todos.length; i++) {
+                    var t = todos[i];
+                    var isOverdue = t.dueDate && new Date(t.dueDate) < new Date();
+                    var dueDateStr = t.dueDate ? new Date(t.dueDate + 'T12:00:00').toLocaleDateString('pt-BR') : '';
+                    var bc = prioBorderColors[t.priority] || '#e67e22';
+                    var bg = prioBgColors[t.priority] || '#fdebd0';
+                    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-left:4px solid ' + bc + ';background:' + bg + ';margin-bottom:2px">';
+                    html += '<div style="display:flex;align-items:center;gap:8px">';
+                    html += '<input type="checkbox" onchange="completeTodoTer(\'' + t.id + '\')" style="width:16px;height:16px;cursor:pointer;accent-color:var(--primary)">';
+                    html += '<span style="font-size:0.9rem">' + t.title + '</span>';
+                    html += '<span class="badge ' + (prioColors[t.priority] || 'badge-yellow') + '" style="font-size:0.7rem">' + (prioNames[t.priority] || 'Media') + '</span>';
+                    if (isOverdue) html += '<span class="badge badge-coral" style="font-size:0.7rem">Atrasada</span>';
+                    html += '</div>';
+                    if (dueDateStr) html += '<span style="font-size:0.75rem;color:' + (isOverdue ? 'var(--coral)' : 'var(--text-light)') + '">' + dueDateStr + '</span>';
+                    html += '</div>';
+                }
+                container.innerHTML = html;
+            }).catch(function() {
+                container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-light)">Erro ao carregar tarefas.</div>';
+            });
+        }
+        function completeTodoTer(id) {
+            db.collection('config').doc('todos').get().then(function(snap) {
+                if (!snap.exists) return;
+                var items = snap.data().items || [];
+                for (var i = 0; i < items.length; i++) {
+                    if (items[i].id === id) { items[i].status = 'concluida'; items[i].completedAt = new Date().toISOString(); break; }
+                }
+                db.collection('config').doc('todos').set({ items: items }).then(function() {
+                    localStorage.setItem('prisma_todos', JSON.stringify(items));
+                    loadTodosTer();
+                    showToast('Tarefa concluida!');
+                });
+            });
+        }
+
         function doLogout() { DB.logout(); window.location.href = 'login.html'; }
+
     </script>
 </body>
 </html>
