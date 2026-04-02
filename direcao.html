@@ -1,0 +1,2056 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prisma - Direcao</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="img/logo.png">
+</head>
+<body>
+    <!-- Loading -->
+    <div id="loadingScreen" style="position:fixed;top:0;left:0;right:0;bottom:0;background:var(--background);display:flex;align-items:center;justify-content:center;z-index:9999">
+        <div style="text-align:center">
+            <img src="img/logo.png" alt="Prisma" style="max-width:120px;height:auto;margin-bottom:8px" onerror="this.style.display='none';this.nextElementSibling.style.display=''">
+            <h2 style="color:var(--primary);font-family:Poppins,sans-serif;font-size:1.8rem;display:none">PRISMA</h2>
+            <p style="color:var(--text-light);font-family:Poppins,sans-serif">Carregando...</p>
+        </div>
+    </div>
+
+    <!-- Menu Mobile -->
+    <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="img/logo.png" alt="Prisma" style="max-width:100px;height:auto;margin-bottom:4px" onerror="this.style.display='none';this.nextElementSibling.style.display=''">
+                <h2 style="font-size:1.4rem;font-weight:700;margin-bottom:4px;display:none">PRISMA</h2>
+                <p id="sidebarUserName" style="font-size:0.85rem;opacity:0.9;margin-bottom:6px">Direcao</p>
+                <span class="role-badge direcao" style="background:#F3E5F5;color:#7B1FA2">Direcao</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a class="nav-item active" onclick="showSection('dashboard')" data-section="dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                    Painel Geral
+                </a>
+                <a class="nav-item" onclick="showSection('agenda')" data-section="agenda">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    Agenda
+                </a>
+                <a class="nav-item" onclick="showSection('financeiro')" data-section="financeiro">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    Financeiro
+                </a>
+                <a class="nav-item" onclick="showSection('frequencia')" data-section="frequencia">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    Frequencia
+                </a>
+                <a class="nav-item" onclick="showSection('evolucoes')" data-section="evolucoes">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    Evolucoes
+                </a>
+                <a class="nav-item" onclick="showSection('documentacao')" data-section="documentacao">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    Documentacao
+                </a>
+                <a class="nav-item" onclick="showSection('relatorios')" data-section="relatorios">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    Relatorios
+                </a>
+                <a class="nav-item" onclick="showSection('family-meetings')" data-section="family-meetings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    Atendimentos Familia
+                </a>
+                <a class="nav-item" onclick="showSection('espelhos')" data-section="espelhos">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    Espelhos
+                </a>
+                <a class="nav-item" onclick="showSection('espelho-terapeuta')" data-section="espelho-terapeuta">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Espelho Terapeuta
+                </a>
+                <a class="nav-item" onclick="showSection('contratos')" data-section="contratos">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    Contratos
+                </a>
+                <a class="nav-item" onclick="showSection('indicadores')" data-section="indicadores">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+                    Indicadores
+                </a>
+                <a class="nav-item" onclick="showSection('profile')" data-section="profile">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Perfil
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a class="nav-item" onclick="doLogout()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    Sair
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- === DASHBOARD === -->
+            <div class="section active" id="section-dashboard">
+                <div class="page-header">
+                    <div>
+                        <h1>Painel da Direcao</h1>
+                        <p class="welcome-text">Bem-vindo(a), <span id="welcomeName"></span></p>
+                    </div>
+                </div>
+                <div class="stats-grid" id="statsGrid"></div>
+                <div class="card">
+                    <div class="card-header"><h2>Proximos Atendimentos com Familia</h2></div>
+                    <div id="dashUpcomingFM"></div>
+                </div>
+            </div>
+
+            <!-- === AGENDA === -->
+            <div class="section" id="section-agenda">
+                <div class="page-header">
+                    <h1>Agenda da Clinica</h1>
+                </div>
+                <div class="filter-bar">
+                    <select id="agendaView" onchange="loadAgendaDir()" style="padding:10px;border:2px solid var(--border);border-radius:10px;font-family:Poppins,sans-serif">
+                        <option value="semana">Visao Semanal</option>
+                        <option value="mes">Visao Mensal</option>
+                    </select>
+                    <input type="date" id="agendaDate" onchange="loadAgendaDir()">
+                    <select id="agendaTherapistFilter" onchange="loadAgendaDir()">
+                        <option value="">Todos os terapeutas</option>
+                    </select>
+                    <select id="agendaPatientFilter" onchange="loadAgendaDir()">
+                        <option value="">Todos os pacientes</option>
+                    </select>
+                    <div style="display:flex;gap:8px">
+                        <button class="btn btn-secondary" style="width:auto" onclick="changeAgendaPeriod(-1)">&larr; Anterior</button>
+                        <button class="btn btn-secondary" style="width:auto" onclick="setAgendaToday()">Hoje</button>
+                        <button class="btn btn-secondary" style="width:auto" onclick="changeAgendaPeriod(1)">Proximo &rarr;</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h2 id="agendaWeekLabel">Semana</h2></div>
+                    <div id="agendaDirContent"></div>
+                </div>
+                <div id="agendaDirEmpty" class="empty-state" style="display:none"><h3>Nenhum atendimento agendado</h3></div>
+            </div>
+
+            <!-- === FINANCEIRO (Pagamentos + Espelhos inline) === -->
+            <div class="section" id="section-financeiro">
+                <div class="page-header">
+                    <h1>Financeiro</h1>
+                    <div style="display:flex;gap:8px">
+                        <button class="btn btn-secondary" style="width:auto" onclick="printPagamentos()">Imprimir</button>
+                        <button class="btn btn-primary" style="width:auto" onclick="openAddPaymentModal()">+ Novo Pagamento</button>
+                    </div>
+                </div>
+                <div class="filter-bar">
+                    <input type="month" id="payMonth" onchange="loadPagamentos()">
+                    <select id="payPatientFilter" onchange="loadPagamentos()">
+                        <option value="">Todos os pacientes</option>
+                    </select>
+                    <select id="payStatusFilter" onchange="loadPagamentos()">
+                        <option value="">Todos os status</option>
+                        <option value="pago">Pago</option>
+                        <option value="pendente">Pendente</option>
+                        <option value="parcial">Parcial</option>
+                    </select>
+                </div>
+                <div class="stats-grid" id="finStatsGridDir"></div>
+                <div class="card">
+                    <div class="table-container">
+                        <table id="payTable" style="width:100%;border-collapse:collapse">
+                            <thead>
+                                <tr>
+                                    <th style="padding:10px;text-align:left;border-bottom:2px solid var(--border);font-size:0.85rem">Paciente</th>
+                                    <th style="padding:10px;text-align:left;border-bottom:2px solid var(--border);font-size:0.85rem">Mes Ref.</th>
+                                    <th style="padding:10px;text-align:left;border-bottom:2px solid var(--border);font-size:0.85rem">Valor</th>
+                                    <th style="padding:10px;text-align:left;border-bottom:2px solid var(--border);font-size:0.85rem">Status</th>
+                                    <th style="padding:10px;text-align:left;border-bottom:2px solid var(--border);font-size:0.85rem">Metodo</th>
+                                    <th style="padding:10px;text-align:left;border-bottom:2px solid var(--border);font-size:0.85rem">Data Pgto</th>
+                                    <th style="padding:10px;text-align:left;border-bottom:2px solid var(--border);font-size:0.85rem">Obs</th>
+                                    <th style="padding:10px;text-align:left;border-bottom:2px solid var(--border);font-size:0.85rem">Pago por</th>
+                                    <th style="padding:10px;text-align:left;border-bottom:2px solid var(--border);font-size:0.85rem">Acoes</th>
+                                </tr>
+                            </thead>
+                            <tbody id="payTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="payEmpty" class="empty-state" style="display:none"><h3>Nenhum pagamento encontrado</h3></div>
+            </div>
+
+            <!-- === FREQUENCIA === -->
+            <div class="section" id="section-frequencia">
+                <div class="page-header">
+                    <h1>Frequencia</h1>
+                    <div style="display:flex;gap:8px">
+                        <button class="btn btn-secondary" style="width:auto" onclick="printFrequencia()">Imprimir</button>
+                        <button class="btn btn-primary" style="width:auto" onclick="openAddAttendanceModal()">+ Registrar Frequencia</button>
+                    </div>
+                </div>
+                <div class="filter-bar">
+                    <input type="month" id="freqMonth" onchange="loadFrequencia()">
+                    <select id="freqPatientFilter" onchange="loadFrequencia()">
+                        <option value="">Todos os pacientes</option>
+                    </select>
+                </div>
+                <div class="card">
+                    <div class="table-container">
+                        <table id="freqTable">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Paciente</th>
+                                    <th>Terapeuta</th>
+                                    <th>Status</th>
+                                    <th>Acoes</th>
+                                </tr>
+                            </thead>
+                            <tbody id="freqTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="freqEmpty" class="empty-state" style="display:none"><h3>Nenhum registro de frequencia encontrado</h3></div>
+            </div>
+
+            <!-- === EVOLUCOES === -->
+            <div class="section" id="section-evolucoes">
+                <div class="page-header">
+                    <h1>Evolucoes</h1>
+                </div>
+                <div class="filter-bar">
+                    <select id="evoPatientFilter" onchange="loadAllEvolutions()">
+                        <option value="">Todos os pacientes</option>
+                    </select>
+                    <select id="evoTherapistFilter" onchange="loadAllEvolutions()">
+                        <option value="">Todos os terapeutas</option>
+                    </select>
+                    <select id="evoScopeFilter" onchange="loadAllEvolutions()">
+                        <option value="">Todos os tipos</option>
+                        <option value="individual">Individual</option>
+                        <option value="multiprofissional">Multiprofissional</option>
+                    </select>
+                </div>
+                <div id="allEvolutionsList" class="evolution-list"></div>
+                <div id="evoEmpty" class="empty-state" style="display:none"><h3>Nenhuma evolucao encontrada</h3></div>
+            </div>
+
+            <!-- === DOCUMENTACAO === -->
+            <div class="section" id="section-documentacao">
+                <div class="page-header">
+                    <h1>Documentacao dos Terapeutas</h1>
+                </div>
+                <div class="filter-bar">
+                    <select id="docTherapistFilter" onchange="loadAllDocuments()">
+                        <option value="">Todos os terapeutas</option>
+                    </select>
+                </div>
+                <div id="allDocumentsList"></div>
+                <div id="docEmpty" class="empty-state" style="display:none"><h3>Nenhum documento encontrado</h3></div>
+            </div>
+
+            <!-- === RELATORIOS === -->
+            <div class="section" id="section-relatorios">
+                <div class="page-header">
+                    <h1>Relatorios</h1>
+                </div>
+                <div class="filter-bar">
+                    <select id="repPatientFilter" onchange="loadAllReports()">
+                        <option value="">Todos os pacientes</option>
+                    </select>
+                    <select id="repTherapistFilter" onchange="loadAllReports()">
+                        <option value="">Todos os terapeutas</option>
+                    </select>
+                </div>
+                <div id="allReportsList" class="evolution-list"></div>
+                <div id="repEmpty" class="empty-state" style="display:none"><h3>Nenhum relatorio encontrado</h3></div>
+            </div>
+
+            <!-- === ATENDIMENTOS COM FAMILIA === -->
+            <div class="section" id="section-family-meetings">
+                <div class="page-header">
+                    <h1>Atendimentos com Familia</h1>
+                    <button class="btn btn-primary" style="width:auto" onclick="openAddFamilyMeetingModal()">+ Novo Atendimento</button>
+                </div>
+                <div class="filter-bar">
+                    <select id="fmPatientFilter" onchange="loadFamilyMeetings()">
+                        <option value="">Todos os pacientes</option>
+                    </select>
+                    <select id="fmStatusFilter" onchange="loadFamilyMeetings()">
+                        <option value="">Todos os status</option>
+                        <option value="agendada">Agendadas</option>
+                        <option value="confirmada">Confirmadas</option>
+                        <option value="realizada">Realizadas</option>
+                        <option value="cancelada">Canceladas</option>
+                    </select>
+                </div>
+                <div id="familyMeetingsList"></div>
+            </div>
+
+            <!-- === ESPELHOS === -->
+            <div class="section" id="section-espelhos">
+                <div class="page-header">
+                    <h1>Espelhos</h1>
+                    <button class="btn btn-primary" style="width:auto" onclick="openGenerateStatementModal()">+ Gerar Espelho</button>
+                </div>
+                <div id="statementsList" class="evolution-list"></div>
+                <div id="statementsEmpty" class="empty-state" style="display:none"><h3>Nenhum espelho gerado ainda</h3></div>
+            </div>
+
+            <!-- === PERFIL === -->
+            <div class="section" id="section-profile">
+                <div class="page-header"><h1>Meu Perfil</h1></div>
+                <div class="profile-card">
+                    <div class="profile-avatar-large" id="profileAvatar"></div>
+                    <div class="profile-info">
+                        <h2 id="profileName"></h2>
+                        <p id="profileRole"></p>
+                    </div>
+                    <form id="formProfileContact" style="margin-bottom:24px">
+                        <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="profileEmail" placeholder="seu@email.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Celular</label>
+                                <input type="tel" id="profilePhone" placeholder="(00) 00000-0000">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width:auto">Salvar Contato</button>
+                    </form>
+                    <hr style="border:none;border-top:1px solid var(--border);margin:16px 0">
+                    <form id="formPassword">
+                        <div class="form-group">
+                            <label>Senha atual</label>
+                            <input type="password" id="currentPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nova senha</label>
+                            <input type="password" id="newPassword" required minlength="6">
+                        </div>
+                        <div class="form-group">
+                            <label>Confirmar nova senha</label>
+                            <input type="password" id="confirmPassword" required minlength="6">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Alterar Senha</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- === CONTRATOS === -->
+            <div class="section" id="section-contratos">
+                <div class="page-header">
+                    <h1>Contratos</h1>
+                </div>
+                <div class="filter-bar">
+                    <select id="contratoPatientFilter" onchange="loadContratosDir()">
+                        <option value="">Todos os pacientes</option>
+                    </select>
+                </div>
+                <div class="card" style="margin-bottom:20px">
+                    <div class="card-header"><h2>Gerar / Upload Contrato</h2></div>
+                    <div style="display:flex;gap:12px;flex-wrap:wrap">
+                        <select id="contratoPatientSelect" style="padding:10px;border:2px solid var(--border);border-radius:10px;font-family:Poppins,sans-serif">
+                            <option value="">Selecionar paciente...</option>
+                        </select>
+                        <button class="btn btn-primary" style="width:auto" onclick="gerarContratoDir()">Gerar Contrato</button>
+                        <label class="btn btn-secondary" style="width:auto;cursor:pointer">
+                            Upload Contrato
+                            <input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="uploadContratoDir(this)">
+                        </label>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h2>Todos os Contratos</h2></div>
+                    <div id="contratosDirList"></div>
+                </div>
+            </div>
+
+            <!-- === INDICADORES === -->
+            <div class="section" id="section-indicadores">
+                <div class="page-header">
+                    <h1>Indicadores de Gestao</h1>
+                    <button class="btn btn-secondary" style="width:auto" onclick="printIndicadores()">Imprimir</button>
+                </div>
+                <div class="filter-bar">
+                    <input type="month" id="indicadoresMonth" onchange="loadIndicadores()">
+                </div>
+                <div class="stats-grid" id="indicadoresGrid"></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px">
+                    <div class="card">
+                        <div class="card-header"><h2>Atendimentos por Terapeuta</h2></div>
+                        <div id="indicadoresByTherapist"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><h2>Frequencia por Paciente</h2></div>
+                        <div id="indicadoresByPatient"></div>
+                    </div>
+                </div>
+                <div class="card" style="margin-top:20px">
+                    <div class="card-header"><h2>Resumo Financeiro</h2></div>
+                    <div id="indicadoresFinanceiro"></div>
+                </div>
+            </div>
+
+            <!-- === ESPELHO MENSAL DO TERAPEUTA === -->
+            <div class="section" id="section-espelho-terapeuta">
+                <div class="page-header">
+                    <h1>Espelho Mensal do Terapeuta</h1>
+                    <button class="btn btn-primary" style="width:auto" onclick="openEspelhoTerapeutaModal()">+ Gerar Espelho</button>
+                </div>
+                <div id="espelhoTerapeutaResult"></div>
+                <div id="espelhoTerapeutaEmpty" class="empty-state"><h3>Selecione um terapeuta e mes para gerar o espelho</h3></div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Modal: Espelho Mensal Terapeuta -->
+    <div class="modal-overlay" id="modalEspelhoTerapeuta">
+        <div class="modal">
+            <h2>Gerar Espelho Mensal do Terapeuta</h2>
+            <form id="formEspelhoTerapeuta">
+                <div class="form-group">
+                    <label>Terapeuta</label>
+                    <select id="etTherapist" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Mes de Referencia</label>
+                    <input type="month" id="etMonth" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalEspelhoTerapeuta')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="width:auto">Gerar Espelho</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Novo Pagamento -->
+    <div class="modal-overlay" id="modalPayment">
+        <div class="modal">
+            <h2 id="modalPaymentTitle">Novo Pagamento</h2>
+            <form id="formPayment">
+                <input type="hidden" id="editPaymentId">
+                <div class="form-group">
+                    <label>Paciente</label>
+                    <select id="payPatient" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Mes de referencia</label>
+                    <input type="month" id="payRefMonth" required>
+                </div>
+                <div class="form-group">
+                    <label>Valor (R$)</label>
+                    <input type="number" id="payAmount" required step="0.01" min="0" placeholder="0,00">
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="payStatus" required>
+                        <option value="pendente">Pendente</option>
+                        <option value="pago">Pago</option>
+                        <option value="parcial">Parcial</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Metodo de pagamento</label>
+                    <select id="payMethod">
+                        <option value="">-- Selecione --</option>
+                        <option value="dinheiro">Dinheiro</option>
+                        <option value="pix">PIX</option>
+                        <option value="cartao">Cartao</option>
+                        <option value="boleto">Boleto</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Data do pagamento</label>
+                    <input type="date" id="payDate">
+                </div>
+                <div class="form-group">
+                    <label>Observacoes</label>
+                    <textarea id="payNotes" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Pago por (responsavel)</label>
+                    <input type="text" id="payPaidByDir" placeholder="Ex: Mae, Pai, Responsavel financeiro...">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalPayment')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="width:auto">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Registrar Frequencia -->
+    <div class="modal-overlay" id="modalAttendance">
+        <div class="modal">
+            <h2>Registrar Frequencia</h2>
+            <form id="formAttendance">
+                <div class="form-group">
+                    <label>Paciente</label>
+                    <select id="attPatient" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Terapeuta</label>
+                    <select id="attTherapist" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Data</label>
+                    <input type="date" id="attDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="attStatus" required>
+                        <option value="presente">Presente</option>
+                        <option value="falta">Falta</option>
+                        <option value="atraso">Atraso</option>
+                        <option value="justificada">Justificada</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Observacoes</label>
+                    <textarea id="attNotes" rows="2"></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalAttendance')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="width:auto">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Gerar Espelho -->
+    <div class="modal-overlay" id="modalStatement">
+        <div class="modal">
+            <h2>Gerar Espelho</h2>
+            <form id="formStatement">
+                <div class="form-group">
+                    <label>Paciente</label>
+                    <select id="stmPatient" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Tipo</label>
+                    <select id="stmType" required onchange="updateStatementPeriodField()">
+                        <option value="mensal">Mensal</option>
+                        <option value="anual">Anual</option>
+                    </select>
+                </div>
+                <div class="form-group" id="stmPeriodMonthGroup">
+                    <label>Periodo (Mes)</label>
+                    <input type="month" id="stmPeriodMonth" required>
+                </div>
+                <div class="form-group" id="stmPeriodYearGroup" style="display:none">
+                    <label>Periodo (Ano)</label>
+                    <input type="number" id="stmPeriodYear" min="2020" max="2030" placeholder="2026">
+                </div>
+                <div class="form-group">
+                    <label>Observacoes</label>
+                    <textarea id="stmNotes" rows="2"></textarea>
+                </div>
+                <div id="stmPreview" class="card" style="background:var(--background);margin-top:12px;padding:16px;display:none">
+                    <h3 style="font-size:0.9rem;color:var(--text-medium);margin-bottom:8px">Pre-visualizacao:</h3>
+                    <div id="stmPreviewContent"></div>
+                </div>
+                <div style="margin-top:8px">
+                    <button type="button" class="btn btn-secondary" style="width:auto" onclick="previewStatement()">Calcular</button>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalStatement')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="width:auto">Gerar Espelho</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Atendimento com Familia -->
+    <div class="modal-overlay" id="modalFamilyMeeting">
+        <div class="modal">
+            <h2 id="modalFMTitle">Novo Atendimento com Familia</h2>
+            <form id="formFamilyMeeting">
+                <input type="hidden" id="editFMId">
+                <div class="form-group"><label>Paciente</label><select id="fmPatient" required></select></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Data</label><input type="date" id="fmDate" required></div>
+                    <div class="form-group"><label>Horario</label><input type="time" id="fmTime"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tipo</label>
+                        <select id="fmType">
+                            <option value="presencial">Presencial</option>
+                            <option value="online">Online</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Local</label><input type="text" id="fmLocation" placeholder="Sala, link da reuniao..."></div>
+                </div>
+                <div class="form-group">
+                    <label>Terapeutas participantes</label>
+                    <div id="fmTherapistsCheckboxes" class="therapist-checkboxes"></div>
+                </div>
+                <div class="form-group">
+                    <label>Contatos da Familia</label>
+                    <div id="fmFamilyContacts"></div>
+                    <button type="button" class="btn btn-small btn-secondary" style="margin-top:8px" onclick="addFamilyContactField()">+ Adicionar Contato</button>
+                </div>
+                <div class="form-group"><label>Pauta</label><textarea id="fmAgenda" rows="3" placeholder="Assuntos a serem discutidos..."></textarea></div>
+                <div class="form-group"><label>Observacoes</label><textarea id="fmNotes" rows="2" placeholder="Notas..."></textarea></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalFamilyMeeting')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="width:auto">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/data.js?v=20260313a"></script>
+    <script>
+        // ======= AUTH CHECK =======
+        const currentUser = DB.getCurrentUser();
+        if (!currentUser || currentUser.role !== 'direcao') {
+            window.location.href = 'login.html';
+        }
+
+        // ======= INIT =======
+        DB.init().then(() => {
+            document.getElementById('loadingScreen').style.display = 'none';
+            startApp();
+        }).catch(err => {
+            console.error('Erro DB.init:', err);
+            document.getElementById('loadingScreen').innerHTML = '<div style="text-align:center;padding:40px;color:#e74c3c"><h2>Erro ao carregar</h2><p>' + (err.message || err) + '</p><button onclick="location.reload()" style="padding:10px 20px;margin-top:20px;cursor:pointer">Tentar novamente</button></div>';
+        });
+
+        function startApp() {
+            document.getElementById('sidebarUserName').textContent = currentUser.name;
+            document.getElementById('welcomeName').textContent = currentUser.name;
+            loadDashboard();
+            populateFilters();
+        }
+
+        // ======= NAVIGATION =======
+        function showSection(name) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById('section-' + name).classList.add('active');
+            document.querySelectorAll('.sidebar-nav .nav-item').forEach(n => n.classList.remove('active'));
+            const navItem = document.querySelector(`.nav-item[data-section="${name}"]`);
+            if (navItem) navItem.classList.add('active');
+            document.querySelector('.sidebar').classList.remove('open');
+
+            if (name === 'dashboard') loadDashboard();
+            if (name === 'agenda') { initAgendaDir(); loadAgendaDir(); }
+            if (name === 'financeiro') { initFinanceiroDir(); loadPagamentos(); }
+            if (name === 'frequencia') { initFreqMonth(); loadFrequencia(); }
+            if (name === 'evolucoes') loadAllEvolutions();
+            if (name === 'documentacao') loadAllDocuments();
+            if (name === 'relatorios') loadAllReports();
+            if (name === 'family-meetings') { loadFMFilters(); loadFamilyMeetings(); }
+            if (name === 'espelhos') loadEspelhos();
+            if (name === 'espelho-terapeuta') { /* ready */ }
+            if (name === 'profile') loadProfile();
+            if (name === 'contratos') { loadContratoFiltersDir(); loadContratosDir(); }
+            if (name === 'indicadores') loadIndicadores();
+        }
+
+        // ======= DASHBOARD =======
+        function loadDashboard() {
+            const patients = DB.getPatients();
+            const therapists = DB.getTherapists();
+            const today = new Date().toISOString().split('T')[0];
+            const thisMonth = today.substring(0, 7);
+            const evosThisMonth = DB.getEvolutions().filter(e => e.createdAt && e.createdAt.startsWith(thisMonth));
+            const pendingPayments = DB.getPayments().filter(p => p.status === 'pendente');
+            const upcomingFM = DB.getUpcomingFamilyMeetings();
+
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-icon green">&#128101;</div>
+                    <div class="stat-info">
+                        <h3>${patients.length}</h3>
+                        <p>Total de Pacientes</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon blue">&#128100;</div>
+                    <div class="stat-info">
+                        <h3>${therapists.length}</h3>
+                        <p>Total de Terapeutas</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon yellow">&#128221;</div>
+                    <div class="stat-info">
+                        <h3>${evosThisMonth.length}</h3>
+                        <p>Evolucoes este Mes</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon coral">&#128176;</div>
+                    <div class="stat-info">
+                        <h3>${pendingPayments.length}</h3>
+                        <p>Pagamentos Pendentes</p>
+                    </div>
+                </div>
+            `;
+
+            // Upcoming family meetings
+            const container = document.getElementById('dashUpcomingFM');
+            if (upcomingFM.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>Nenhum atendimento familiar proximo</h3></div>';
+            } else {
+                container.innerHTML = upcomingFM.slice(0, 5).map(m => {
+                    const patient = DB.getPatientById(m.patientId);
+                    return `<div class="evolution-item">
+                        <div class="evo-header">
+                            <div>
+                                <strong>${patient ? patient.name : '?'}</strong>
+                                <span class="badge badge-yellow" style="margin-left:8px">${m.status || 'agendada'}</span>
+                                <span class="badge badge-blue" style="margin-left:4px">${m.type === 'online' ? 'Online' : 'Presencial'}</span>
+                            </div>
+                            <span class="evo-date">${formatDate(m.date)}${m.time ? ' ' + m.time : ''}</span>
+                        </div>
+                    </div>`;
+                }).join('');
+            }
+        }
+
+        // ======= POPULATE FILTERS =======
+        function populateFilters() {
+            const therapists = DB.getTherapists();
+            const patients = DB.getPatients();
+
+            const patientOptions = '<option value="">Todos os pacientes</option>' +
+                patients.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+            const therapistOptions = '<option value="">Todos os terapeutas</option>' +
+                therapists.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+
+            ['payPatientFilter', 'freqPatientFilter', 'evoPatientFilter', 'repPatientFilter'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = patientOptions;
+            });
+            ['evoTherapistFilter', 'repTherapistFilter', 'docTherapistFilter'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = therapistOptions;
+            });
+        }
+
+        function populatePatientSelect(selectId) {
+            const patients = DB.getPatients();
+            const el = document.getElementById(selectId);
+            el.innerHTML = '<option value="">-- Selecione --</option>' +
+                patients.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+        }
+
+        function populateTherapistSelect(selectId) {
+            const therapists = DB.getTherapists();
+            const el = document.getElementById(selectId);
+            el.innerHTML = '<option value="">-- Selecione --</option>' +
+                therapists.map(t => `<option value="${t.id}">${t.name} (${t.specialty})</option>`).join('');
+        }
+
+        // ======= FINANCEIRO / PAGAMENTOS =======
+        function initPayMonth() {
+            const el = document.getElementById('payMonth');
+            if (!el.value) {
+                const now = new Date();
+                el.value = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+            }
+        }
+
+        function initFinanceiroDir() {
+            const patients = DB.getPatients();
+            document.getElementById('payPatientFilter').innerHTML = '<option value="">Todos os pacientes</option>' +
+                patients.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+        }
+
+        function loadPagamentos() {
+            const ym = document.getElementById('payMonth').value;
+            const patientFilter = document.getElementById('payPatientFilter').value;
+            const statusFilter = document.getElementById('payStatusFilter').value;
+            let payments = ym ? DB.getPaymentsByMonth(ym) : DB.getPayments();
+            if (patientFilter) payments = payments.filter(p => p.patientId === patientFilter);
+            if (statusFilter) payments = payments.filter(p => p.status === statusFilter);
+
+            const totalAmount = payments.reduce((s, p) => s + (parseFloat(p.amount) || 0), 0);
+            const paidAmount = payments.filter(p => p.status === 'pago').reduce((s, p) => s + (parseFloat(p.amount) || 0), 0);
+            const pendingAmount = payments.filter(p => p.status === 'pendente').reduce((s, p) => s + (parseFloat(p.amount) || 0), 0);
+
+            document.getElementById('finStatsGridDir').innerHTML = `
+                <div class="stat-card"><div class="stat-value">R$ ${totalAmount.toFixed(2)}</div><div class="stat-label">Total</div></div>
+                <div class="stat-card"><div class="stat-value" style="color:var(--success)">R$ ${paidAmount.toFixed(2)}</div><div class="stat-label">Pago</div></div>
+                <div class="stat-card"><div class="stat-value" style="color:var(--danger)">R$ ${pendingAmount.toFixed(2)}</div><div class="stat-label">Pendente</div></div>
+                <div class="stat-card"><div class="stat-value">${payments.length}</div><div class="stat-label">Registros</div></div>`;
+
+            const tbody = document.getElementById('payTableBody');
+            const emptyEl = document.getElementById('payEmpty');
+            const methodNames = { dinheiro: 'Dinheiro', pix: 'PIX', cartao: 'Cartao', boleto: 'Boleto' };
+
+            if (payments.length === 0) {
+                tbody.innerHTML = '';
+                document.getElementById('payTable').closest('.card').style.display = 'none';
+                emptyEl.style.display = '';
+                return;
+            }
+            document.getElementById('payTable').closest('.card').style.display = '';
+            emptyEl.style.display = 'none';
+
+            payments.sort((a, b) => (b.paymentDate || '').localeCompare(a.paymentDate || ''));
+            tbody.innerHTML = payments.map(p => {
+                const patient = DB.getPatientById(p.patientId);
+                const statusClass = p.status === 'pago' ? 'badge-green' : p.status === 'parcial' ? 'badge-yellow' : 'badge-coral';
+                return `<tr>
+                    <td style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:0.85rem">${patient ? patient.name : '-'}</td>
+                    <td style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:0.85rem">${p.month || '-'}</td>
+                    <td style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:0.85rem;font-weight:600">R$ ${parseFloat(p.amount || 0).toFixed(2)}</td>
+                    <td style="padding:8px 10px;border-bottom:1px solid var(--border)"><span class="badge ${statusClass}">${p.status || '-'}</span></td>
+                    <td style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:0.85rem">${methodNames[p.method] || p.method || '-'}</td>
+                    <td style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:0.85rem">${p.paymentDate ? formatDate(p.paymentDate) : '-'}</td>
+                    <td style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:0.8rem;color:var(--text-light);max-width:180px;overflow:hidden;text-overflow:ellipsis" title="${p.notes || ''}">${p.notes ? p.notes.substring(0, 50) + (p.notes.length > 50 ? '...' : '') : '-'}</td>
+                    <td style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:0.85rem">${p.paidBy || '-'}</td>
+                    <td style="padding:8px 10px;border-bottom:1px solid var(--border)">
+                        <button class="btn btn-edit btn-small" onclick="editPayment('${p.id}')">Editar</button>
+                        <button class="btn btn-danger btn-small" onclick="deletePayment('${p.id}')">Excluir</button>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        function openAddPaymentModal() {
+            document.getElementById('formPayment').reset();
+            document.getElementById('editPaymentId').value = '';
+            document.getElementById('modalPaymentTitle').textContent = 'Novo Pagamento';
+            populatePatientSelect('payPatient');
+            const now = new Date();
+            document.getElementById('payRefMonth').value = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+            document.getElementById('modalPayment').classList.add('active');
+        }
+
+        function editPayment(id) {
+            const payment = DB.getPayments().find(p => p.id === id);
+            if (!payment) return;
+            populatePatientSelect('payPatient');
+            document.getElementById('editPaymentId').value = id;
+            document.getElementById('modalPaymentTitle').textContent = 'Editar Pagamento';
+            setTimeout(() => {
+                document.getElementById('payPatient').value = payment.patientId || '';
+                document.getElementById('payRefMonth').value = payment.month || '';
+                document.getElementById('payAmount').value = payment.amount || '';
+                document.getElementById('payStatus').value = payment.status || 'pendente';
+                document.getElementById('payMethod').value = payment.method || '';
+                document.getElementById('payDate').value = payment.paymentDate || '';
+                document.getElementById('payNotes').value = payment.notes || '';
+                document.getElementById('payPaidByDir').value = payment.paidBy || '';
+            }, 50);
+            document.getElementById('modalPayment').classList.add('active');
+        }
+
+        document.getElementById('formPayment').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const editId = document.getElementById('editPaymentId').value;
+            const data = {
+                patientId: document.getElementById('payPatient').value,
+                month: document.getElementById('payRefMonth').value,
+                amount: parseFloat(document.getElementById('payAmount').value) || 0,
+                status: document.getElementById('payStatus').value,
+                method: document.getElementById('payMethod').value,
+                paymentDate: document.getElementById('payDate').value,
+                notes: document.getElementById('payNotes').value,
+                paidBy: document.getElementById('payPaidByDir').value.trim()
+            };
+            if (editId) {
+                await DB.updatePayment(editId, data);
+                showToast('Pagamento atualizado!');
+            } else {
+                await DB.addPayment(data);
+                showToast('Pagamento registrado!');
+            }
+            closeModal('modalPayment');
+            loadPagamentos();
+        });
+
+        async function deletePayment(id) {
+            if (confirm('Excluir este pagamento?')) {
+                await DB.removePayment(id);
+                showToast('Pagamento excluido.');
+                loadPagamentos();
+            }
+        }
+
+        function printPagamentos() {
+            const ym = document.getElementById('payMonth').value;
+            const patientFilter = document.getElementById('payPatientFilter').value;
+            let payments = ym ? DB.getPaymentsByMonth(ym) : DB.getPayments();
+            if (patientFilter) payments = payments.filter(p => p.patientId === patientFilter);
+            const totalAmount = payments.reduce((sum, p) => sum + (parseFloat(p.amount) || 0), 0);
+            const paidAmount = payments.filter(p => p.status === 'pago').reduce((sum, p) => sum + (parseFloat(p.amount) || 0), 0);
+            const win = window.open('', '_blank');
+            win.document.write(`<html><head><title>Pagamentos${ym ? ' - ' + ym : ''}</title>
+                <style>body{font-family:Arial,sans-serif;padding:30px;color:#333}h1{color:#7B1FA2;font-size:18px}
+                .subtitle{color:#999;font-size:12px;margin-bottom:20px}
+                table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px 12px;border-bottom:1px solid #ddd;font-size:13px}
+                th{background:#f5f5f5;font-weight:600}.summary{margin-top:20px;padding:12px;background:#f0f0f0;border-radius:4px;font-size:13px}</style></head><body>
+                <h1>Clinica Prisma - Pagamentos (Direcao)</h1>
+                <p class="subtitle">Periodo: ${ym || 'Todos'} | Total: ${payments.length}</p>
+                <table><thead><tr><th>Paciente</th><th>Mes</th><th>Valor</th><th>Status</th><th>Metodo</th><th>Data Pgto</th><th>Pago por</th></tr></thead>
+                <tbody>${payments.map(p => {
+                    const patient = DB.getPatientById(p.patientId);
+                    const methodNames = { dinheiro: 'Dinheiro', pix: 'PIX', cartao: 'Cartao', boleto: 'Boleto' };
+                    return `<tr><td>${patient ? patient.name : '-'}</td><td>${p.month || '-'}</td><td>R$ ${parseFloat(p.amount || 0).toFixed(2)}</td><td>${p.status}</td><td>${methodNames[p.method] || p.method || '-'}</td><td>${p.paymentDate ? formatDate(p.paymentDate) : '-'}</td><td>${p.paidBy || '-'}</td></tr>`;
+                }).join('')}</tbody></table>
+                <div class="summary"><strong>Resumo:</strong> Total: R$ ${totalAmount.toFixed(2)} | Pago: R$ ${paidAmount.toFixed(2)} | Pendente: R$ ${(totalAmount - paidAmount).toFixed(2)}</div>
+                </body></html>`);
+            win.document.close();
+            win.print();
+        }
+
+        // ======= FREQUENCIA =======
+        function initFreqMonth() {
+            const el = document.getElementById('freqMonth');
+            if (!el.value) {
+                const now = new Date();
+                el.value = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+            }
+        }
+
+        function loadFrequencia() {
+            initFreqMonth();
+            const ym = document.getElementById('freqMonth').value;
+            const patientFilter = document.getElementById('freqPatientFilter').value;
+            if (!ym) return;
+            const [year, month] = ym.split('-').map(Number);
+            let records = DB.getAttendanceByMonth(year, month);
+            if (patientFilter) records = records.filter(r => r.patientId === patientFilter);
+            records.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            const tbody = document.getElementById('freqTableBody');
+            const emptyEl = document.getElementById('freqEmpty');
+            const tableEl = document.getElementById('freqTable');
+
+            if (records.length === 0) {
+                tbody.innerHTML = '';
+                tableEl.closest('.card').style.display = 'none';
+                emptyEl.style.display = '';
+                return;
+            }
+            tableEl.closest('.card').style.display = '';
+            emptyEl.style.display = 'none';
+
+            tbody.innerHTML = records.map(r => {
+                const patient = DB.getPatientById(r.patientId);
+                const therapist = DB.getUserById(r.therapistId);
+                const statusClass = r.status === 'presente' ? 'badge-green' : r.status === 'falta' ? 'badge-coral' : 'badge-yellow';
+                return `<tr>
+                    <td>${formatDate(r.date)}</td>
+                    <td>${patient ? patient.name : '-'}</td>
+                    <td>${therapist ? therapist.name : '-'}</td>
+                    <td><span class="badge ${statusClass}">${r.status}</span></td>
+                    <td><button class="btn btn-danger btn-small" onclick="deleteAttendance('${r.id}')">Excluir</button></td>
+                </tr>`;
+            }).join('');
+        }
+
+        function openAddAttendanceModal() {
+            document.getElementById('formAttendance').reset();
+            populatePatientSelect('attPatient');
+            populateTherapistSelect('attTherapist');
+            document.getElementById('attDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('modalAttendance').classList.add('active');
+        }
+
+        document.getElementById('formAttendance').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await DB.addAttendance({
+                patientId: document.getElementById('attPatient').value,
+                therapistId: document.getElementById('attTherapist').value,
+                date: document.getElementById('attDate').value,
+                status: document.getElementById('attStatus').value,
+                notes: document.getElementById('attNotes').value
+            });
+            closeModal('modalAttendance');
+            showToast('Frequencia registrada!');
+            loadFrequencia();
+        });
+
+        async function deleteAttendance(id) {
+            if (confirm('Excluir este registro de frequencia?')) {
+                await DB.removeAttendance(id);
+                showToast('Registro excluido.');
+                loadFrequencia();
+            }
+        }
+
+        function printFrequencia() {
+            const ym = document.getElementById('freqMonth').value;
+            const patientFilter = document.getElementById('freqPatientFilter').value;
+            if (!ym) return;
+            const [year, month] = ym.split('-').map(Number);
+            let records = DB.getAttendanceByMonth(year, month);
+            if (patientFilter) records = records.filter(r => r.patientId === patientFilter);
+            records.sort((a, b) => new Date(b.date) - new Date(a.date));
+            const win = window.open('', '_blank');
+            win.document.write(`<html><head><title>Frequencia - ${ym}</title>
+                <style>body{font-family:Arial,sans-serif;padding:30px;color:#333}h1{color:#7B1FA2;font-size:18px}
+                .subtitle{color:#999;font-size:12px;margin-bottom:20px}
+                table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px 12px;border-bottom:1px solid #ddd;font-size:13px}
+                th{background:#f5f5f5;font-weight:600}</style></head><body>
+                <h1>Clinica Prisma - Frequencia (Direcao)</h1>
+                <p class="subtitle">Periodo: ${ym} | Total: ${records.length}</p>
+                <table><thead><tr><th>Data</th><th>Paciente</th><th>Terapeuta</th><th>Status</th><th>Obs</th></tr></thead>
+                <tbody>${records.map(r => {
+                    const patient = DB.getPatientById(r.patientId);
+                    const therapist = DB.getUserById(r.therapistId);
+                    return `<tr><td>${formatDate(r.date)}</td><td>${patient ? patient.name : '-'}</td><td>${therapist ? therapist.name : '-'}</td><td>${r.status}</td><td>${r.notes || '-'}</td></tr>`;
+                }).join('')}</tbody></table></body></html>`);
+            win.document.close();
+            win.print();
+        }
+
+        // ======= EVOLUCOES =======
+        function loadAllEvolutions() {
+            const patientFilter = document.getElementById('evoPatientFilter').value;
+            const therapistFilter = document.getElementById('evoTherapistFilter').value;
+            const scopeFilter = document.getElementById('evoScopeFilter').value;
+
+            let evolutions = DB.getEvolutions();
+            if (patientFilter) evolutions = evolutions.filter(e => e.patientId === patientFilter);
+            if (therapistFilter) evolutions = evolutions.filter(e => e.therapistId === therapistFilter);
+            if (scopeFilter) evolutions = evolutions.filter(e => (e.scope || 'individual') === scopeFilter);
+            evolutions.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+            const container = document.getElementById('allEvolutionsList');
+            const emptyEl = document.getElementById('evoEmpty');
+
+            if (evolutions.length === 0) {
+                container.innerHTML = '';
+                emptyEl.style.display = '';
+                return;
+            }
+            emptyEl.style.display = 'none';
+
+            container.innerHTML = evolutions.map(e => {
+                const patient = DB.getPatientById(e.patientId);
+                const therapist = DB.getUserById(e.therapistId);
+                const scope = e.scope || 'individual';
+                const scopeBadge = scope === 'multiprofissional' ? 'badge-multi' : 'badge-individual';
+                return `<div class="evolution-item">
+                    <div class="evo-header">
+                        <div>
+                            <strong>${patient ? patient.name : '?'}</strong>
+                            <span class="evo-therapist" style="margin-left:8px">${therapist ? therapist.name : '?'} (${therapist ? therapist.specialty || '' : ''})</span>
+                            <span class="badge ${scopeBadge}" style="margin-left:8px">${scope === 'multiprofissional' ? 'Multi' : 'Individual'}</span>
+                        </div>
+                        <span class="evo-date">${formatDate(e.date || e.createdAt)}</span>
+                    </div>
+                    <div class="evo-content">${truncate(e.content, 300)}</div>
+                </div>`;
+            }).join('');
+        }
+
+        // ======= DOCUMENTACAO =======
+        function loadAllDocuments() {
+            const therapistFilter = document.getElementById('docTherapistFilter').value;
+            let documents = DB.getDocuments();
+            if (therapistFilter) documents = documents.filter(d => d.therapistId === therapistFilter);
+
+            const container = document.getElementById('allDocumentsList');
+            const emptyEl = document.getElementById('docEmpty');
+
+            if (documents.length === 0) {
+                container.innerHTML = '';
+                emptyEl.style.display = '';
+                return;
+            }
+            emptyEl.style.display = 'none';
+
+            // Group by therapist
+            const grouped = {};
+            documents.forEach(d => {
+                const key = d.therapistId || 'unknown';
+                if (!grouped[key]) grouped[key] = [];
+                grouped[key].push(d);
+            });
+
+            let html = '';
+            Object.keys(grouped).forEach(therapistId => {
+                const therapist = DB.getUserById(therapistId);
+                html += `<div class="card" style="margin-bottom:16px">
+                    <div class="card-header"><h2>${therapist ? therapist.name : '?'} <span style="font-weight:400;font-size:0.85rem;color:var(--text-light)">${therapist ? therapist.specialty || '' : ''}</span></h2></div>`;
+                grouped[therapistId].forEach(doc => {
+                    const typeNames = { certificado: 'Certificado', crp: 'CRP', contrato: 'Contrato', diploma: 'Diploma', outro: 'Outro' };
+                    html += `<div class="doc-item">
+                        <div class="doc-icon">&#128196;</div>
+                        <div class="doc-info">
+                            <strong>${doc.title || 'Documento'}</strong>
+                            <span class="badge badge-blue" style="margin-left:8px">${typeNames[doc.type] || doc.type || 'Outro'}</span>
+                            <br><span style="font-size:0.8rem;color:var(--text-light)">Enviado em: ${formatDate(doc.uploadedAt || doc.createdAt)}</span>
+                        </div>
+                        <div style="margin-left:auto">
+                            <button class="btn btn-secondary btn-small" onclick="viewDocument('${doc.id}')">Ver</button>
+                        </div>
+                    </div>`;
+                });
+                html += '</div>';
+            });
+            container.innerHTML = html;
+        }
+
+        function viewDocument(id) {
+            const doc = DB.getDocuments().find(d => d.id === id);
+            if (!doc || !doc.fileData) { showToast('Documento nao encontrado.'); return; }
+            const win = window.open('');
+            if (doc.fileData.startsWith('data:image')) {
+                win.document.write(`<html><body style="margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#333"><img src="${doc.fileData}" style="max-width:100%;max-height:100vh"></body></html>`);
+            } else {
+                win.document.write(`<html><body style="margin:0"><iframe src="${doc.fileData}" style="width:100%;height:100vh;border:none"></iframe></body></html>`);
+            }
+        }
+
+        // ======= RELATORIOS =======
+        function loadAllReports() {
+            const patientFilter = document.getElementById('repPatientFilter').value;
+            const therapistFilter = document.getElementById('repTherapistFilter').value;
+
+            let reports = DB.getReports();
+            if (patientFilter) reports = reports.filter(r => r.patientId === patientFilter);
+            if (therapistFilter) reports = reports.filter(r => r.therapistId === therapistFilter);
+            reports.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+            const container = document.getElementById('allReportsList');
+            const emptyEl = document.getElementById('repEmpty');
+
+            if (reports.length === 0) {
+                container.innerHTML = '';
+                emptyEl.style.display = '';
+                return;
+            }
+            emptyEl.style.display = 'none';
+
+            const typeNames = {
+                mensal: 'Relatorio Mensal', trimestral: 'Relatorio Trimestral',
+                semestral: 'Relatorio Semestral', alta: 'Relatorio de Alta',
+                devolutiva: 'Devolutiva para Familia', escolar: 'Relatorio Escolar', outro: 'Outro'
+            };
+
+            container.innerHTML = reports.map(r => {
+                const patient = DB.getPatientById(r.patientId);
+                const therapist = DB.getUserById(r.therapistId);
+                return `<div class="evolution-item">
+                    <div class="evo-header">
+                        <div>
+                            <strong>${patient ? patient.name : '?'}</strong>
+                            <span class="badge badge-green" style="margin-left:8px">${typeNames[r.type] || r.type || '-'}</span>
+                            <span class="evo-therapist" style="margin-left:8px">${therapist ? therapist.name : r.therapistName || '?'}</span>
+                        </div>
+                        <span class="evo-date">${formatDate(r.date || r.createdAt)}</span>
+                    </div>
+                    <div class="evo-content">${truncate(r.content, 300)}</div>
+                    <div class="evo-actions">
+                        <button class="btn btn-secondary btn-small" onclick="printReport('${r.id}')">Imprimir</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function printReport(id) {
+            const report = DB.getReports().find(r => r.id === id);
+            if (!report) return;
+            const patient = DB.getPatientById(report.patientId);
+            const typeNames = {
+                mensal: 'Relatorio Mensal', trimestral: 'Relatorio Trimestral',
+                semestral: 'Relatorio Semestral', alta: 'Relatorio de Alta',
+                devolutiva: 'Devolutiva para Familia', escolar: 'Relatorio Escolar', outro: 'Outro'
+            };
+            const win = window.open('', '_blank');
+            win.document.write(`<html><head><title>Relatorio - ${patient ? patient.name : ''}</title>
+                <style>body{font-family:Arial,sans-serif;padding:40px;color:#333;line-height:1.6}
+                h1{color:#7B1FA2;font-size:20px}h2{color:#7B1FA2;font-size:16px;margin-top:20px}
+                .header{text-align:center;border-bottom:2px solid #7B1FA2;padding-bottom:20px;margin-bottom:30px}
+                .info{font-size:13px;color:#666}pre{white-space:pre-wrap;font-family:Arial;font-size:14px}</style></head>
+                <body>
+                    <div class="header"><h1>Clinica Prisma</h1><p style="color:#999;font-size:12px;letter-spacing:2px">CUIDADO QUE TRANSFORMA</p></div>
+                    <h2>${typeNames[report.type] || report.type}</h2>
+                    <p class="info"><strong>Paciente:</strong> ${patient ? patient.name : '-'}</p>
+                    <p class="info"><strong>Terapeuta:</strong> ${report.therapistName || '-'}</p>
+                    <p class="info"><strong>Periodo:</strong> ${report.period || '-'}</p>
+                    <p class="info"><strong>Data:</strong> ${formatDate(report.date || report.createdAt)}</p>
+                    <hr style="margin:20px 0;border:none;border-top:1px solid #ddd">
+                    <pre>${report.content}</pre>
+                </body></html>`);
+            win.document.close();
+            win.print();
+        }
+
+        // ======= ESPELHOS =======
+        function loadEspelhos() {
+            const statements = DB.getStatements().sort((a, b) => new Date(b.generatedAt || b.createdAt) - new Date(a.generatedAt || a.createdAt));
+            const container = document.getElementById('statementsList');
+            const emptyEl = document.getElementById('statementsEmpty');
+
+            if (statements.length === 0) {
+                container.innerHTML = '';
+                emptyEl.style.display = '';
+                return;
+            }
+            emptyEl.style.display = 'none';
+            container.innerHTML = statements.map(s => {
+                const patient = DB.getPatientById(s.patientId);
+                const typeNames = { mensal: 'Mensal', anual: 'Anual' };
+                return `<div class="evolution-item">
+                    <div class="evo-header">
+                        <div>
+                            <strong>${patient ? patient.name : '?'}</strong>
+                            <span class="badge badge-green" style="margin-left:8px">${typeNames[s.type] || s.type}</span>
+                            <span class="badge badge-yellow" style="margin-left:4px">${s.period || '-'}</span>
+                        </div>
+                        <span class="evo-date">${formatDate(s.generatedAt || s.createdAt)}</span>
+                    </div>
+                    <div class="evo-content">
+                        <strong>Sessoes:</strong> ${s.totalSessions || 0} total | ${s.attendedSessions || 0} presentes | ${s.missedSessions || 0} faltas<br>
+                        <strong>Financeiro:</strong> R$ ${parseFloat(s.totalAmount || 0).toFixed(2)} total | R$ ${parseFloat(s.paidAmount || 0).toFixed(2)} pago
+                        ${s.notes ? `<br><strong>Obs:</strong> ${s.notes}` : ''}
+                    </div>
+                    <div class="evo-actions">
+                        <button class="btn btn-secondary btn-small" onclick="printStatement('${s.id}')">Imprimir</button>
+                        <button class="btn btn-danger btn-small" onclick="deleteStatement('${s.id}')">Excluir</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function openGenerateStatementModal() {
+            document.getElementById('formStatement').reset();
+            populatePatientSelect('stmPatient');
+            const now = new Date();
+            document.getElementById('stmPeriodMonth').value = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+            document.getElementById('stmPeriodYear').value = now.getFullYear();
+            document.getElementById('stmPreview').style.display = 'none';
+            updateStatementPeriodField();
+            document.getElementById('modalStatement').classList.add('active');
+        }
+
+        function updateStatementPeriodField() {
+            const type = document.getElementById('stmType').value;
+            document.getElementById('stmPeriodMonthGroup').style.display = type === 'mensal' ? '' : 'none';
+            document.getElementById('stmPeriodYearGroup').style.display = type === 'anual' ? '' : 'none';
+            document.getElementById('stmPeriodMonth').required = type === 'mensal';
+            document.getElementById('stmPeriodYear').required = type === 'anual';
+        }
+
+        function previewStatement() {
+            const patientId = document.getElementById('stmPatient').value;
+            const type = document.getElementById('stmType').value;
+            if (!patientId) { showToast('Selecione um paciente primeiro.'); return; }
+
+            let period, attendanceRecords, payments;
+            if (type === 'mensal') {
+                period = document.getElementById('stmPeriodMonth').value;
+                if (!period) { showToast('Selecione o periodo.'); return; }
+                const [year, month] = period.split('-').map(Number);
+                attendanceRecords = DB.getAttendanceByMonth(year, month).filter(a => a.patientId === patientId);
+                payments = DB.getPaymentsByMonth(period).filter(p => p.patientId === patientId);
+            } else {
+                const year = document.getElementById('stmPeriodYear').value;
+                if (!year) { showToast('Selecione o ano.'); return; }
+                period = year;
+                attendanceRecords = DB.getAttendance().filter(a => a.patientId === patientId && a.date && a.date.startsWith(year));
+                payments = DB.getPayments().filter(p => p.patientId === patientId && p.month && p.month.startsWith(year));
+            }
+
+            const totalSessions = attendanceRecords.length;
+            const attendedSessions = attendanceRecords.filter(a => a.status === 'presente' || a.status === 'atraso').length;
+            const missedSessions = attendanceRecords.filter(a => a.status === 'falta').length;
+            const totalAmount = payments.reduce((sum, p) => sum + (parseFloat(p.amount) || 0), 0);
+            const paidAmount = payments.filter(p => p.status === 'pago').reduce((sum, p) => sum + (parseFloat(p.amount) || 0), 0);
+
+            const previewDiv = document.getElementById('stmPreview');
+            previewDiv.style.display = '';
+            document.getElementById('stmPreviewContent').innerHTML = `
+                <p><strong>Total de Sessoes:</strong> ${totalSessions}</p>
+                <p><strong>Presencas:</strong> ${attendedSessions}</p>
+                <p><strong>Faltas:</strong> ${missedSessions}</p>
+                <p><strong>Justificadas:</strong> ${attendanceRecords.filter(a => a.status === 'justificada').length}</p>
+                <hr style="margin:8px 0;border:none;border-top:1px solid var(--border)">
+                <p><strong>Valor Total:</strong> R$ ${totalAmount.toFixed(2)}</p>
+                <p><strong>Valor Pago:</strong> R$ ${paidAmount.toFixed(2)}</p>
+                <p><strong>Saldo:</strong> R$ ${(totalAmount - paidAmount).toFixed(2)}</p>
+            `;
+            previewDiv.dataset.totalSessions = totalSessions;
+            previewDiv.dataset.attendedSessions = attendedSessions;
+            previewDiv.dataset.missedSessions = missedSessions;
+            previewDiv.dataset.totalAmount = totalAmount;
+            previewDiv.dataset.paidAmount = paidAmount;
+        }
+
+        document.getElementById('formStatement').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const patientId = document.getElementById('stmPatient').value;
+            const type = document.getElementById('stmType').value;
+            let period = type === 'mensal' ? document.getElementById('stmPeriodMonth').value : document.getElementById('stmPeriodYear').value;
+            const previewDiv = document.getElementById('stmPreview');
+            if (previewDiv.style.display === 'none') previewStatement();
+
+            await DB.addStatement({
+                patientId, type, period,
+                totalSessions: parseInt(previewDiv.dataset.totalSessions) || 0,
+                attendedSessions: parseInt(previewDiv.dataset.attendedSessions) || 0,
+                missedSessions: parseInt(previewDiv.dataset.missedSessions) || 0,
+                totalAmount: parseFloat(previewDiv.dataset.totalAmount) || 0,
+                paidAmount: parseFloat(previewDiv.dataset.paidAmount) || 0,
+                notes: document.getElementById('stmNotes').value,
+                generatedBy: currentUser.id
+            });
+            closeModal('modalStatement');
+            showToast('Espelho gerado com sucesso!');
+            loadEspelhos();
+        });
+
+        function printStatement(id) {
+            const statement = DB.getStatements().find(s => s.id === id);
+            if (!statement) return;
+            const patient = DB.getPatientById(statement.patientId);
+            const typeNames = { mensal: 'Mensal', anual: 'Anual' };
+            const win = window.open('', '_blank');
+            win.document.write(`<html><head><title>Espelho - ${patient ? patient.name : ''}</title>
+                <style>body{font-family:Arial,sans-serif;padding:40px;color:#333;line-height:1.6}
+                h1{color:#7B1FA2;font-size:20px}h2{color:#7B1FA2;font-size:16px;margin-top:20px}
+                .header{text-align:center;border-bottom:2px solid #7B1FA2;padding-bottom:20px;margin-bottom:30px}
+                .info{font-size:13px;color:#666}
+                table{width:100%;border-collapse:collapse;margin-top:16px}
+                th,td{text-align:left;padding:8px 12px;border-bottom:1px solid #ddd}th{background:#f5f5f5;font-weight:600}</style></head>
+                <body>
+                    <div class="header"><h1>Clinica Prisma</h1><p style="color:#999;font-size:12px;letter-spacing:2px">CUIDADO QUE TRANSFORMA</p></div>
+                    <h2>Espelho ${typeNames[statement.type] || statement.type}</h2>
+                    <p class="info"><strong>Paciente:</strong> ${patient ? patient.name : '-'}</p>
+                    <p class="info"><strong>Periodo:</strong> ${statement.period || '-'}</p>
+                    <p class="info"><strong>Gerado em:</strong> ${formatDate(statement.generatedAt || statement.createdAt)}</p>
+                    <hr style="margin:20px 0;border:none;border-top:1px solid #ddd">
+                    <h2>Frequencia</h2>
+                    <table>
+                        <tr><th>Total de Sessoes</th><td>${statement.totalSessions || 0}</td></tr>
+                        <tr><th>Presencas</th><td>${statement.attendedSessions || 0}</td></tr>
+                        <tr><th>Faltas</th><td>${statement.missedSessions || 0}</td></tr>
+                    </table>
+                    <h2>Financeiro</h2>
+                    <table>
+                        <tr><th>Valor Total</th><td>R$ ${parseFloat(statement.totalAmount || 0).toFixed(2)}</td></tr>
+                        <tr><th>Valor Pago</th><td>R$ ${parseFloat(statement.paidAmount || 0).toFixed(2)}</td></tr>
+                        <tr><th>Saldo</th><td>R$ ${(parseFloat(statement.totalAmount || 0) - parseFloat(statement.paidAmount || 0)).toFixed(2)}</td></tr>
+                    </table>
+                    ${statement.notes ? `<p style="margin-top:20px"><strong>Observacoes:</strong> ${statement.notes}</p>` : ''}
+                </body></html>`);
+            win.document.close();
+            win.print();
+        }
+
+        async function deleteStatement(id) {
+            if (confirm('Excluir este espelho?')) {
+                await DB.removeStatement(id);
+                showToast('Espelho excluido.');
+                loadEspelhos();
+            }
+        }
+
+        // ======= ATENDIMENTOS COM FAMILIA =======
+        function loadFMFilters() {
+            const patients = DB.getPatients();
+            document.getElementById('fmPatientFilter').innerHTML = '<option value="">Todos os pacientes</option>' +
+                patients.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+        }
+
+        function loadFamilyMeetings() {
+            const patientFilter = document.getElementById('fmPatientFilter').value;
+            const statusFilter = document.getElementById('fmStatusFilter').value;
+            let meetings = DB.getFamilyMeetings().sort((a, b) => new Date(b.date) - new Date(a.date));
+            if (patientFilter) meetings = meetings.filter(m => m.patientId === patientFilter);
+            if (statusFilter) meetings = meetings.filter(m => m.status === statusFilter);
+
+            const container = document.getElementById('familyMeetingsList');
+            if (meetings.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>Nenhum atendimento com familia</h3><p>Clique em "+ Novo Atendimento" para agendar.</p></div>';
+                return;
+            }
+            container.innerHTML = meetings.map(m => {
+                const patient = DB.getPatientById(m.patientId);
+                const statusClass = m.status === 'realizada' ? 'realizada' : m.status === 'cancelada' ? 'cancelada' : '';
+                const statusBadge = m.status === 'realizada' ? 'badge-green' : m.status === 'cancelada' ? 'badge-coral' : m.status === 'confirmada' ? 'badge-green' : 'badge-yellow';
+                const therapistNames = (m.therapistIds || []).map(tid => { const t = DB.getUserById(tid); return t ? t.name.split(' ')[0] : ''; }).filter(Boolean).join(', ');
+                const contacts = (m.familyContacts || []).map(c => `<div class="family-contact"><div><span class="contact-name">${c.name}</span><span class="contact-info"> ${c.email || ''} ${c.phone || ''}</span></div></div>`).join('');
+                return `<div class="meeting-card ${statusClass}">
+                    <div class="evo-header">
+                        <div>
+                            <strong>${patient ? patient.name : '?'}</strong>
+                            <span class="badge ${statusBadge}" style="margin-left:8px">${m.status || 'agendada'}</span>
+                            <span class="badge badge-blue" style="margin-left:4px">${m.type === 'online' ? 'Online' : 'Presencial'}</span>
+                            ${m.inviteSent ? '<span class="badge badge-green" style="margin-left:4px">Convite enviado</span>' : ''}
+                        </div>
+                        <span class="evo-date">${formatDate(m.date)}${m.time ? ' ' + m.time : ''}</span>
+                    </div>
+                    ${m.location ? `<div style="font-size:0.85rem;color:var(--text-light);margin-top:4px">Local: ${m.location}</div>` : ''}
+                    ${therapistNames ? `<div style="font-size:0.85rem;color:var(--text-light);margin-top:2px">Terapeutas: ${therapistNames}</div>` : ''}
+                    ${contacts ? `<div style="margin-top:8px">${contacts}</div>` : ''}
+                    ${m.agenda ? `<div class="evo-content" style="margin-top:8px"><strong>Pauta:</strong> ${m.agenda}</div>` : ''}
+                    ${m.notes ? `<div class="evo-content">${m.notes}</div>` : ''}
+                    <div class="evo-actions">
+                        <button class="btn btn-edit btn-small" onclick="editFamilyMeeting('${m.id}')">Editar</button>
+                        ${!m.inviteSent ? `<button class="invite-btn" onclick="sendFamilyInvite('${m.id}')">&#9993; Enviar Convite</button>` : ''}
+                        ${m.status === 'agendada' ? `<button class="btn btn-success btn-small" onclick="updateFMStatus('${m.id}','confirmada')">Confirmar</button>` : ''}
+                        ${m.status === 'confirmada' ? `<button class="btn btn-success btn-small" onclick="updateFMStatus('${m.id}','realizada')">Realizada</button>` : ''}
+                        ${m.status !== 'cancelada' && m.status !== 'realizada' ? `<button class="btn btn-danger btn-small" onclick="updateFMStatus('${m.id}','cancelada')">Cancelar</button>` : ''}
+                        <button class="btn btn-danger btn-small" onclick="deleteFamilyMeeting('${m.id}')">Excluir</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function openAddFamilyMeetingModal() {
+            document.getElementById('formFamilyMeeting').reset();
+            document.getElementById('editFMId').value = '';
+            document.getElementById('modalFMTitle').textContent = 'Novo Atendimento com Familia';
+            document.getElementById('fmDate').value = new Date().toISOString().split('T')[0];
+            const patients = DB.getPatients();
+            document.getElementById('fmPatient').innerHTML = patients.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+            const therapists = DB.getTherapists();
+            document.getElementById('fmTherapistsCheckboxes').innerHTML = therapists.map(t =>
+                `<label><input type="checkbox" value="${t.id}" name="fmTherapist"><span>${t.name}</span></label>`
+            ).join('');
+            document.getElementById('fmFamilyContacts').innerHTML = '';
+            addFamilyContactField();
+            document.getElementById('modalFamilyMeeting').classList.add('active');
+        }
+
+        function addFamilyContactField() {
+            const container = document.getElementById('fmFamilyContacts');
+            const div = document.createElement('div');
+            div.className = 'form-row';
+            div.style.marginBottom = '8px';
+            div.innerHTML = `<div class="form-group" style="margin-bottom:0"><input type="text" placeholder="Nome" class="fc-name"></div><div class="form-group" style="margin-bottom:0"><input type="email" placeholder="Email" class="fc-email"></div><div class="form-group" style="margin-bottom:0"><input type="tel" placeholder="Telefone" class="fc-phone"></div>`;
+            container.appendChild(div);
+        }
+
+        function editFamilyMeeting(id) {
+            const m = DB.getFamilyMeetings().find(x => x.id === id);
+            if (!m) return;
+            const patients = DB.getPatients();
+            document.getElementById('fmPatient').innerHTML = patients.map(p => `<option value="${p.id}" ${p.id === m.patientId ? 'selected' : ''}>${p.name}</option>`).join('');
+            const therapists = DB.getTherapists();
+            document.getElementById('fmTherapistsCheckboxes').innerHTML = therapists.map(t =>
+                `<label><input type="checkbox" value="${t.id}" name="fmTherapist" ${(m.therapistIds || []).includes(t.id) ? 'checked' : ''}><span>${t.name}</span></label>`
+            ).join('');
+            document.getElementById('editFMId').value = m.id;
+            document.getElementById('modalFMTitle').textContent = 'Editar Atendimento';
+            document.getElementById('fmDate').value = m.date || '';
+            document.getElementById('fmTime').value = m.time || '';
+            document.getElementById('fmType').value = m.type || 'presencial';
+            document.getElementById('fmLocation').value = m.location || '';
+            document.getElementById('fmAgenda').value = m.agenda || '';
+            document.getElementById('fmNotes').value = m.notes || '';
+            const contactsContainer = document.getElementById('fmFamilyContacts');
+            contactsContainer.innerHTML = '';
+            (m.familyContacts || []).forEach(c => {
+                addFamilyContactField();
+                const rows = contactsContainer.children;
+                const lastRow = rows[rows.length - 1];
+                lastRow.querySelector('.fc-name').value = c.name || '';
+                lastRow.querySelector('.fc-email').value = c.email || '';
+                lastRow.querySelector('.fc-phone').value = c.phone || '';
+            });
+            if ((m.familyContacts || []).length === 0) addFamilyContactField();
+            document.getElementById('modalFamilyMeeting').classList.add('active');
+        }
+
+        document.getElementById('formFamilyMeeting').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const editId = document.getElementById('editFMId').value;
+            const selectedTherapists = Array.from(document.querySelectorAll('input[name="fmTherapist"]:checked')).map(cb => cb.value);
+            const contactRows = document.getElementById('fmFamilyContacts').children;
+            const familyContacts = [];
+            for (const row of contactRows) {
+                const name = row.querySelector('.fc-name').value.trim();
+                const email = row.querySelector('.fc-email').value.trim();
+                const phone = row.querySelector('.fc-phone').value.trim();
+                if (name) familyContacts.push({ name, email, phone });
+            }
+            const data = {
+                patientId: document.getElementById('fmPatient').value,
+                date: document.getElementById('fmDate').value,
+                time: document.getElementById('fmTime').value,
+                type: document.getElementById('fmType').value,
+                location: document.getElementById('fmLocation').value.trim(),
+                therapistIds: selectedTherapists,
+                familyContacts: familyContacts,
+                agenda: document.getElementById('fmAgenda').value.trim(),
+                notes: document.getElementById('fmNotes').value.trim(),
+                createdBy: currentUser.id
+            };
+            if (editId) {
+                await DB.updateFamilyMeeting(editId, data);
+                showToast('Atendimento atualizado!');
+            } else {
+                await DB.addFamilyMeeting(data);
+                showToast('Atendimento agendado!');
+            }
+            closeModal('modalFamilyMeeting');
+            loadFamilyMeetings();
+        });
+
+        async function updateFMStatus(id, status) {
+            await DB.updateFamilyMeeting(id, { status });
+            loadFamilyMeetings();
+            showToast('Status atualizado!');
+        }
+
+        async function deleteFamilyMeeting(id) {
+            if (confirm('Excluir este atendimento?')) {
+                await DB.removeFamilyMeeting(id);
+                loadFamilyMeetings();
+                showToast('Atendimento excluido.');
+            }
+        }
+
+        async function sendFamilyInvite(id) {
+            const m = DB.getFamilyMeetings().find(x => x.id === id);
+            if (!m) return;
+            const patient = DB.getPatientById(m.patientId);
+            const contacts = (m.familyContacts || []).map(c => `${c.name} (${c.email || ''} ${c.phone || ''})`).join(', ');
+            await DB.updateFamilyMeeting(id, { inviteSent: true });
+            loadFamilyMeetings();
+            showToast(`Convite enviado para: ${contacts || 'familia de ' + (patient ? patient.name : '?')} - Data: ${formatDate(m.date)} ${m.time || ''}`);
+        }
+
+        // ======= PERFIL =======
+        function loadProfile() {
+            const user = DB.getUserById(currentUser.id) || currentUser;
+            const initials = user.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+            document.getElementById('profileAvatar').textContent = initials;
+            document.getElementById('profileName').textContent = user.name;
+            document.getElementById('profileRole').textContent = 'Direcao';
+            document.getElementById('profileEmail').value = user.email || '';
+            document.getElementById('profilePhone').value = user.phone || '';
+        }
+
+        document.getElementById('formProfileContact').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await DB.updateUser(currentUser.id, {
+                email: document.getElementById('profileEmail').value.trim(),
+                phone: document.getElementById('profilePhone').value.trim()
+            });
+            showToast('Contato atualizado!');
+        });
+
+        document.getElementById('formPassword').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const user = DB.getUserById(currentUser.id);
+            if (!user) { showToast('Erro: usuario nao encontrado.'); return; }
+            const currentPass = document.getElementById('currentPassword').value;
+            const newPass = document.getElementById('newPassword').value;
+            const confirmPass = document.getElementById('confirmPassword').value;
+            if (currentPass !== user.password) { showToast('Senha atual incorreta!'); return; }
+            if (newPass !== confirmPass) { showToast('As senhas nao coincidem!'); return; }
+            if (newPass.length < 6) { showToast('A nova senha deve ter pelo menos 6 caracteres.'); return; }
+            await DB.changePassword(currentUser.id, newPass);
+            document.getElementById('formPassword').reset();
+            showToast('Senha alterada com sucesso!');
+        });
+
+        // ======= UTILS =======
+        function formatDate(dateStr) {
+            if (!dateStr) return '-';
+            const d = new Date(dateStr + (dateStr.length === 10 ? 'T00:00:00' : ''));
+            return d.toLocaleDateString('pt-BR');
+        }
+
+        function truncate(str, max) {
+            if (!str) return '';
+            return str.length > max ? str.substring(0, max) + '...' : str;
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        // ======= AGENDA =======
+        function initAgendaDir() {
+            const dateEl = document.getElementById('agendaDate');
+            if (!dateEl.value) {
+                dateEl.value = new Date().toISOString().split('T')[0];
+            }
+            const therapists = DB.getTherapists();
+            const patients = DB.getPatients();
+            document.getElementById('agendaTherapistFilter').innerHTML = '<option value="">Todos os terapeutas</option>' +
+                therapists.map(t => `<option value="${t.id}">${t.name} (${t.specialty || ''})</option>`).join('');
+            document.getElementById('agendaPatientFilter').innerHTML = '<option value="">Todos os pacientes</option>' +
+                patients.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+        }
+
+        function setAgendaToday() {
+            document.getElementById('agendaDate').value = new Date().toISOString().split('T')[0];
+            loadAgendaDir();
+        }
+
+        function changeAgendaPeriod(dir) {
+            const dateEl = document.getElementById('agendaDate');
+            const view = document.getElementById('agendaView').value;
+            const d = new Date(dateEl.value + 'T00:00:00');
+            if (view === 'mes') {
+                d.setMonth(d.getMonth() + dir);
+            } else {
+                d.setDate(d.getDate() + (dir * 7));
+            }
+            dateEl.value = d.toISOString().split('T')[0];
+            loadAgendaDir();
+        }
+
+        function loadAgendaDir() {
+            const dateEl = document.getElementById('agendaDate');
+            if (!dateEl.value) { dateEl.value = new Date().toISOString().split('T')[0]; }
+            const view = document.getElementById('agendaView').value;
+            const baseDate = new Date(dateEl.value + 'T00:00:00');
+            const therapistFilter = document.getElementById('agendaTherapistFilter').value;
+            const patientFilter = document.getElementById('agendaPatientFilter').value;
+
+            if (view === 'mes') {
+                renderCalendarMonthDir(baseDate, therapistFilter, patientFilter);
+                return;
+            }
+
+            const dayOfWeek = baseDate.getDay();
+            const monday = new Date(baseDate);
+            monday.setDate(baseDate.getDate() - ((dayOfWeek === 0 ? 7 : dayOfWeek) - 1));
+            const friday = new Date(monday);
+            friday.setDate(monday.getDate() + 4);
+            const startDate = monday.toISOString().split('T')[0];
+            const endDate = friday.toISOString().split('T')[0];
+            const label = 'Semana: ' + monday.toLocaleDateString('pt-BR') + ' a ' + friday.toLocaleDateString('pt-BR');
+            document.getElementById('agendaWeekLabel').textContent = label;
+
+            let slots = DB.getAgendaByDateRange(startDate, endDate);
+            if (therapistFilter) slots = slots.filter(s => s.therapistId === therapistFilter);
+            if (patientFilter) slots = slots.filter(s => s.patientId === patientFilter);
+
+            const container = document.getElementById('agendaDirContent');
+            const emptyEl = document.getElementById('agendaDirEmpty');
+            if (slots.length === 0) { container.innerHTML = ''; container.closest('.card').style.display = 'none'; emptyEl.style.display = ''; return; }
+            container.closest('.card').style.display = ''; emptyEl.style.display = 'none';
+
+            const dayNames = ['Domingo','Segunda-feira','Terca-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sabado'];
+            const days = {};
+            slots.forEach(s => { if (!days[s.date]) { const dd = new Date(s.date+'T00:00:00'); days[s.date] = { label: dayNames[dd.getDay()]+' - '+dd.toLocaleDateString('pt-BR'), slots: [] }; } days[s.date].slots.push(s); });
+            const sortedDates = Object.keys(days).sort();
+            let html = '';
+            sortedDates.forEach(dateKey => {
+                const day = days[dateKey]; day.slots.sort((a,b) => (a.startTime||'').localeCompare(b.startTime||''));
+                html += `<div style="margin-bottom:16px"><h3 style="font-size:0.95rem;color:var(--primary);margin-bottom:8px;padding:8px 0;border-bottom:1px solid var(--border)">${day.label}</h3>`;
+                day.slots.forEach(s => {
+                    const patient = DB.getPatientById(s.patientId); const therapist = DB.getUserById(s.therapistId);
+                    const statusClass = s.status==='realizado'?'badge-green':s.status==='cancelado'?'badge-coral':'badge-yellow';
+                    html += `<div style="display:flex;align-items:center;gap:12px;padding:8px 12px;border-bottom:1px solid var(--border-light,#f0f0f0)">
+                        <div style="min-width:100px;font-weight:600;color:var(--text-medium)">${s.startTime||'?'} - ${s.endTime||'?'}</div>
+                        <div style="flex:1"><strong>${patient?patient.name:'?'}</strong><span style="color:var(--text-light);margin-left:8px;font-size:0.85rem">${therapist?therapist.name+' ('+(therapist.specialty||'')+')':''}</span></div>
+                        <span class="badge ${statusClass}">${s.status||'agendado'}</span></div>`;
+                });
+                html += '</div>';
+            });
+            container.innerHTML = html;
+        }
+
+        function renderCalendarMonthDir(baseDate, therapistFilter, patientFilter) {
+            const year = baseDate.getFullYear(); const month = baseDate.getMonth();
+            const firstDay = new Date(year, month, 1); const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startWeekday = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
+            const startStr = firstDay.toISOString().split('T')[0]; const endStr = lastDay.toISOString().split('T')[0];
+            let slots = DB.getAgendaByDateRange(startStr, endStr);
+            if (therapistFilter) slots = slots.filter(s => s.therapistId === therapistFilter);
+            if (patientFilter) slots = slots.filter(s => s.patientId === patientFilter);
+            const slotsByDay = {};
+            slots.forEach(s => { const d = parseInt(s.date.split('-')[2]); if (!slotsByDay[d]) slotsByDay[d] = []; slotsByDay[d].push(s); });
+            const monthNames = ['Janeiro','Fevereiro','Marco','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+            const today = new Date(); const isCurrentMonth = today.getFullYear()===year && today.getMonth()===month; const todayDate = today.getDate();
+            const specColors = {'Fonoaudiologa':'#FFF3E0','Fono':'#FFF3E0','Psicóloga':'#E3F2FD','Psicologa':'#E3F2FD','Psicologia':'#E3F2FD','Psicopedagoga':'#FCE4EC','Psicopedagogia':'#FCE4EC','Terapeuta Ocupacional':'#E8F5E9','T.O':'#E8F5E9','Psicomotricista':'#F3E5F5','Psicomotricidade':'#F3E5F5'};
+            function getSpecColor(sp) { if(!sp) return '#F5F5F5'; for(const [k,c] of Object.entries(specColors)){if(sp.toLowerCase().includes(k.toLowerCase()))return c;} return '#F5F5F5'; }
+            document.getElementById('agendaWeekLabel').textContent = monthNames[month]+' '+year;
+            const container = document.getElementById('agendaDirContent');
+            const emptyEl = document.getElementById('agendaDirEmpty');
+            container.closest('.card').style.display = ''; emptyEl.style.display = 'none';
+            let html = `<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;table-layout:fixed;min-width:700px"><thead><tr>
+                <th style="padding:10px;text-align:center;background:var(--primary,#7B1FA2);color:#fff;font-size:0.85rem">Seg</th>
+                <th style="padding:10px;text-align:center;background:var(--primary,#7B1FA2);color:#fff;font-size:0.85rem">Ter</th>
+                <th style="padding:10px;text-align:center;background:var(--primary,#7B1FA2);color:#fff;font-size:0.85rem">Qua</th>
+                <th style="padding:10px;text-align:center;background:var(--primary,#7B1FA2);color:#fff;font-size:0.85rem">Qui</th>
+                <th style="padding:10px;text-align:center;background:var(--primary,#7B1FA2);color:#fff;font-size:0.85rem">Sex</th>
+                <th style="padding:10px;text-align:center;background:#e0e0e0;color:#666;font-size:0.85rem">Sab</th>
+                <th style="padding:10px;text-align:center;background:#e0e0e0;color:#666;font-size:0.85rem">Dom</th>
+            </tr></thead><tbody>`;
+            let dc = 1;
+            for (let row = 0; row < 6; row++) {
+                if (dc > daysInMonth) break;
+                html += '<tr>';
+                for (let col = 0; col < 7; col++) {
+                    if (row===0 && col<startWeekday) { html+='<td style="padding:4px;border:1px solid var(--border);background:#fafafa;vertical-align:top;height:110px"></td>'; }
+                    else if (dc>daysInMonth) { html+='<td style="padding:4px;border:1px solid var(--border);background:#fafafa;vertical-align:top;height:110px"></td>'; }
+                    else {
+                        const isTd = isCurrentMonth && dc===todayDate; const isWe = col>=5;
+                        const ds = slotsByDay[dc]||[]; ds.sort((a,b)=>(a.startTime||'').localeCompare(b.startTime||''));
+                        html += `<td style="padding:4px;border:1px solid var(--border);vertical-align:top;height:110px;${isTd?'background:#E8F5E9;':isWe?'background:#fafafa;':''}">
+                            <div style="font-weight:${isTd?'700':'600'};font-size:0.85rem;margin-bottom:4px;${isTd?'background:var(--primary,#7B1FA2);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;':'color:#333;'}">${dc}</div>
+                            <div style="overflow-y:auto;max-height:80px">`;
+                        ds.forEach(s => {
+                            const p = DB.getPatientById(s.patientId); const t = DB.getUserById(s.therapistId);
+                            const bg = t ? getSpecColor(t.specialty) : '#F5F5F5';
+                            const dot = s.status==='realizado'?'\u{1F7E2}':s.status==='cancelado'?'\u{1F534}':'\u{1F7E1}';
+                            html += `<div style="font-size:0.7rem;padding:2px 4px;margin-bottom:2px;border-radius:4px;background:${bg};white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${p?p.name:'?'} - ${t?t.name:'?'} (${s.startTime||''}-${s.endTime||''}) [${s.status||'agendado'}]">${dot} ${s.startTime||''} ${p?p.name.split(' ')[0]:'?'}</div>`;
+                        });
+                        html += '</div></td>'; dc++;
+                    }
+                }
+                html += '</tr>';
+            }
+            html += '</tbody></table></div>';
+            html += `<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;padding:12px;background:#fff;border-radius:10px;border:1px solid var(--border)">
+                <span style="font-size:0.8rem;font-weight:600">Legenda:</span>
+                <span style="font-size:0.75rem;padding:3px 8px;border-radius:4px;background:#E3F2FD">Psicologia</span>
+                <span style="font-size:0.75rem;padding:3px 8px;border-radius:4px;background:#FCE4EC">Psicopedagogia</span>
+                <span style="font-size:0.75rem;padding:3px 8px;border-radius:4px;background:#FFF3E0">Fonoaudiologia</span>
+                <span style="font-size:0.75rem;padding:3px 8px;border-radius:4px;background:#E8F5E9">T.O.</span>
+                <span style="font-size:0.75rem;padding:3px 8px;border-radius:4px;background:#F3E5F5">Psicomotricidade</span>
+                <span style="font-size:0.75rem;margin-left:8px">\u{1F7E1} Agendado</span>
+                <span style="font-size:0.75rem">\u{1F7E2} Realizado</span>
+                <span style="font-size:0.75rem">\u{1F534} Cancelado</span>
+            </div>`;
+            container.innerHTML = html;
+        }
+
+        // ======= CONTRATOS =======
+        function loadContratoFiltersDir() {
+            const patients = DB.getPatients();
+            const filterSelect = document.getElementById('contratoPatientFilter');
+            const patientSelect = document.getElementById('contratoPatientSelect');
+            let filterHtml = '<option value="">Todos os pacientes</option>';
+            let selectHtml = '<option value="">Selecionar paciente...</option>';
+            patients.forEach(p => {
+                filterHtml += `<option value="${p.id}">${p.name}</option>`;
+                selectHtml += `<option value="${p.id}">${p.name}</option>`;
+            });
+            filterSelect.innerHTML = filterHtml;
+            patientSelect.innerHTML = selectHtml;
+        }
+
+        function loadContratosDir() {
+            const filterPatient = document.getElementById('contratoPatientFilter').value;
+            let docs = DB.getDocuments().filter(d => d.type === 'contrato');
+            if (filterPatient) docs = docs.filter(d => d.patientId === filterPatient);
+            docs.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
+            const container = document.getElementById('contratosDirList');
+            if (docs.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>Nenhum contrato</h3></div>';
+                return;
+            }
+            container.innerHTML = docs.map(c => {
+                const patient = DB.getPatientById(c.patientId);
+                return `<div class="doc-item">
+                    <div class="doc-icon">&#128196;</div>
+                    <div class="doc-info"><h4>${c.title || 'Contrato'}</h4><p>${patient ? patient.name : 'N/A'} - ${formatDate(c.uploadedAt)}</p></div>
+                    <div style="display:flex;gap:8px">
+                        <button class="btn btn-secondary btn-small" onclick="verContratoDir('${c.id}')">Ver</button>
+                        <button class="btn btn-danger btn-small" onclick="excluirContratoDir('${c.id}')">Excluir</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function gerarContratoDir() {
+            const pacId = document.getElementById('contratoPatientSelect').value;
+            if (!pacId) { showToast('Selecione um paciente!'); return; }
+            const patient = DB.getPatientById(pacId);
+            if (!patient) return;
+            const today = new Date().toLocaleDateString('pt-BR');
+            const w = window.open('', '_blank');
+            w.document.write(`<html><head><title>Contrato - ${patient.name}</title><style>body{font-family:Arial,sans-serif;padding:40px;color:#333;line-height:1.8;font-size:13px}h1{color:#7BA89A;font-size:20px;text-align:center}h2{color:#5E8F80;font-size:16px;margin-top:24px}.header{text-align:center;border-bottom:2px solid #7BA89A;padding-bottom:20px;margin-bottom:30px}.field{border-bottom:1px solid #333;display:inline-block;min-width:200px;margin:0 4px}.signature{margin-top:60px;display:flex;justify-content:space-between}.signature div{text-align:center;width:45%}.signature div hr{border:none;border-top:1px solid #333;margin-bottom:4px}</style></head><body><div class="header"><h1>Clinica Prisma</h1><p style="color:#999;font-size:11px;letter-spacing:2px">CUIDADO QUE TRANSFORMA</p></div><h2>CONTRATO DE PRESTACAO DE SERVICOS TERAPEUTICOS</h2><p>Pelo presente instrumento, de um lado a <strong>Clinica Prisma</strong>, doravante denominada CONTRATADA, e do outro:</p><p>Nome do Paciente: <span class="field">${patient.name}</span></p><p>Responsavel: <span class="field">${patient.guardian || '________________________'}</span></p><p>Diagnostico: <span class="field">${patient.diagnosis || '________________________'}</span></p><p>Convenio: <span class="field">${patient.insurance || 'Particular'}</span></p><p>Data: <span class="field">${today}</span></p><h2>CLAUSULAS</h2><p><strong>1.</strong> A CONTRATADA se compromete a prestar servicos de atendimento terapeutico multidisciplinar.</p><p><strong>2.</strong> Os atendimentos seguem agenda definida entre as partes.</p><p><strong>3.</strong> Faltas comunicadas com antecedencia minima de 24 horas.</p><p><strong>4.</strong> Valores conforme tabela vigente, cobrados mensalmente.</p><p><strong>5.</strong> Vigencia de 12 meses, renovavel automaticamente.</p><p><strong>6.</strong> Rescisao mediante aviso previo de 30 dias.</p><div class="signature"><div><hr><p>Responsavel pelo Paciente</p></div><div><hr><p>Clinica Prisma</p></div></div></body></html>`);
+            w.document.close();
+            w.print();
+        }
+
+        async function uploadContratoDir(input) {
+            const pacId = document.getElementById('contratoPatientSelect').value;
+            if (!pacId) { showToast('Selecione um paciente primeiro!'); input.value = ''; return; }
+            const file = input.files[0];
+            if (!file) return;
+            if (file.size > 5 * 1024 * 1024) { showToast('Arquivo muito grande (max 5MB)!'); return; }
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const patient = DB.getPatientById(pacId);
+                await DB.addDocument({ patientId: pacId, type: 'contrato', title: 'Contrato - ' + (patient ? patient.name : '') + ' - ' + file.name, fileName: file.name, fileData: e.target.result, uploadedBy: currentUser.id });
+                input.value = '';
+                loadContratosDir();
+                showToast('Contrato enviado!');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function verContratoDir(id) {
+            const doc = DB.getDocuments().find(d => d.id === id);
+            if (!doc || !doc.fileData) { showToast('Arquivo nao encontrado!'); return; }
+            const w = window.open('', '_blank');
+            if (doc.fileData.startsWith('data:application/pdf')) {
+                w.document.write(`<html><body style="margin:0"><iframe src="${doc.fileData}" style="width:100%;height:100vh;border:none"></iframe></body></html>`);
+            } else {
+                w.document.write(`<html><body style="margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f5f5"><img src="${doc.fileData}" style="max-width:100%;max-height:100vh"></body></html>`);
+            }
+            w.document.close();
+        }
+
+        async function excluirContratoDir(id) {
+            if (!confirm('Excluir este contrato?')) return;
+            await DB.removeDocument(id);
+            loadContratosDir();
+            showToast('Contrato excluido!');
+        }
+
+        function loadIndicadores() {
+            const ym = document.getElementById('indicadoresMonth').value;
+            if (!ym) {
+                document.getElementById('indicadoresMonth').value = new Date().toISOString().slice(0, 7);
+            }
+            const [year, month] = (document.getElementById('indicadoresMonth').value).split('-').map(Number);
+
+            const patients = DB.getPatients();
+            const therapists = DB.getTherapists();
+            const attendance = DB.getAttendanceByMonth ? DB.getAttendanceByMonth(year, month) : [];
+            const evolutions = (DB.getEvolutions ? DB.getEvolutions() : DB._cache.evolutions || []);
+            const payments = DB._cache.payments || [];
+
+            // Filter evolutions for the month
+            const monthEvos = evolutions.filter(e => {
+                const d = new Date(e.date || e.createdAt);
+                return d.getFullYear() === year && (d.getMonth() + 1) === month;
+            });
+
+            // Filter attendance
+            const presentes = attendance.filter(a => a.status === 'presente');
+            const faltas = attendance.filter(a => a.status === 'faltou' || a.status === 'faltou_justificado');
+            const taxaPresenca = attendance.length > 0 ? Math.round((presentes.length / attendance.length) * 100) : 0;
+
+            // Filter payments for the month
+            const monthStr = ym || new Date().toISOString().slice(0, 7);
+            const monthPayments = payments.filter(p => p.month === monthStr || (p.paymentDate && p.paymentDate.startsWith(monthStr)));
+            const totalReceita = monthPayments.filter(p => p.status === 'pago').reduce((s, p) => s + (p.amount || 0), 0);
+
+            // Stats grid
+            document.getElementById('indicadoresGrid').innerHTML = `
+                <div class="stat-card"><div class="stat-number">${monthEvos.length}</div><div class="stat-label">Evolucoes registradas</div></div>
+                <div class="stat-card"><div class="stat-number">${presentes.length}</div><div class="stat-label">Sessoes realizadas</div></div>
+                <div class="stat-card"><div class="stat-number">${faltas.length}</div><div class="stat-label">Faltas no mes</div></div>
+                <div class="stat-card"><div class="stat-number">${taxaPresenca}%</div><div class="stat-label">Taxa de presenca</div></div>
+                <div class="stat-card"><div class="stat-number">${patients.length}</div><div class="stat-label">Pacientes ativos</div></div>
+                <div class="stat-card"><div class="stat-number">R$ ${totalReceita.toFixed(2)}</div><div class="stat-label">Receita confirmada</div></div>
+            `;
+
+            // By therapist
+            const byTherapist = {};
+            therapists.forEach(t => { byTherapist[t.id] = {name: t.name, specialty: t.specialty || '', evos: 0, sessoes: 0, faltas: 0}; });
+            monthEvos.forEach(e => { if (byTherapist[e.therapistId]) byTherapist[e.therapistId].evos++; });
+            attendance.forEach(a => {
+                if (byTherapist[a.therapistId]) {
+                    if (a.status === 'presente') byTherapist[a.therapistId].sessoes++;
+                    else byTherapist[a.therapistId].faltas++;
+                }
+            });
+
+            const therapistRows = Object.values(byTherapist).map(t =>
+                `<tr><td><strong>${t.name}</strong><br><span style="font-size:0.75rem;color:var(--text-light)">${t.specialty}</span></td><td>${t.sessoes}</td><td>${t.faltas}</td><td>${t.evos}</td></tr>`
+            ).join('');
+
+            document.getElementById('indicadoresByTherapist').innerHTML = therapistRows ?
+                `<table style="width:100%"><thead><tr><th>Terapeuta</th><th>Sessoes</th><th>Faltas pac.</th><th>Evolucoes</th></tr></thead><tbody>${therapistRows}</tbody></table>` :
+                '<div style="text-align:center;padding:20px;color:var(--text-light)">Sem dados para o periodo</div>';
+
+            // By patient
+            const byPatient = {};
+            patients.forEach(p => { byPatient[p.id] = {name: p.name, presencas: 0, faltas: 0, total: 0}; });
+            attendance.forEach(a => {
+                if (byPatient[a.patientId]) {
+                    byPatient[a.patientId].total++;
+                    if (a.status === 'presente') byPatient[a.patientId].presencas++;
+                    else byPatient[a.patientId].faltas++;
+                }
+            });
+
+            const patientRows = Object.values(byPatient).filter(p => p.total > 0).sort((a, b) => b.faltas - a.faltas).map(p => {
+                const taxa = p.total > 0 ? Math.round((p.presencas / p.total) * 100) : 0;
+                const color = taxa >= 80 ? 'var(--success)' : taxa >= 60 ? '#FF9800' : 'var(--coral)';
+                return `<tr><td><strong>${p.name}</strong></td><td>${p.presencas}</td><td>${p.faltas}</td><td style="color:${color};font-weight:600">${taxa}%</td></tr>`;
+            }).join('');
+
+            document.getElementById('indicadoresByPatient').innerHTML = patientRows ?
+                `<table style="width:100%"><thead><tr><th>Paciente</th><th>Presencas</th><th>Faltas</th><th>Frequencia</th></tr></thead><tbody>${patientRows}</tbody></table>` :
+                '<div style="text-align:center;padding:20px;color:var(--text-light)">Sem dados de frequencia para o periodo</div>';
+
+            // Financial summary
+            const custoTerapeutas = monthPayments.filter(p => p.status === 'pago').reduce((s, p) => s + ((p.amount || 0) * 0.5), 0);
+            document.getElementById('indicadoresFinanceiro').innerHTML = `
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:16px">
+                    <div style="text-align:center"><div style="font-size:1.5rem;font-weight:700;color:var(--success)">R$ ${totalReceita.toFixed(2)}</div><div style="font-size:0.85rem;color:var(--text-light)">Receita bruta</div></div>
+                    <div style="text-align:center"><div style="font-size:1.5rem;font-weight:700;color:var(--coral)">R$ ${custoTerapeutas.toFixed(2)}</div><div style="font-size:0.85rem;color:var(--text-light)">Custo terapeutas (50%)</div></div>
+                    <div style="text-align:center"><div style="font-size:1.5rem;font-weight:700;color:var(--primary)">R$ ${(totalReceita - custoTerapeutas).toFixed(2)}</div><div style="font-size:0.85rem;color:var(--text-light)">Resultado liquido</div></div>
+                </div>
+            `;
+        }
+
+        function printIndicadores() {
+            const content = document.getElementById('section-indicadores').innerHTML;
+            const win = window.open('', '_blank');
+            win.document.write('<html><head><title>Indicadores - Prisma</title><style>body{font-family:Poppins,sans-serif;padding:20px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:8px;text-align:left}th{background:#f5f5f5}.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat-card{background:#f9f9f9;padding:16px;border-radius:8px;text-align:center}.stat-number{font-size:1.5rem;font-weight:700}.stat-label{font-size:0.85rem;color:#666}.card{border:1px solid #eee;border-radius:8px;padding:16px;margin:12px 0}.card-header h2{font-size:1.1rem}.btn,.filter-bar,.page-header button{display:none}</style></head><body>');
+            win.document.write(content);
+            win.document.write('</body></html>');
+            win.document.close();
+            win.print();
+        }
+
+        // ======= ESPELHO MENSAL DO TERAPEUTA =======
+        function openEspelhoTerapeutaModal() {
+            const therapists = DB.getTherapists();
+            const el = document.getElementById('etTherapist');
+            el.innerHTML = '<option value="">-- Selecione --</option>' +
+                therapists.map(t => `<option value="${t.id}">${t.name} (${t.specialty || ''})</option>`).join('');
+            const now = new Date();
+            document.getElementById('etMonth').value = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+            document.getElementById('modalEspelhoTerapeuta').classList.add('active');
+        }
+
+        document.getElementById('formEspelhoTerapeuta').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const therapistId = document.getElementById('etTherapist').value;
+            const monthVal = document.getElementById('etMonth').value;
+            if (!therapistId || !monthVal) return;
+
+            const therapist = DB.getUserById(therapistId);
+            const [year, month] = monthVal.split('-').map(Number);
+
+            const allAttendance = DB.getAttendanceByMonth(year, month);
+            const therapistAttendance = allAttendance.filter(a => a.therapistId === therapistId);
+
+            const totalSessions = therapistAttendance.length;
+            const attended = therapistAttendance.filter(a => a.status === 'presente' || a.status === 'atraso');
+            const missed = therapistAttendance.filter(a => a.status === 'falta');
+            const justified = therapistAttendance.filter(a => a.status === 'justificada');
+
+            const patientSessions = {};
+            therapistAttendance.forEach(a => {
+                const patient = DB.getPatientById(a.patientId);
+                const pName = patient ? patient.name : 'Desconhecido';
+                if (!patientSessions[pName]) patientSessions[pName] = { total: 0, presentes: 0, faltas: 0 };
+                patientSessions[pName].total++;
+                if (a.status === 'presente' || a.status === 'atraso') patientSessions[pName].presentes++;
+                if (a.status === 'falta') patientSessions[pName].faltas++;
+            });
+
+            const payments = DB.getPaymentsByMonth(monthVal);
+            let totalValueSessions = 0;
+            payments.forEach(p => {
+                const patient = DB.getPatientById(p.patientId);
+                if (patient && patient.therapists && patient.therapists.includes(therapistId)) {
+                    totalValueSessions += parseFloat(p.amount) || 0;
+                }
+            });
+            const therapistPayment = totalValueSessions * 0.5;
+
+            const monthNames = ['Janeiro','Fevereiro','Marco','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+
+            const container = document.getElementById('espelhoTerapeutaResult');
+            document.getElementById('espelhoTerapeutaEmpty').style.display = 'none';
+            container.innerHTML = `
+                <div class="card" style="margin-bottom:16px">
+                    <div class="card-header">
+                        <h2>Espelho Mensal - ${therapist ? therapist.name : '?'}</h2>
+                        <button class="btn btn-secondary btn-small" style="width:auto" onclick="printEspelhoTerapeuta()">Imprimir</button>
+                    </div>
+                    <div style="padding:16px">
+                        <p><strong>Terapeuta:</strong> ${therapist ? therapist.name : '-'}</p>
+                        <p><strong>Especialidade:</strong> ${therapist ? (therapist.specialty || '-') : '-'}</p>
+                        <p><strong>Periodo:</strong> ${monthNames[month - 1]} / ${year}</p>
+                        <hr style="margin:16px 0;border:none;border-top:1px solid var(--border)">
+                        <h3 style="font-size:1rem;margin-bottom:12px">Resumo de Sessoes</h3>
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:16px">
+                            <div class="stat-card"><div class="stat-value">${totalSessions}</div><div class="stat-label">Total de Sessoes</div></div>
+                            <div class="stat-card"><div class="stat-value" style="color:var(--success)">${attended.length}</div><div class="stat-label">Presencas</div></div>
+                            <div class="stat-card"><div class="stat-value" style="color:var(--danger)">${missed.length}</div><div class="stat-label">Faltas</div></div>
+                            <div class="stat-card"><div class="stat-value" style="color:var(--warning)">${justified.length}</div><div class="stat-label">Justificadas</div></div>
+                        </div>
+                        <h3 style="font-size:1rem;margin-bottom:12px">Detalhamento por Paciente</h3>
+                        <table style="width:100%;border-collapse:collapse">
+                            <thead>
+                                <tr>
+                                    <th style="padding:8px 12px;text-align:left;border-bottom:2px solid var(--border);font-size:0.85rem">Paciente</th>
+                                    <th style="padding:8px 12px;text-align:center;border-bottom:2px solid var(--border);font-size:0.85rem">Total</th>
+                                    <th style="padding:8px 12px;text-align:center;border-bottom:2px solid var(--border);font-size:0.85rem">Presencas</th>
+                                    <th style="padding:8px 12px;text-align:center;border-bottom:2px solid var(--border);font-size:0.85rem">Faltas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${Object.entries(patientSessions).map(([name, data]) => `
+                                    <tr>
+                                        <td style="padding:8px 12px;border-bottom:1px solid var(--border);font-size:0.85rem">${name}</td>
+                                        <td style="padding:8px 12px;text-align:center;border-bottom:1px solid var(--border);font-size:0.85rem">${data.total}</td>
+                                        <td style="padding:8px 12px;text-align:center;border-bottom:1px solid var(--border);font-size:0.85rem;color:var(--success)">${data.presentes}</td>
+                                        <td style="padding:8px 12px;text-align:center;border-bottom:1px solid var(--border);font-size:0.85rem;color:var(--danger)">${data.faltas}</td>
+                                    </tr>
+                                `).join('')}
+                                ${Object.keys(patientSessions).length === 0 ? '<tr><td colspan="4" style="padding:16px;text-align:center;color:var(--text-light)">Nenhuma sessao registrada neste periodo</td></tr>' : ''}
+                            </tbody>
+                        </table>
+                        <hr style="margin:16px 0;border:none;border-top:1px solid var(--border)">
+                        <h3 style="font-size:1rem;margin-bottom:8px">Financeiro</h3>
+                        <p><strong>Valor a Receber (50%):</strong> <span style="font-size:1.2rem;font-weight:700;color:var(--success)">R$ ${therapistPayment.toFixed(2)}</span></p>
+                    </div>
+                </div>
+            `;
+            closeModal('modalEspelhoTerapeuta');
+        });
+
+        function printEspelhoTerapeuta() {
+            const content = document.getElementById('espelhoTerapeutaResult');
+            if (!content.innerHTML) return;
+            const win = window.open('', '_blank');
+            win.document.write(`<html><head><title>Espelho Terapeuta</title>
+                <style>body{font-family:Arial,sans-serif;padding:40px;color:#333;line-height:1.6}
+                h1{color:#7B1FA2;font-size:20px}h2{color:#7B1FA2;font-size:16px;margin-top:20px}
+                .header{text-align:center;border-bottom:2px solid #7B1FA2;padding-bottom:20px;margin-bottom:30px}
+                table{width:100%;border-collapse:collapse;margin-top:16px}
+                th,td{text-align:left;padding:8px 12px;border-bottom:1px solid #ddd}th{background:#f5f5f5;font-weight:600}
+                .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+                .stat-box{text-align:center;padding:12px;border:1px solid #ddd;border-radius:8px}
+                .stat-box .val{font-size:1.5rem;font-weight:700}.stat-box .lbl{font-size:0.8rem;color:#666}</style></head>
+                <body>
+                    <div class="header"><h1>Clinica Prisma</h1><p style="color:#999;font-size:12px;letter-spacing:2px">CUIDADO QUE TRANSFORMA</p></div>
+                    ${content.querySelector('.card > div[style*="padding"]').innerHTML}
+                </body></html>`);
+            win.document.close();
+            win.print();
+        }
+
+        function doLogout() {
+            DB.logout();
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>
