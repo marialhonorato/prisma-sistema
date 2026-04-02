@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Debug Prisma</title></head>
+<body style="font-family:monospace;padding:20px;background:#111;color:#0f0">
+<h2>Diagnostico Prisma</h2>
+<div id="log"></div>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/data.js?v=20260313a"></script>
+<script>
+function log(msg) {
+    document.getElementById('log').innerHTML += '<div>' + msg + '</div>';
+}
+log('1. Scripts carregados OK');
+log('2. Iniciando DB.init()...');
+DB.init().then(function() {
+    log('3. DB.init() OK');
+    var users = DB.getUsers();
+    log('4. Total usuarios: ' + users.length);
+    var terapeutas = DB.getTherapists();
+    log('5. Total terapeutas: ' + terapeutas.length);
+    for (var i = 0; i < terapeutas.length; i++) {
+        log('   - ' + terapeutas[i].name + ' (' + terapeutas[i].specialty + ') [' + terapeutas[i].id + ']');
+    }
+    var patients = DB.getPatients();
+    log('6. Total pacientes: ' + patients.length);
+    var objectives = DB.getTherapeuticObjectives();
+    log('7. Total objetivos: ' + objectives.length);
+    var targets = DB.getAbaTargets ? DB.getAbaTargets() : [];
+    log('8. Total alvos ABA: ' + (targets ? targets.length : 'N/A'));
+    var payments = DB.getPayments();
+    log('9. Total pagamentos: ' + payments.length);
+    log('--- FIM ---');
+}).catch(function(err) {
+    log('ERRO no DB.init(): ' + err.message);
+});
+</script>
+</body>
+</html>
